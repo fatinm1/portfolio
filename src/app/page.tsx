@@ -1,103 +1,128 @@
-import Image from "next/image";
+"use client";
+
+import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
+
+// More precise deterministic random function
+function seededRandom(seed: number) {
+  const x = Math.sin(seed) * 10000;
+  const result = x - Math.floor(x);
+  // Round to 4 decimal places to ensure consistency
+  return Math.round(result * 10000) / 10000;
+}
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const [isClient, setIsClient] = useState(false);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  // Pre-calculate all particle data to ensure consistency
+  const particles = Array.from({ length: 30 }, (_, i) => {
+    const seed = i * 123.456;
+    return {
+      width: Math.round((seededRandom(seed) * 40 + 20) * 100) / 100,
+      height: Math.round((seededRandom(seed + 1) * 40 + 20) * 100) / 100,
+      top: Math.round(seededRandom(seed + 2) * 90 * 100) / 100,
+      left: Math.round(seededRandom(seed + 3) * 90 * 100) / 100,
+      yOffset: Math.round((seededRandom(seed + 4) * 40 - 20) * 100) / 100,
+      xOffset: Math.round((seededRandom(seed + 5) * 40 - 20) * 100) / 100,
+      duration: Math.round((seededRandom(seed + 6) * 6 + 4) * 100) / 100,
+    };
+  });
+
+  // Don't render particles until client-side to prevent hydration issues
+  if (!isClient) {
+    return (
+      <div className="relative flex flex-col items-center justify-center min-h-[80vh] overflow-hidden">
+        {/* Static background without particles */}
+        <div className="absolute inset-0 -z-10">
+          <div className="w-full h-full bg-gradient-to-br from-[#0f2027] via-[#2c5364] to-[#232526] opacity-80" />
+        </div>
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1 }}
+          className="text-center max-w-2xl mx-auto"
+        >
+          <h1 className="text-4xl sm:text-6xl font-extrabold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-blue-300 drop-shadow-lg">
+            Fatin Mojumder
+          </h1>
+          <h2 className="text-xl sm:text-2xl font-semibold mb-2 text-white/80">
+            Senior CS Major at UMBC
+          </h2>
+          <p className="text-lg sm:text-xl mb-8 text-white/70">
+            Building smart systems for real-world impact
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="/projects" className="px-8 py-3 rounded-full bg-cyan-500/80 hover:bg-cyan-400 text-white font-bold shadow-lg transition-all backdrop-blur-md">
+              View Projects
+            </a>
+            <a href="/contact" className="px-8 py-3 rounded-full bg-white/10 border border-cyan-400 text-cyan-200 font-bold shadow-lg hover:bg-cyan-400/20 hover:text-white transition-all backdrop-blur-md">
+              Contact Me
+            </a>
+          </div>
+        </motion.div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="relative flex flex-col items-center justify-center min-h-[80vh] overflow-hidden">
+      {/* Animated background particles */}
+      <div className="absolute inset-0 -z-10">
+        <div className="w-full h-full bg-gradient-to-br from-[#0f2027] via-[#2c5364] to-[#232526] opacity-80" />
+        <div className="absolute inset-0 pointer-events-none">
+          {/* Simple animated dots/particles */}
+          {particles.map((particle, i) => (
+            <motion.span
+              key={i}
+              className="absolute rounded-full bg-white/10 blur-lg"
+              style={{
+                width: `${particle.width}px`,
+                height: `${particle.height}px`,
+                top: `${particle.top}%`,
+                left: `${particle.left}%`,
+              }}
+              animate={{
+                y: [0, particle.yOffset, 0],
+                x: [0, particle.xOffset, 0],
+              }}
+              transition={{
+                duration: particle.duration,
+                repeat: Infinity,
+                repeatType: "loop",
+                ease: "easeInOut",
+              }}
             />
-            Deploy now
+          ))}
+        </div>
+      </div>
+      <motion.div
+        initial={{ opacity: 0, y: 40 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 1 }}
+        className="text-center max-w-2xl mx-auto"
+      >
+        <h1 className="text-4xl sm:text-6xl font-extrabold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-blue-300 drop-shadow-lg">
+          Fatin Mojumder
+        </h1>
+        <h2 className="text-xl sm:text-2xl font-semibold mb-2 text-white/80">
+          Senior CS Major at UMBC
+        </h2>
+        <p className="text-lg sm:text-xl mb-8 text-white/70">
+          Building smart systems for real-world impact
+        </p>
+        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <a href="/projects" className="px-8 py-3 rounded-full bg-cyan-500/80 hover:bg-cyan-400 text-white font-bold shadow-lg transition-all backdrop-blur-md">
+            View Projects
           </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
+          <a href="/contact" className="px-8 py-3 rounded-full bg-white/10 border border-cyan-400 text-cyan-200 font-bold shadow-lg hover:bg-cyan-400/20 hover:text-white transition-all backdrop-blur-md">
+            Contact Me
           </a>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      </motion.div>
     </div>
   );
 }
