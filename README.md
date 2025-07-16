@@ -22,7 +22,7 @@ A modern, futuristic portfolio website built with Next.js, featuring an AI chatb
 - **Video demo support** (file upload + YouTube/Vimeo URLs)
 - **Technology tags** and project categorization
 - **GitHub integration** for code links
-- **SQLite database** for persistent storage
+- **MySQL database** for persistent storage
 
 ### 🔐 Security Features
 - **Password-protected admin panel** with bcrypt hashing
@@ -43,6 +43,7 @@ A modern, futuristic portfolio website built with Next.js, featuring an AI chatb
 ### Prerequisites
 - Node.js 18+ 
 - npm or yarn
+- MySQL database (local or cloud)
 - OpenAI API key (optional, for enhanced chatbot)
 
 ### Installation
@@ -61,18 +62,29 @@ A modern, futuristic portfolio website built with Next.js, featuring an AI chatb
 3. **Set up environment variables**
    ```bash
    # Copy the example environment file
-   cp .env.local.example .env.local
+   cp env.example .env.local
    
-   # Edit .env.local and add your OpenAI API key
+   # Edit .env.local and add your configuration
    OPENAI_API_KEY=your_openai_api_key_here
+   DB_HOST=localhost
+   DB_USER=root
+   DB_PASSWORD=your_mysql_password
+   DB_NAME=portfolio
+   DB_PORT=3306
    ```
 
-4. **Run the development server**
+4. **Set up MySQL database**
+   ```bash
+   # Create a MySQL database named 'portfolio'
+   mysql -u root -p -e "CREATE DATABASE portfolio;"
+   ```
+
+5. **Run the development server**
    ```bash
    npm run dev
    ```
 
-5. **Open your browser**
+6. **Open your browser**
    Navigate to [http://localhost:3000](http://localhost:3000)
 
 ## 🔧 Configuration
@@ -85,15 +97,38 @@ A modern, futuristic portfolio website built with Next.js, featuring an AI chatb
    ```
 3. The chatbot will use fallback responses if no API key is provided
 
+### MySQL Database Setup
+1. **Local Development**:
+   ```bash
+   # Install MySQL locally or use Docker
+   docker run --name mysql-portfolio -e MYSQL_ROOT_PASSWORD=password -e MYSQL_DATABASE=portfolio -p 3306:3306 -d mysql:8.0
+   ```
+
+2. **Railway Deployment**:
+   - Add MySQL service in Railway dashboard
+   - Railway will provide connection details automatically
+   - Set environment variables in Railway
+
+3. **Environment Variables**:
+   ```bash
+   DB_HOST=your_mysql_host
+   DB_USER=your_mysql_user
+   DB_PASSWORD=your_mysql_password
+   DB_NAME=portfolio
+   DB_PORT=3306
+   ```
+
 ### Admin Access
 - **Login URL**: `/login`
 - **Admin panel**: `/admin`
+- **Default credentials**: `fatinm1` / `Bd2222Mo?`
 - **Set up admin credentials** by editing the database or using the default user created on first run
 
 ### Database
-- **SQLite database** automatically created in `data/portfolio.db`
-- **Tables**: `projects`, `admin_users`
+- **MySQL database** with automatic table creation
+- **Tables**: `projects`, `admin_users`, `contacts`, `resume`
 - **Automatic initialization** on first run
+- **Connection pooling** for better performance
 
 ## 📁 Project Structure
 
@@ -104,6 +139,9 @@ src/
 │   │   ├── auth/          # Authentication endpoints
 │   │   ├── chatbot/       # AI chatbot API
 │   │   ├── projects/      # Project management API
+│   │   ├── contact/       # Contact form API
+│   │   ├── contacts/      # Contact messages API
+│   │   ├── resume/        # Resume management API
 │   │   └── upload/        # File upload API
 │   ├── admin/             # Admin panel (protected)
 │   ├── chatbot/           # Chatbot interface
@@ -113,7 +151,7 @@ src/
 │   ├── skills/            # Skills page
 │   └── page.tsx           # Homepage
 ├── lib/                   # Utility libraries
-│   ├── database.ts        # Database operations
+│   ├── database.ts        # MySQL database operations
 │   ├── openai.ts          # OpenAI service
 │   └── upload.ts          # File upload utilities
 └── components/            # Reusable components
@@ -143,6 +181,17 @@ src/
 3. Use suggested questions for quick interactions
 4. Clear chat history with the "Clear Chat" button
 
+### Managing Resume
+1. Login to admin panel
+2. Go to "Resume Management" section
+3. Upload a new PDF resume (max 10MB)
+4. Resume will be available for download on contact page
+
+### Contact Management
+1. Contact form submissions are stored in database
+2. View messages in admin panel under "Contact Messages"
+3. Messages include name, email, and timestamp
+
 ### Customization
 - **Profile info**: Edit `src/lib/openai.ts` for chatbot context
 - **Skills**: Update `src/app/skills/page.tsx` with your skills
@@ -157,11 +206,19 @@ src/
 3. **Use HTTPS** for production
 4. **Configure proper CORS** if needed
 5. **Set up database backups**
+6. **Use strong MySQL passwords**
 
 ### Environment Variables
 ```bash
 # Required for OpenAI integration
 OPENAI_API_KEY=your_openai_api_key_here
+
+# Required for MySQL database
+DB_HOST=your_mysql_host
+DB_USER=your_mysql_user
+DB_PASSWORD=your_mysql_password
+DB_NAME=portfolio
+DB_PORT=3306
 
 # Optional security enhancements
 JWT_SECRET=your_jwt_secret_here
@@ -179,22 +236,29 @@ npm run lint         # Run ESLint
 ```
 
 ### Database Management
-- Database is automatically created on first run
-- Located at `data/portfolio.db`
-- Use SQLite browser for manual inspection
+- Database tables are automatically created on first run
+- Use MySQL client for manual inspection
 - Backup before major changes
+- Connection pooling for better performance
 
 ## 🚀 Deployment
 
-### Vercel (Recommended)
+### Railway (Recommended)
+1. Connect your GitHub repository
+2. Add MySQL service in Railway dashboard
+3. Set environment variables in Railway
+4. Deploy automatically on push
+
+### Vercel
 1. Connect your GitHub repository
 2. Set environment variables in Vercel dashboard
-3. Deploy automatically on push
+3. Use external MySQL service (PlanetScale, Railway, etc.)
+4. Deploy automatically on push
 
 ### Other Platforms
-- **Netlify**: Configure build settings
-- **Railway**: Add environment variables
-- **DigitalOcean**: Use App Platform
+- **Netlify**: Configure build settings with external MySQL
+- **DigitalOcean**: Use App Platform with MySQL database
+- **Heroku**: Add MySQL add-on
 
 ## 🤝 Contributing
 

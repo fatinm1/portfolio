@@ -1,8 +1,20 @@
-import sqlite3 from 'sqlite3';
-import path from 'path';
+import mysql from 'mysql2/promise';
 import bcrypt from 'bcryptjs';
 
-const DB_PATH = path.join(process.cwd(), 'data', 'portfolio.db');
+// Database configuration
+const dbConfig = {
+  host: process.env.DB_HOST || 'localhost',
+  user: process.env.DB_USER || 'root',
+  password: process.env.DB_PASSWORD || '',
+  database: process.env.DB_NAME || 'portfolio',
+  port: parseInt(process.env.DB_PORT || '3306'),
+  waitForConnections: true,
+  connectionLimit: 10,
+  queueLimit: 0,
+};
+
+// Create connection pool
+const pool = mysql.createPool(dbConfig);
 
 interface ProjectRow {
   id: number;
@@ -12,14 +24,14 @@ interface ProjectRow {
   github: string;
   video: string | null;
   tags: string | null;
-  created_at: string;
+  created_at: Date;
 }
 
 interface AdminRow {
   id: number;
   username: string;
   password_hash: string;
-  created_at: string;
+  created_at: Date;
 }
 
 interface ContactRow {
@@ -27,149 +39,108 @@ interface ContactRow {
   name: string;
   email: string;
   message: string;
-  created_at: string;
+  created_at: Date;
 }
 
 interface ResumeRow {
   id: number;
   filename: string;
   url: string;
-  uploaded_at: string;
+  uploaded_at: Date;
 }
 
 // Initialize database
-export const initDatabase = () => {
-  return new Promise<void>((resolve, reject) => {
-    const db = new sqlite3.Database(DB_PATH, (err) => {
-      if (err) {
-        reject(err);
-        return;
-      }
+export const initDatabase = async (): Promise<void> => {
+  try {
+    const connection = await pool.getConnection();
+    
+    // Create projects table
+    await connection.execute(`
+      CREATE TABLE IF NOT EXISTS projects (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        name VARCHAR(255) NOT NULL,
+        description TEXT NOT NULL,
+        technologies JSON NOT NULL,
+        github VARCHAR(500) NOT NULL,
+        video VARCHAR(500),
+        tags JSON,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
 
-      // Create projects table
-      db.run(`
-        CREATE TABLE IF NOT EXISTS projects (
-          id INTEGER PRIMARY KEY AUTOINCREMENT,
-          name TEXT NOT NULL,
-          description TEXT NOT NULL,
-          technologies TEXT NOT NULL,
-          github TEXT NOT NULL,
-          video TEXT,
-          tags TEXT,
-          created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-        )
-      `, (err) => {
-        if (err) {
-          reject(err);
-          return;
-        }
+    // Create admin users table
+    await connection.execute(`
+      CREATE TABLE IF NOT EXISTS admin_users (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        username VARCHAR(100) UNIQUE NOT NULL,
+        password_hash VARCHAR(255) NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
 
-        // Create admin users table
-        db.run(`
-          CREATE TABLE IF NOT EXISTS admin_users (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            username TEXT UNIQUE NOT NULL,
-            password_hash TEXT NOT NULL,
-            created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-          )
-        `, (err) => {
-          if (err) {
-            reject(err);
-            return;
-          }
+    // Create contacts table
+    await connection.execute(`
+      CREATE TABLE IF NOT EXISTS contacts (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        name VARCHAR(255) NOT NULL,
+        email VARCHAR(255) NOT NULL,
+        message TEXT NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
 
-          // Create contacts table
-          db.run(`
-            CREATE TABLE IF NOT EXISTS contacts (
-              id INTEGER PRIMARY KEY AUTOINCREMENT,
-              name TEXT NOT NULL,
-              email TEXT NOT NULL,
-              message TEXT NOT NULL,
-              created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-            )
-          `, (err) => {
-            if (err) {
-              reject(err);
-              return;
-            }
+    // Create resume table
+    await connection.execute(`
+      CREATE TABLE IF NOT EXISTS resume (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        filename VARCHAR(255) NOT NULL,
+        url VARCHAR(500) NOT NULL,
+        uploaded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
 
-            // Create resume table
-            db.run(`
-              CREATE TABLE IF NOT EXISTS resume (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                filename TEXT NOT NULL,
-                url TEXT NOT NULL,
-                uploaded_at DATETIME DEFAULT CURRENT_TIMESTAMP
-              )
-            `, (err) => {
-              if (err) {
-                reject(err);
-                return;
-              }
+    // Check if default admin user exists
+    const [adminRows] = await connection.execute(
+      'SELECT COUNT(*) as count FROM admin_users'
+    );
+    const adminCount = (adminRows as any)[0].count;
 
-              // Create default admin user if none exists
-              db.get('SELECT COUNT(*) as count FROM admin_users', (err, row: any) => {
-                if (err) {
-                  reject(err);
-                  return;
-                }
+    if (adminCount === 0) {
+      const defaultPassword = 'Bd2222Mo?'; // Default admin password
+      const hash = await bcrypt.hash(defaultPassword, 10);
+      
+      await connection.execute(
+        'INSERT INTO admin_users (username, password_hash) VALUES (?, ?)',
+        ['fatinm1', hash]
+      );
+      console.log('Default admin user created successfully');
+    }
 
-                if (row.count === 0) {
-                  const defaultPassword = 'Bd2222Mo?'; // Default admin password
-                  bcrypt.hash(defaultPassword, 10, (err, hash) => {
-                    if (err) {
-                      reject(err);
-                      return;
-                    }
-
-                    db.run(
-                      'INSERT INTO admin_users (username, password_hash) VALUES (?, ?)',
-                      ['fatinm1', hash],
-                      (err) => {
-                        if (err) {
-                          reject(err);
-                          return;
-                        }
-                        console.log('Default admin user created successfully');
-                        resolve();
-                      }
-                    );
-                  });
-                } else {
-                  resolve();
-                }
-              });
-            });
-          });
-        });
-      });
-    });
-  });
+    connection.release();
+  } catch (error) {
+    console.error('Database initialization error:', error);
+    throw error;
+  }
 };
 
 // Database operations
-export const getProjects = (): Promise<any[]> => {
-  return new Promise((resolve, reject) => {
-    const db = new sqlite3.Database(DB_PATH);
-    db.all('SELECT * FROM projects ORDER BY created_at DESC', (err, rows: ProjectRow[]) => {
-      db.close();
-      if (err) {
-        reject(err);
-        return;
-      }
-      resolve(rows.map(row => ({
-        ...row,
-        technologies: JSON.parse(row.technologies),
-        tags: row.tags ? JSON.parse(row.tags) : []
-      })));
-    });
-  });
+export const getProjects = async (): Promise<any[]> => {
+  try {
+    const [rows] = await pool.execute('SELECT * FROM projects ORDER BY created_at DESC');
+    return (rows as ProjectRow[]).map(row => ({
+      ...row,
+      technologies: typeof row.technologies === 'string' ? JSON.parse(row.technologies) : row.technologies,
+      tags: row.tags ? (typeof row.tags === 'string' ? JSON.parse(row.tags) : row.tags) : []
+    }));
+  } catch (error) {
+    console.error('Error getting projects:', error);
+    throw error;
+  }
 };
 
-export const addProject = (project: any): Promise<void> => {
-  return new Promise((resolve, reject) => {
-    const db = new sqlite3.Database(DB_PATH);
-    db.run(
+export const addProject = async (project: any): Promise<void> => {
+  try {
+    await pool.execute(
       'INSERT INTO projects (name, description, technologies, github, video, tags) VALUES (?, ?, ?, ?, ?, ?)',
       [
         project.name,
@@ -178,120 +149,80 @@ export const addProject = (project: any): Promise<void> => {
         project.github,
         project.video || null,
         JSON.stringify(project.tags || [])
-      ],
-      (err) => {
-        db.close();
-        if (err) {
-          reject(err);
-          return;
-        }
-        resolve();
-      }
+      ]
     );
-  });
+  } catch (error) {
+    console.error('Error adding project:', error);
+    throw error;
+  }
 };
 
-export const verifyAdmin = (username: string, password: string): Promise<boolean> => {
-  return new Promise((resolve, reject) => {
-    const db = new sqlite3.Database(DB_PATH);
-    db.get(
+export const verifyAdmin = async (username: string, password: string): Promise<boolean> => {
+  try {
+    const [rows] = await pool.execute(
       'SELECT password_hash FROM admin_users WHERE username = ?',
-      [username],
-      (err, row: AdminRow | undefined) => {
-        db.close();
-        if (err) {
-          reject(err);
-          return;
-        }
-        if (!row) {
-          resolve(false);
-          return;
-        }
-        bcrypt.compare(password, row.password_hash, (err, result) => {
-          if (err) {
-            reject(err);
-            return;
-          }
-          resolve(result || false);
-        });
-      }
+      [username]
     );
-  });
+    
+    if ((rows as AdminRow[]).length === 0) {
+      return false;
+    }
+    
+    const row = (rows as AdminRow[])[0];
+    return await bcrypt.compare(password, row.password_hash);
+  } catch (error) {
+    console.error('Error verifying admin:', error);
+    return false;
+  }
 };
 
 // Contact form functions
-export const saveContact = (contact: { name: string; email: string; message: string }): Promise<void> => {
-  return new Promise((resolve, reject) => {
-    const db = new sqlite3.Database(DB_PATH);
-    db.run(
+export const saveContact = async (contact: { name: string; email: string; message: string }): Promise<void> => {
+  try {
+    await pool.execute(
       'INSERT INTO contacts (name, email, message) VALUES (?, ?, ?)',
-      [contact.name, contact.email, contact.message],
-      (err) => {
-        db.close();
-        if (err) {
-          reject(err);
-          return;
-        }
-        resolve();
-      }
+      [contact.name, contact.email, contact.message]
     );
-  });
+  } catch (error) {
+    console.error('Error saving contact:', error);
+    throw error;
+  }
 };
 
-export const getContacts = (): Promise<ContactRow[]> => {
-  return new Promise((resolve, reject) => {
-    const db = new sqlite3.Database(DB_PATH);
-    db.all('SELECT * FROM contacts ORDER BY created_at DESC', (err, rows: ContactRow[]) => {
-      db.close();
-      if (err) {
-        reject(err);
-        return;
-      }
-      resolve(rows);
-    });
-  });
+export const getContacts = async (): Promise<ContactRow[]> => {
+  try {
+    const [rows] = await pool.execute('SELECT * FROM contacts ORDER BY created_at DESC');
+    return rows as ContactRow[];
+  } catch (error) {
+    console.error('Error getting contacts:', error);
+    throw error;
+  }
 };
 
 // Resume functions
-export const saveResume = (resume: { filename: string; url: string }): Promise<void> => {
-  return new Promise((resolve, reject) => {
-    const db = new sqlite3.Database(DB_PATH);
-    
+export const saveResume = async (resume: { filename: string; url: string }): Promise<void> => {
+  try {
     // First, clear any existing resume entries
-    db.run('DELETE FROM resume', (err) => {
-      if (err) {
-        db.close();
-        reject(err);
-        return;
-      }
-      
-      // Then insert the new resume
-      db.run(
-        'INSERT INTO resume (filename, url) VALUES (?, ?)',
-        [resume.filename, resume.url],
-        (err) => {
-          db.close();
-          if (err) {
-            reject(err);
-            return;
-          }
-          resolve();
-        }
-      );
-    });
-  });
+    await pool.execute('DELETE FROM resume');
+    
+    // Then insert the new resume
+    await pool.execute(
+      'INSERT INTO resume (filename, url) VALUES (?, ?)',
+      [resume.filename, resume.url]
+    );
+  } catch (error) {
+    console.error('Error saving resume:', error);
+    throw error;
+  }
 };
 
-export const getCurrentResume = (): Promise<ResumeRow | null> => {
-  return new Promise((resolve, reject) => {
-    const db = new sqlite3.Database(DB_PATH);
-    db.get('SELECT * FROM resume ORDER BY uploaded_at DESC LIMIT 1', (err, row: ResumeRow | undefined) => {
-      db.close();
-      if (err) {
-        reject(err);
-        return;
-      }
-      resolve(row || null);
-    });
-  });
+export const getCurrentResume = async (): Promise<ResumeRow | null> => {
+  try {
+    const [rows] = await pool.execute('SELECT * FROM resume ORDER BY uploaded_at DESC LIMIT 1');
+    const resumeRows = rows as ResumeRow[];
+    return resumeRows.length > 0 ? resumeRows[0] : null;
+  } catch (error) {
+    console.error('Error getting current resume:', error);
+    throw error;
+  }
 }; 

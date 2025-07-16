@@ -19,6 +19,8 @@ build/
 # Database
 data/portfolio.db
 data/portfolio.db-journal
+*.sqlite
+*.sqlite3
 
 # Uploads (keep the directory but ignore files)
 public/uploads/*.pdf
