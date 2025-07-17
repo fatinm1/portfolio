@@ -157,6 +157,56 @@ export const addProject = async (project: any): Promise<void> => {
   }
 };
 
+export const getProjectById = async (id: number): Promise<any> => {
+  try {
+    const [rows] = await pool.execute('SELECT * FROM projects WHERE id = ?', [id]);
+    const projectRows = rows as ProjectRow[];
+    
+    if (projectRows.length === 0) {
+      return null;
+    }
+    
+    const row = projectRows[0];
+    return {
+      ...row,
+      technologies: typeof row.technologies === 'string' ? JSON.parse(row.technologies) : row.technologies,
+      tags: row.tags ? (typeof row.tags === 'string' ? JSON.parse(row.tags) : row.tags) : []
+    };
+  } catch (error) {
+    console.error('Error getting project by ID:', error);
+    throw error;
+  }
+};
+
+export const updateProject = async (id: number, project: any): Promise<void> => {
+  try {
+    await pool.execute(
+      'UPDATE projects SET name = ?, description = ?, technologies = ?, github = ?, video = ?, tags = ? WHERE id = ?',
+      [
+        project.name,
+        project.description,
+        JSON.stringify(project.technologies),
+        project.github,
+        project.video || null,
+        JSON.stringify(project.tags || []),
+        id
+      ]
+    );
+  } catch (error) {
+    console.error('Error updating project:', error);
+    throw error;
+  }
+};
+
+export const deleteProject = async (id: number): Promise<void> => {
+  try {
+    await pool.execute('DELETE FROM projects WHERE id = ?', [id]);
+  } catch (error) {
+    console.error('Error deleting project:', error);
+    throw error;
+  }
+};
+
 export const verifyAdmin = async (username: string, password: string): Promise<boolean> => {
   try {
     const [rows] = await pool.execute(
