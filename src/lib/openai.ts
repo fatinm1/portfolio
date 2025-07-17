@@ -33,7 +33,11 @@ FATIN'S PROFILE:
 - Name: Fatin Mojumder
 - Title: Senior CS Major at UMBC
 - Tagline: "Building smart systems for real-world impact"
-- Key Skills: Python (4 years), C++ (3 years), React (2 years), TensorFlow (2.5 years), Machine Learning, Web Development
+- Key Skills: 
+  Programming: C++ (3 years), Python (4 years), Java (2 years), JavaScript (2 years), TypeScript (2 years), React (2 years), C (1 year), HTML (2 years), CSS (2 years), UI/UX Principles (2 years)
+  Software and Tools: Git (3 years), Figma (2 years), Jira (1 year), Visual Studio Code (3 years), PyCharm (2 years), Fusion 360 (1 year), ArcGIS (1 year), ChatGPT (2 years), Claude (1 year)
+  Frameworks & Libraries: Django (2 years), Flask (2 years), FastAPI (1 year), LangChain (2 years), LLaMA (1 year), OpenAI (2 years)
+  Databases & DevOps: MySQL (2 years), Oracle Database (1 year), PostgreSQL (1 year), GitHub Actions (1 year), Docker (1 year), Jenkins (1 year)
 - Interests: AI/ML, Software Engineering, Problem Solving
 - Goals: Building smart systems that make real-world impact, particularly interested in AI/ML applications
 
@@ -44,7 +48,7 @@ INSTRUCTIONS:
 1. Be helpful, friendly, and professional
 2. Answer questions about Fatin's skills, experience, projects, and goals
 3. If asked about specific projects, provide details from the project list
-4. If asked about skills, mention both technical skills and years of experience
+4. If asked about skills, provide the comprehensive skills list with experience levels
 5. If asked about contact info, direct them to the Contact page
 6. If asked about resume, mention he's a Senior CS Major at UMBC and direct them to contact him
 7. Keep responses concise but informative
@@ -81,7 +85,7 @@ Remember: You're representing Fatin professionally, so be enthusiastic about his
         frequency_penalty: 0.1,
       });
 
-      return completion.choices[0]?.message?.content || 'Sorry, I couldn\'t generate a response right now.';
+      return completion.choices[0]?.message?.content || 'Sorry I am not able to answer this question. Please ask me about Fatin\'s skills, projects, experience, or goals.';
     } catch (error) {
       console.error('OpenAI API error:', error);
       
@@ -101,7 +105,17 @@ Remember: You're representing Fatin professionally, so be enthusiastic about his
       }
       
       if (lowerMessage.includes('skill') || lowerMessage.includes('technology')) {
-        return `Fatin's key skills include Python (4 years), C++ (3 years), React (2 years), TensorFlow (2.5 years), Machine Learning, and Web Development. He's particularly strong in AI/ML and software engineering.`;
+        return `Fatin has extensive skills across multiple areas:
+
+Programming: C++ (3 years), Python (4 years), Java (2 years), JavaScript (2 years), TypeScript (2 years), React (2 years), C (1 year), HTML (2 years), CSS (2 years), UI/UX Principles (2 years)
+
+Software and Tools: Git (3 years), Figma (2 years), Jira (1 year), Visual Studio Code (3 years), PyCharm (2 years), Fusion 360 (1 year), ArcGIS (1 year), ChatGPT (2 years), Claude (1 year)
+
+Frameworks & Libraries: Django (2 years), Flask (2 years), FastAPI (1 year), LangChain (2 years), LLaMA (1 year), OpenAI (2 years)
+
+Databases & DevOps: MySQL (2 years), Oracle Database (1 year), PostgreSQL (1 year), GitHub Actions (1 year), Docker (1 year), Jenkins (1 year)
+
+He's particularly strong in AI/ML, software engineering, and web development. You can also visit the Skills page for a visual representation of his experience levels.`;
       }
       
       if (lowerMessage.includes('project')) {
@@ -124,9 +138,9 @@ Remember: You're representing Fatin professionally, so be enthusiastic about his
         return `Fatin is focused on building smart systems that make a real-world impact. He's particularly interested in AI/ML applications and software engineering challenges.`;
       }
 
-      return `I'm Fatin's AI assistant! I can help you learn about Fatin's skills, projects, experience, and goals. Feel free to ask me anything about him or his work.`;
+      return `Sorry I am not able to answer this question. Please ask me about Fatin's skills, projects, experience, or goals.`;
     } catch (error) {
-      return `I'm Fatin's AI assistant! I can help you learn about Fatin's skills, projects, experience, and goals. Feel free to ask me anything about him or his work.`;
+      return `Sorry I am not able to answer this question. Please ask me about Fatin's skills, projects, experience, or goals.`;
     }
   }
 } 
