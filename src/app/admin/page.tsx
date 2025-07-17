@@ -1,8 +1,8 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
-import { Mail, Eye, EyeOff, Upload, Download, FileText } from "lucide-react";
+import { Mail, Eye, EyeOff, Download, FileText } from "lucide-react";
 
 interface ProjectForm {
   name: string;
@@ -45,11 +45,7 @@ export default function AdminPage() {
   const { register, handleSubmit, reset, setValue, formState: { errors } } = useForm<ProjectForm>();
 
   // Check authentication on mount
-  useEffect(() => {
-    checkAuth();
-  }, []);
-
-  const checkAuth = async () => {
+  const checkAuth = useCallback(async () => {
     try {
       const response = await fetch('/api/auth/check');
       if (!response.ok) {
@@ -61,7 +57,11 @@ export default function AdminPage() {
     } catch (error) {
       router.push('/login');
     }
-  };
+  }, [router]);
+
+  useEffect(() => {
+    checkAuth();
+  }, [checkAuth]);
 
   const fetchResume = async () => {
     setLoadingResume(true);
