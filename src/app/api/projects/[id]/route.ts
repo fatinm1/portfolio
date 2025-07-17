@@ -12,17 +12,18 @@ const ensureDatabase = async () => {
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     await ensureDatabase();
-    const id = parseInt(params.id);
+    const { id } = await params;
+    const projectId = parseInt(id);
     
-    if (isNaN(id)) {
+    if (isNaN(projectId)) {
       return NextResponse.json({ error: 'Invalid project ID' }, { status: 400 });
     }
 
-    const project = await getProjectById(id);
+    const project = await getProjectById(projectId);
     
     if (!project) {
       return NextResponse.json({ error: 'Project not found' }, { status: 404 });
@@ -37,13 +38,14 @@ export async function GET(
 
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     await ensureDatabase();
-    const id = parseInt(params.id);
+    const { id } = await params;
+    const projectId = parseInt(id);
     
-    if (isNaN(id)) {
+    if (isNaN(projectId)) {
       return NextResponse.json({ error: 'Invalid project ID' }, { status: 400 });
     }
 
@@ -55,12 +57,12 @@ export async function PUT(
     }
 
     // Check if project exists
-    const existingProject = await getProjectById(id);
+    const existingProject = await getProjectById(projectId);
     if (!existingProject) {
       return NextResponse.json({ error: 'Project not found' }, { status: 404 });
     }
 
-    await updateProject(id, body);
+    await updateProject(projectId, body);
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error('Error updating project:', error);
@@ -70,23 +72,24 @@ export async function PUT(
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     await ensureDatabase();
-    const id = parseInt(params.id);
+    const { id } = await params;
+    const projectId = parseInt(id);
     
-    if (isNaN(id)) {
+    if (isNaN(projectId)) {
       return NextResponse.json({ error: 'Invalid project ID' }, { status: 400 });
     }
 
     // Check if project exists
-    const existingProject = await getProjectById(id);
+    const existingProject = await getProjectById(projectId);
     if (!existingProject) {
       return NextResponse.json({ error: 'Project not found' }, { status: 404 });
     }
 
-    await deleteProject(id);
+    await deleteProject(projectId);
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error('Error deleting project:', error);
