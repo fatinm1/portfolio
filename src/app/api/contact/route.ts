@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { saveContact } from '@/lib/database';
+import { initDatabase, saveContact } from '@/lib/database';
 
 interface ContactFormData {
   name: string;
@@ -7,8 +7,19 @@ interface ContactFormData {
   message: string;
 }
 
+let dbInitialized = false;
+
+const ensureDatabase = async () => {
+  if (!dbInitialized) {
+    await initDatabase();
+    dbInitialized = true;
+  }
+};
+
 export async function POST(req: NextRequest) {
   try {
+    await ensureDatabase();
+    
     const { name, email, message }: ContactFormData = await req.json();
     
     // Validate required fields

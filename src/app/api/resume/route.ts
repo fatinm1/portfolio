@@ -1,8 +1,19 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getCurrentResume } from '@/lib/database';
+import { initDatabase, getCurrentResume } from '@/lib/database';
+
+let dbInitialized = false;
+
+const ensureDatabase = async () => {
+  if (!dbInitialized) {
+    await initDatabase();
+    dbInitialized = true;
+  }
+};
 
 export async function GET(req: NextRequest) {
   try {
+    await ensureDatabase();
+    
     const resume = await getCurrentResume();
     
     return NextResponse.json({ 

@@ -1,8 +1,19 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getContacts } from '@/lib/database';
+import { initDatabase, getContacts } from '@/lib/database';
+
+let dbInitialized = false;
+
+const ensureDatabase = async () => {
+  if (!dbInitialized) {
+    await initDatabase();
+    dbInitialized = true;
+  }
+};
 
 export async function GET(req: NextRequest) {
   try {
+    await ensureDatabase();
+    
     const contacts = await getContacts();
     
     return NextResponse.json({ 

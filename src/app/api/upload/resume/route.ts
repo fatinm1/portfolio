@@ -1,10 +1,21 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { writeFile, mkdir } from 'fs/promises';
 import path from 'path';
-import { saveResume } from '@/lib/database';
+import { initDatabase, saveResume } from '@/lib/database';
+
+let dbInitialized = false;
+
+const ensureDatabase = async () => {
+  if (!dbInitialized) {
+    await initDatabase();
+    dbInitialized = true;
+  }
+};
 
 export async function POST(req: NextRequest) {
   try {
+    await ensureDatabase();
+    
     const formData = await req.formData();
     const file = formData.get('resume') as File;
     
