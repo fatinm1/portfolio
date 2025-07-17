@@ -34,8 +34,11 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'File size must be less than 10MB' }, { status: 400 });
     }
 
-    // Create uploads directory if it doesn't exist
-    const uploadsDir = path.join(process.cwd(), 'public', 'uploads');
+    // Use Railway volume storage or fallback to local
+    const uploadsDir = process.env.RAILWAY_VOLUME_MOUNT_PATH 
+      ? path.join(process.env.RAILWAY_VOLUME_MOUNT_PATH, 'uploads')
+      : path.join(process.cwd(), 'public', 'uploads');
+    
     await mkdir(uploadsDir, { recursive: true });
 
     // Generate unique filename

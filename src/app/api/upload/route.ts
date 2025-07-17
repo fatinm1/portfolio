@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { upload } from '@/lib/upload';
+import { writeFile, mkdir } from 'fs/promises';
+import path from 'path';
 
 export async function POST(req: NextRequest) {
   try {
@@ -21,6 +22,13 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'File size too large (max 100MB)' }, { status: 400 });
     }
 
+    // Use Railway volume storage or fallback to local
+    const uploadsDir = process.env.RAILWAY_VOLUME_MOUNT_PATH 
+      ? path.join(process.env.RAILWAY_VOLUME_MOUNT_PATH, 'uploads')
+      : path.join(process.cwd(), 'public', 'uploads');
+    
+    await mkdir(uploadsDir, { recursive: true });
+
     // Generate unique filename
     const timestamp = Date.now();
     const randomSuffix = Math.round(Math.random() * 1E9);
@@ -31,11 +39,8 @@ export async function POST(req: NextRequest) {
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
     
-    const fs = require('fs').promises;
-    const path = require('path');
-    const uploadPath = path.join(process.cwd(), 'public', 'uploads', filename);
-    
-    await fs.writeFile(uploadPath, buffer);
+    const filepath = path.join(uploadsDir, filename);
+    await writeFile(filepath, buffer);
     
     return NextResponse.json({ 
       success: true, 
