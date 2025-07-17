@@ -281,4 +281,4 @@ For issues and questions:
 
 ---
 
-**Built with ❤️ using Next.js, TypeScript, and Tailwind CSS**
+**Built using Next.js, TypeScript, and Tailwind CSS**
