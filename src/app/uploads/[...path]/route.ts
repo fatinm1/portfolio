@@ -4,10 +4,11 @@ import path from 'path';
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { path: string[] } }
+  { params }: { params: Promise<{ path: string[] }> }
 ) {
   try {
-    const filePath = params.path.join('/');
+    const { path: pathSegments } = await params;
+    const filePath = pathSegments.join('/');
     
     // Use Railway volume storage or fallback to local
     const uploadsDir = process.env.RAILWAY_VOLUME_MOUNT_PATH 
