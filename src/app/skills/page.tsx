@@ -54,13 +54,13 @@ export default function SkillsPage() {
       <div className="grid gap-8 grid-cols-1 lg:grid-cols-2">
         {/* Programming Languages */}
         <div className="glass p-6">
-          <h2 className="font-semibold text-xl mb-4 text-cyan-400">Programming Languages</h2>
+          <h2 className="font-semibold text-xl mb-4 text-[#C8FF00]">Programming Languages</h2>
           <div className="space-y-4">
             {skills.programming.map((skill, index) => (
               <div key={index} className="mb-4">
                 <div className="flex justify-between mb-1">
                   <span className="text-white/90">{skill.name}</span>
-                  <span className="text-cyan-400 font-medium">{skill.years} years</span>
+                  <span className="text-[#C8FF00] font-medium">{skill.years} years</span>
                 </div>
                 <div className="w-full h-2 bg-white/10 rounded-full">
                   <div 
@@ -75,13 +75,13 @@ export default function SkillsPage() {
 
         {/* Software & Tools */}
         <div className="glass p-6">
-          <h2 className="font-semibold text-xl mb-4 text-purple-400">Software & Tools</h2>
+          <h2 className="font-semibold text-xl mb-4 text-[#C8FF00]">Software & Tools</h2>
           <div className="space-y-4">
             {skills.softwareTools.map((skill, index) => (
               <div key={index} className="mb-4">
                 <div className="flex justify-between mb-1">
                   <span className="text-white/90">{skill.name}</span>
-                  <span className="text-purple-400 font-medium">{skill.years} years</span>
+                  <span className="text-[#C8FF00] font-medium">{skill.years} years</span>
                 </div>
                 <div className="w-full h-2 bg-white/10 rounded-full">
                   <div 
@@ -96,13 +96,13 @@ export default function SkillsPage() {
 
         {/* Frameworks & Libraries */}
         <div className="glass p-6">
-          <h2 className="font-semibold text-xl mb-4 text-green-400">Frameworks & Libraries</h2>
+          <h2 className="font-semibold text-xl mb-4 text-[#C8FF00]">Frameworks & Libraries</h2>
           <div className="space-y-4">
             {skills.frameworks.map((skill, index) => (
               <div key={index} className="mb-4">
                 <div className="flex justify-between mb-1">
                   <span className="text-white/90">{skill.name}</span>
-                  <span className="text-green-400 font-medium">{skill.years} years</span>
+                  <span className="text-[#C8FF00] font-medium">{skill.years} years</span>
                 </div>
                 <div className="w-full h-2 bg-white/10 rounded-full">
                   <div 
@@ -117,13 +117,13 @@ export default function SkillsPage() {
 
         {/* Databases & DevOps */}
         <div className="glass p-6">
-          <h2 className="font-semibold text-xl mb-4 text-blue-400">Databases & DevOps</h2>
+          <h2 className="font-semibold text-xl mb-4 text-[#C8FF00]">Databases & DevOps</h2>
           <div className="space-y-4">
             {skills.databasesDevOps.map((skill, index) => (
               <div key={index} className="mb-4">
                 <div className="flex justify-between mb-1">
                   <span className="text-white/90">{skill.name}</span>
-                  <span className="text-blue-400 font-medium">{skill.years} years</span>
+                  <span className="text-[#C8FF00] font-medium">{skill.years} years</span>
                 </div>
                 <div className="w-full h-2 bg-white/10 rounded-full">
                   <div 

@@ -110,10 +110,10 @@ export default function ContactPage() {
               href="mailto:fatinm1@umbc.edu" 
               className="flex items-center gap-3 p-4 rounded-lg bg-white/5 hover:bg-white/10 transition-colors border border-white/10"
             >
-              <Mail className="w-5 h-5 text-cyan-400" />
+              <Mail className="w-5 h-5 text-[#C8FF00]" />
               <div>
                 <p className="font-medium text-white">Email</p>
-                <p className="text-cyan-400">fatinm1@umbc.edu</p>
+                <p className="text-[#C8FF00]">fatinm1@umbc.edu</p>
               </div>
             </a>
             
@@ -123,10 +123,10 @@ export default function ContactPage() {
               rel="noopener noreferrer"
               className="flex items-center gap-3 p-4 rounded-lg bg-white/5 hover:bg-white/10 transition-colors border border-white/10"
             >
-              <Linkedin className="w-5 h-5 text-cyan-400" />
+              <Linkedin className="w-5 h-5 text-[#C8FF00]" />
               <div>
                 <p className="font-medium text-white">LinkedIn</p>
-                <p className="text-cyan-400">linkedin.com/in/fatin-mojumder</p>
+                <p className="text-[#C8FF00]">linkedin.com/in/fatin-mojumder</p>
               </div>
             </a>
             
@@ -136,10 +136,10 @@ export default function ContactPage() {
               rel="noopener noreferrer"
               className="flex items-center gap-3 p-4 rounded-lg bg-white/5 hover:bg-white/10 transition-colors border border-white/10"
             >
-              <Github className="w-5 h-5 text-cyan-400" />
+              <Github className="w-5 h-5 text-[#C8FF00]" />
               <div>
                 <p className="font-medium text-white">GitHub</p>
-                <p className="text-cyan-400">github.com/fatinm1</p>
+                <p className="text-[#C8FF00]">github.com/fatinm1</p>
               </div>
             </a>
           </div>
@@ -172,7 +172,7 @@ export default function ContactPage() {
                 value={formData.name}
                 onChange={handleInputChange}
                 placeholder="Your name" 
-                className="w-full rounded-lg px-4 py-2 bg-white/10 border border-white/20 text-white focus:outline-none focus:border-cyan-400 transition-colors" 
+                className="w-full rounded-lg px-4 py-2 bg-white/10 border border-white/20 text-white focus:outline-none focus:border-[#C8FF00] transition-colors" 
                 required
                 disabled={loading}
               />
@@ -186,7 +186,7 @@ export default function ContactPage() {
                 value={formData.email}
                 onChange={handleInputChange}
                 placeholder="your@email.com" 
-                className="w-full rounded-lg px-4 py-2 bg-white/10 border border-white/20 text-white focus:outline-none focus:border-cyan-400 transition-colors" 
+                className="w-full rounded-lg px-4 py-2 bg-white/10 border border-white/20 text-white focus:outline-none focus:border-[#C8FF00] transition-colors" 
                 required
                 disabled={loading}
               />
@@ -199,7 +199,7 @@ export default function ContactPage() {
                 value={formData.message}
                 onChange={handleInputChange}
                 placeholder="Your message..." 
-                className="w-full rounded-lg px-4 py-2 bg-white/10 border border-white/20 text-white focus:outline-none focus:border-cyan-400 transition-colors resize-none" 
+                className="w-full rounded-lg px-4 py-2 bg-white/10 border border-white/20 text-white focus:outline-none focus:border-[#C8FF00] transition-colors resize-none" 
                 rows={4} 
                 required
                 disabled={loading}
@@ -209,11 +209,11 @@ export default function ContactPage() {
             <button 
               type="submit"
               disabled={loading || !formData.name || !formData.email || !formData.message}
-              className="w-full px-6 py-3 rounded-lg bg-cyan-500 text-white font-bold shadow hover:bg-cyan-400 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2" 
+              className="w-full px-6 py-3 rounded-lg bg-[#C8FF00] text-black font-bold shadow hover:bg-[#C8FF00]/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2" 
             >
               {loading ? (
                 <>
-                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                  <div className="w-4 h-4 border-2 border-black border-t-transparent rounded-full animate-spin"></div>
                   Sending...
                 </>
               ) : (
@@ -227,14 +227,14 @@ export default function ContactPage() {
         </div>
 
         {/* Resume Section */}
-        <div className="border-t border-white/20 pt-8 mt-8">
+        <div id="resume" className="border-t border-white/20 pt-8 mt-8 scroll-mt-24">
           <h3 className="text-lg font-semibold mb-4">Resume</h3>
           <div className="flex items-center gap-3 p-4 rounded-lg bg-white/5 border border-white/10">
-            <Download className="w-5 h-5 text-cyan-400" />
+            <Download className="w-5 h-5 text-[#C8FF00]" />
             <div className="flex-1">
               {loadingResume ? (
                 <div className="flex items-center gap-2">
-                  <div className="w-4 h-4 border-2 border-cyan-400 border-t-transparent rounded-full animate-spin"></div>
+                  <div className="w-4 h-4 border-2 border-[#C8FF00] border-t-transparent rounded-full animate-spin"></div>
                   <p className="text-white/60">Loading resume...</p>
                 </div>
               ) : resume ? (
@@ -254,7 +254,7 @@ export default function ContactPage() {
             {resume && (
               <button 
                 onClick={handleResumeDownload}
-                className="px-4 py-2 rounded-lg bg-cyan-500 text-white text-sm hover:bg-cyan-400 transition-colors flex items-center gap-2"
+                className="px-4 py-2 rounded-lg bg-[#C8FF00] text-black text-sm hover:bg-[#C8FF00]/90 transition-colors flex items-center gap-2"
               >
                 <Download className="w-4 h-4" />
                 Download

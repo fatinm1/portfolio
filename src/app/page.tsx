@@ -1,128 +1,83 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import Link from "next/link";
 
-// More precise deterministic random function
-function seededRandom(seed: number) {
-  const x = Math.sin(seed) * 10000;
-  const result = x - Math.floor(x);
-  // Round to 4 decimal places to ensure consistency
-  return Math.round(result * 10000) / 10000;
-}
+// Placeholder brands - replace with your actual brand names/logos
+const BRANDS = ["UMBC", "GitHub", "React", "OpenAI", "LangChain", "MySQL"];
 
 export default function Home() {
-  const [isClient, setIsClient] = useState(false);
-
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
-
-  // Pre-calculate all particle data to ensure consistency
-  const particles = Array.from({ length: 30 }, (_, i) => {
-    const seed = i * 123.456;
-    return {
-      width: Math.round((seededRandom(seed) * 40 + 20) * 100) / 100,
-      height: Math.round((seededRandom(seed + 1) * 40 + 20) * 100) / 100,
-      top: Math.round(seededRandom(seed + 2) * 90 * 100) / 100,
-      left: Math.round(seededRandom(seed + 3) * 90 * 100) / 100,
-      yOffset: Math.round((seededRandom(seed + 4) * 40 - 20) * 100) / 100,
-      xOffset: Math.round((seededRandom(seed + 5) * 40 - 20) * 100) / 100,
-      duration: Math.round((seededRandom(seed + 6) * 6 + 4) * 100) / 100,
-    };
-  });
-
-  // Don't render particles until client-side to prevent hydration issues
-  if (!isClient) {
-    return (
-      <div className="relative flex flex-col items-center justify-center min-h-[80vh] overflow-hidden">
-        {/* Static background without particles */}
-        <div className="absolute inset-0 -z-10">
-          <div className="w-full h-full bg-gradient-to-br from-[#0f2027] via-[#2c5364] to-[#232526] opacity-80" />
-        </div>
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1 }}
-          className="text-center max-w-2xl mx-auto"
-        >
-          <h1 className="text-4xl sm:text-6xl font-extrabold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-blue-300 drop-shadow-lg">
-            Fatin Mojumder
-          </h1>
-          <h2 className="text-xl sm:text-2xl font-semibold mb-2 text-white/80">
-            Senior CS Major at UMBC
-          </h2>
-          <p className="text-lg sm:text-xl mb-8 text-white/70">
-            Building smart systems for real-world impact
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a href="/projects" className="px-8 py-3 rounded-full bg-cyan-500/80 hover:bg-cyan-400 text-white font-bold shadow-lg transition-all backdrop-blur-md">
-              View Projects
-            </a>
-            <a href="/contact" className="px-8 py-3 rounded-full bg-white/10 border border-cyan-400 text-cyan-200 font-bold shadow-lg hover:bg-cyan-400/20 hover:text-white transition-all backdrop-blur-md">
-              Contact Me
-            </a>
-          </div>
-        </motion.div>
-      </div>
-    );
-  }
-
   return (
-    <div className="relative flex flex-col items-center justify-center min-h-[80vh] overflow-hidden">
-      {/* Animated background particles */}
-      <div className="absolute inset-0 -z-10">
-        <div className="w-full h-full bg-gradient-to-br from-[#0f2027] via-[#2c5364] to-[#232526] opacity-80" />
-        <div className="absolute inset-0 pointer-events-none">
-          {/* Simple animated dots/particles */}
-          {particles.map((particle, i) => (
-            <motion.span
-              key={i}
-              className="absolute rounded-full bg-white/10 blur-lg"
-              style={{
-                width: `${particle.width}px`,
-                height: `${particle.height}px`,
-                top: `${particle.top}%`,
-                left: `${particle.left}%`,
-              }}
-              animate={{
-                y: [0, particle.yOffset, 0],
-                x: [0, particle.xOffset, 0],
-              }}
-              transition={{
-                duration: particle.duration,
-                repeat: Infinity,
-                repeatType: "loop",
-                ease: "easeInOut",
-              }}
-            />
-          ))}
-        </div>
-      </div>
+    <div>
+    <div className="relative min-h-[85vh] flex flex-col justify-center px-6 sm:px-10">
+      {/* Available to Work Badge */}
       <motion.div
-        initial={{ opacity: 0, y: 40 }}
+        initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1 }}
-        className="text-center max-w-2xl mx-auto"
+        transition={{ duration: 0.6 }}
+        className="mb-8"
       >
-        <h1 className="text-4xl sm:text-6xl font-extrabold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-blue-300 drop-shadow-lg">
-          Fatin Mojumder
-        </h1>
-        <h2 className="text-xl sm:text-2xl font-semibold mb-2 text-white/80">
-          Senior CS Major at UMBC
-        </h2>
-        <p className="text-lg sm:text-xl mb-8 text-white/70">
-          Building smart systems for real-world impact
-        </p>
-        <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <a href="/projects" className="px-8 py-3 rounded-full bg-cyan-500/80 hover:bg-cyan-400 text-white font-bold shadow-lg transition-all backdrop-blur-md">
-            View Projects
-          </a>
-          <a href="/contact" className="px-8 py-3 rounded-full bg-white/10 border border-cyan-400 text-cyan-200 font-bold shadow-lg hover:bg-cyan-400/20 hover:text-white transition-all backdrop-blur-md">
-            Contact Me
-          </a>
+        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-[#C8FF00]/30">
+          <span className="w-2 h-2 rounded-full bg-[#C8FF00] animate-pulse" />
+          <span className="text-sm font-medium text-white/80 tracking-wide">AVAILABLE TO WORK</span>
         </div>
       </motion.div>
+
+      {/* Hero Headline */}
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.7, delay: 0.1 }}
+        className="max-w-4xl"
+      >
+        <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight mb-6">
+          <span className="text-white">Building &amp; Simplifying</span>
+          <br />
+          <span className="text-white font-serif" style={{ fontFamily: "var(--font-playfair), serif" }}>
+            <span className="relative inline-block">
+              smart systems
+              <span className="absolute -inset-1 rounded-full border-2 border-[#C8FF00]/50 -z-10" />
+            </span>
+          </span>
+          <br />
+          <span className="text-[#C8FF00]">by design.</span>
+        </h1>
+        <p className="text-lg sm:text-xl text-white/70 max-w-2xl mb-12">
+          Senior CS Major at UMBC. Translating complex technology into functional, cohesive systems with real-world impact.
+        </p>
+        <div className="flex flex-col sm:flex-row gap-4">
+          <Link 
+            href="/projects" 
+            className="inline-flex px-8 py-3 rounded-lg bg-[#C8FF00] text-black font-bold hover:bg-[#C8FF00]/90 transition-colors"
+          >
+            View Projects
+          </Link>
+          <Link 
+            href="/contact" 
+            className="inline-flex px-8 py-3 rounded-lg border-2 border-[#C8FF00] text-[#C8FF00] font-bold hover:bg-[#C8FF00]/10 transition-colors"
+          >
+            Contact Me
+          </Link>
+        </div>
+      </motion.div>
+    </div>
+
+    {/* Brands Section */}
+    <section className="py-20 px-6 sm:px-10 border-t border-white/10">
+      <h2 className="text-sm font-medium tracking-[0.2em] text-white/60 text-center mb-12 uppercase">
+        Technologies & Platforms
+      </h2>
+      <div className="flex flex-wrap justify-center gap-8 sm:gap-12 items-center max-w-4xl mx-auto">
+        {BRANDS.map((brand) => (
+          <span
+            key={brand}
+            className="text-white/40 text-lg sm:text-xl font-medium hover:text-white/60 transition-colors"
+          >
+            {brand}
+          </span>
+        ))}
+      </div>
+    </section>
     </div>
   );
 }

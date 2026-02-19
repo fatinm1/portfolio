@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import Navigation from "@/components/Navigation";
+import Footer from "@/components/Footer";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -10,6 +11,11 @@ const geistSans = Geist({
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
+  subsets: ["latin"],
+});
+
+const playfair = Playfair_Display({
+  variable: "--font-playfair",
   subsets: ["latin"],
 });
 
@@ -24,10 +30,11 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
-      <body className="bg-gradient-to-br from-[#0f2027] via-[#2c5364] to-[#232526] min-h-screen text-white">
+    <html lang="en" className={`${geistSans.variable} ${geistMono.variable} ${playfair.variable}`}>
+      <body className="bg-black min-h-screen text-white">
         <Navigation />
-        <main className="pt-24">{children}</main>
+        <main className="pt-20">{children}</main>
+        <Footer />
       </body>
     </html>
   );

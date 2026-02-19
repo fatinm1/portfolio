@@ -152,9 +152,9 @@ export default function ChatbotPage() {
         <div className="glass p-6 min-h-[600px] flex items-center justify-center">
           <div className="text-center">
             <div className="flex space-x-1 mb-4">
-              <div className="w-2 h-2 bg-cyan-400 rounded-full animate-bounce"></div>
-              <div className="w-2 h-2 bg-cyan-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
-              <div className="w-2 h-2 bg-cyan-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+              <div className="w-2 h-2 bg-[#C8FF00] rounded-full animate-bounce"></div>
+              <div className="w-2 h-2 bg-[#C8FF00] rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
+              <div className="w-2 h-2 bg-[#C8FF00] rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
             </div>
             <p className="text-white/70">Loading chatbot...</p>
           </div>
@@ -192,7 +192,7 @@ export default function ChatbotPage() {
                   <div
                     className={`max-w-[80%] px-4 py-2 rounded-lg ${
                       message.isUser
-                        ? 'bg-cyan-500 text-white'
+                        ? 'bg-[#C8FF00] text-black text-white'
                         : 'bg-white/10 text-white'
                     }`}
                   >
@@ -229,13 +229,13 @@ export default function ChatbotPage() {
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 placeholder="Type your question..."
-                className="flex-1 rounded-lg px-4 py-2 bg-white/10 border border-white/20 text-white focus:outline-none focus:border-cyan-400"
+                className="flex-1 rounded-lg px-4 py-2 bg-white/10 border border-white/20 text-white focus:outline-none focus:border-[#C8FF00]"
                 disabled={loading}
               />
               <button
                 type="submit"
                 disabled={loading || !input.trim()}
-                className="px-6 py-2 rounded-lg bg-cyan-500 text-white font-bold shadow hover:bg-cyan-400 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="px-6 py-2 rounded-lg bg-[#C8FF00] text-black font-bold shadow hover:bg-[#C8FF00]/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 Send
               </button>
@@ -260,8 +260,8 @@ export default function ChatbotPage() {
               ))}
             </div>
             
-            <div className="mt-6 p-4 bg-cyan-500/10 rounded-lg">
-              <h4 className="font-semibold text-cyan-400 mb-2">💡 Tips</h4>
+            <div className="mt-6 p-4 bg-[#C8FF00]/10 rounded-lg">
+              <h4 className="font-semibold text-[#C8FF00] mb-2">💡 Tips</h4>
               <ul className="text-xs text-white/70 space-y-1">
                 <li>• Ask about specific projects</li>
                 <li>• Inquire about skills and experience</li>

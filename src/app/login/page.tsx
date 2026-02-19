@@ -50,7 +50,7 @@ export default function LoginPage() {
             <label className="block text-sm font-medium mb-2">Username</label>
             <input
               {...register("username", { required: "Username is required" })}
-              className="w-full rounded-lg px-4 py-2 bg-white/10 border border-white/20 text-white focus:outline-none focus:border-cyan-400"
+              className="w-full rounded-lg px-4 py-2 bg-white/10 border border-white/20 text-white focus:outline-none focus:border-[#C8FF00]"
               placeholder="Enter username"
             />
             {errors.username && <p className="text-red-400 text-sm mt-1">{errors.username.message}</p>}
@@ -61,7 +61,7 @@ export default function LoginPage() {
             <input
               type="password"
               {...register("password", { required: "Password is required" })}
-              className="w-full rounded-lg px-4 py-2 bg-white/10 border border-white/20 text-white focus:outline-none focus:border-cyan-400"
+              className="w-full rounded-lg px-4 py-2 bg-white/10 border border-white/20 text-white focus:outline-none focus:border-[#C8FF00]"
               placeholder="Enter password"
             />
             {errors.password && <p className="text-red-400 text-sm mt-1">{errors.password.message}</p>}
@@ -70,7 +70,7 @@ export default function LoginPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full px-6 py-3 rounded-lg bg-cyan-500 text-white font-bold shadow hover:bg-cyan-400 transition-colors disabled:opacity-50"
+            className="w-full px-6 py-3 rounded-lg bg-[#C8FF00] text-black font-bold shadow hover:bg-[#C8FF00]/90 transition-colors disabled:opacity-50"
           >
             {loading ? "Logging in..." : "Login"}
           </button>
