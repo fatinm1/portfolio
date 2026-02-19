@@ -1,26 +1,29 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { Zap } from "lucide-react";
 
-const scrollTo = (id: string) => {
-  document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
-};
-
 export default function Navigation() {
+  const pathname = usePathname();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const isHome = pathname === "/";
 
   const navItems = [
-    { id: "home", label: "Home" },
-    { id: "about", label: "About" },
-    { id: "work", label: "Work" },
-    { id: "projects", label: "Projects" },
-    { id: "contact", label: "Contact" },
+    { id: "home", label: "Home", href: "/" },
+    { id: "about", label: "About", href: "/#about" },
+    { id: "work", label: "Work", href: "/#work" },
+    { id: "projects", label: "Projects", href: "/#projects" },
+    { id: "contact", label: "Contact", href: "/#contact" },
   ];
 
-  const handleNavClick = (id: string) => {
-    scrollTo(id);
+  const handleNavClick = (e: React.MouseEvent, id: string) => {
+    if (isHome) {
+      e.preventDefault();
+      const el = id === "home" ? document.body : document.getElementById(id);
+      el?.scrollIntoView({ behavior: "smooth" });
+    }
     setIsMenuOpen(false);
   };
 
@@ -30,7 +33,7 @@ export default function Navigation() {
         {/* Left - Brand pill */}
         <Link
           href="/"
-          onClick={(e) => { e.preventDefault(); handleNavClick("home"); }}
+          onClick={(e) => handleNavClick(e, "home")}
           className="px-4 py-2 rounded-full bg-white/5 border border-white/10 text-white font-medium text-sm hover:bg-white/10 transition-colors"
         >
           Fatin&apos;s Portfolio
@@ -40,22 +43,24 @@ export default function Navigation() {
         <ul className="hidden md:flex items-center gap-6 text-sm text-white/90">
           {navItems.map((item) => (
             <li key={item.id}>
-              <button
-                onClick={() => handleNavClick(item.id)}
+              <Link
+                href={item.href}
+                onClick={(e) => handleNavClick(e, item.id)}
                 className="hover:text-white transition-colors"
               >
                 {item.label}
-              </button>
+              </Link>
             </li>
           ))}
           <li>
-            <button
-              onClick={() => scrollTo("contact")}
+            <Link
+              href="/#contact"
+              onClick={(e) => handleNavClick(e, "contact")}
               className="px-4 py-2 rounded-full bg-white/5 border border-white/20 text-white text-sm hover:bg-white/10 transition-colors inline-flex items-center gap-2"
             >
               <Zap className="w-4 h-4" />
               Get in touch
-            </button>
+            </Link>
           </li>
           <li>
             <Link
@@ -94,18 +99,23 @@ export default function Navigation() {
         <ul className="px-6 pb-6 pt-2 space-y-2 border-t border-white/10">
           {navItems.map((item) => (
             <li key={item.id}>
-              <button
-                onClick={() => handleNavClick(item.id)}
+              <Link
+                href={item.href}
+                onClick={(e) => handleNavClick(e, item.id)}
                 className="block w-full text-left py-3 text-white/90 hover:text-white"
               >
                 {item.label}
-              </button>
+              </Link>
             </li>
           ))}
           <li>
-            <button onClick={() => handleNavClick("contact")} className="block py-3 text-[#C8FF00] font-medium text-left w-full">
+            <Link
+              href="/#contact"
+              onClick={(e) => handleNavClick(e, "contact")}
+              className="block py-3 text-[#C8FF00] font-medium"
+            >
               Get in touch
-            </button>
+            </Link>
           </li>
           <li>
             <Link href="/chatbot" className="block py-3 text-white/70">
