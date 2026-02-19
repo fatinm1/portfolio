@@ -108,7 +108,7 @@ export default function Home() {
         <a
           href="#contact"
           onClick={(e) => { e.preventDefault(); document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" }); }}
-          className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#C8FF00] text-black font-semibold hover:bg-[#C8FF00]/90 transition-colors w-fit"
+          className="btn-green inline-flex items-center gap-2 w-fit"
         >
           Email me <ArrowUpRight className="w-4 h-4" />
         </a>
@@ -142,7 +142,7 @@ export default function Home() {
         <button
           onClick={handleResumeDownload}
           disabled={!resume || loadingResume}
-          className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-[#C8FF00] text-black font-semibold hover:bg-[#C8FF00]/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          className="btn-green inline-flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           View Resume <ArrowUpRight className="w-4 h-4" />
         </button>
@@ -175,7 +175,7 @@ export default function Home() {
           <button
             onClick={handleResumeDownload}
             disabled={!resume || loadingResume}
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-[#C8FF00] text-black font-semibold hover:bg-[#C8FF00]/90 transition-colors w-fit disabled:opacity-50"
+            className="btn-green inline-flex items-center gap-2 w-fit"
           >
             View Resume <ArrowUpRight className="w-4 h-4" />
           </button>
@@ -239,7 +239,7 @@ export default function Home() {
                     href={project.github}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-[#C8FF00] text-black font-semibold hover:bg-[#C8FF00]/90 transition-colors text-sm"
+                    className="btn-green inline-flex items-center gap-2 text-sm px-5 py-2.5"
                   >
                     View case study <ArrowUpRight className="w-4 h-4" />
                   </a>
@@ -262,7 +262,7 @@ export default function Home() {
         <a
           href="#contact"
           onClick={(e) => { e.preventDefault(); document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" }); }}
-          className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-[#C8FF00] text-black font-semibold hover:bg-[#C8FF00]/90 transition-colors"
+          className="btn-green inline-flex items-center gap-2"
         >
           Contact <ArrowUpRight className="w-4 h-4" />
         </a>
@@ -320,7 +320,7 @@ export default function Home() {
           <button
             type="submit"
             disabled={formLoading}
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-[#C8FF00] text-black font-semibold hover:bg-[#C8FF00]/90 transition-colors disabled:opacity-50"
+            className="btn-green inline-flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {formLoading ? "Sending..." : "Drop me a message"} <Send className="w-4 h-4" />
           </button>

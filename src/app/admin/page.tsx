@@ -405,7 +405,7 @@ export default function AdminPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full px-6 py-3 rounded-lg bg-cyan-500 text-white font-bold shadow hover:bg-cyan-400 transition-colors disabled:opacity-50"
+              className="btn-green w-full disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? (editingProject ? "Updating Project..." : "Adding Project...") : (editingProject ? "Update Project" : "Add Project")}
             </button>

@@ -235,7 +235,7 @@ export default function ChatbotPage() {
               <button
                 type="submit"
                 disabled={loading || !input.trim()}
-                className="px-6 py-2 rounded-lg bg-[#C8FF00] text-black font-bold shadow hover:bg-[#C8FF00]/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="btn-green inline-flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 Send
               </button>

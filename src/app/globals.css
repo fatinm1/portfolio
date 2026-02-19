@@ -11,15 +11,31 @@
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-accent: var(--accent);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-  --font-serif: var(--font-playfair);
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
 }
 
 body {
   background: #000000;
   color: #fff;
-  font-family: 'Inter', 'Geist', 'Segoe UI', Arial, sans-serif;
+  font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+}
+
+/* Green CTA button - glossy lime style */
+.btn-green {
+  background: linear-gradient(to bottom, #C8FF00 0%, #A7ED57 50%, #9BE04D 100%);
+  border: 1px solid #7AB82E;
+  color: #1a1a1a;
+  font-weight: 600;
+  border-radius: 9999px;
+  padding: 0.75rem 1.5rem;
+  transition: box-shadow 0.2s, transform 0.15s;
+}
+.btn-green:hover:not(:disabled) {
+  box-shadow: 0 4px 20px rgba(200, 255, 0, 0.35);
+}
+.btn-green:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .glass {

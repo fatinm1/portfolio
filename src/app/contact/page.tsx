@@ -209,7 +209,7 @@ export default function ContactPage() {
             <button 
               type="submit"
               disabled={loading || !formData.name || !formData.email || !formData.message}
-              className="w-full px-6 py-3 rounded-lg bg-[#C8FF00] text-black font-bold shadow hover:bg-[#C8FF00]/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2" 
+              className="btn-green w-full flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed" 
             >
               {loading ? (
                 <>
@@ -254,7 +254,7 @@ export default function ContactPage() {
             {resume && (
               <button 
                 onClick={handleResumeDownload}
-                className="px-4 py-2 rounded-lg bg-[#C8FF00] text-black text-sm hover:bg-[#C8FF00]/90 transition-colors flex items-center gap-2"
+                className="btn-green text-sm px-4 py-2 flex items-center gap-2"
               >
                 <Download className="w-4 h-4" />
                 Download
