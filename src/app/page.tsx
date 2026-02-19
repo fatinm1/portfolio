@@ -3,8 +3,13 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 
-// Placeholder brands - replace with your actual brand names/logos
-const BRANDS = ["UMBC", "GitHub", "React", "OpenAI", "LangChain", "MySQL"];
+// Tools & technologies in moving headline
+const TOOLS = [
+  "UMBC", "GitHub", "React", "OpenAI", "LangChain", "MySQL",
+  "Python", "C++", "Java", "JavaScript", "TypeScript", "Django", "Flask", "FastAPI",
+  "Git", "Figma", "Jira", "VS Code", "PyCharm", "Docker", "PostgreSQL",
+  "Next.js", "Tailwind", "Node.js", "MongoDB", "Jenkins", "GitHub Actions",
+];
 
 export default function Home() {
   return (
@@ -62,20 +67,22 @@ export default function Home() {
       </motion.div>
     </div>
 
-    {/* Brands Section */}
-    <section className="py-20 px-6 sm:px-10 border-t border-white/10">
-      <h2 className="text-sm font-medium tracking-[0.2em] text-white/60 text-center mb-12 uppercase">
+    {/* Moving Headline - Technologies & Platforms */}
+    <section className="py-16 border-t border-white/10 overflow-hidden">
+      <h2 className="text-sm font-medium tracking-[0.2em] text-white/60 text-center mb-10 uppercase">
         Technologies & Platforms
       </h2>
-      <div className="flex flex-wrap justify-center gap-8 sm:gap-12 items-center max-w-4xl mx-auto">
-        {BRANDS.map((brand) => (
-          <span
-            key={brand}
-            className="text-white/40 text-lg sm:text-xl font-medium hover:text-white/60 transition-colors"
-          >
-            {brand}
-          </span>
-        ))}
+      <div className="relative">
+        <div className="flex animate-marquee whitespace-nowrap">
+          {[...TOOLS, ...TOOLS].map((tool, i) => (
+            <span
+              key={`${tool}-${i}`}
+              className="mx-6 sm:mx-10 text-white/50 text-lg sm:text-xl font-medium"
+            >
+              {tool}
+            </span>
+          ))}
+        </div>
       </div>
     </section>
     </div>
