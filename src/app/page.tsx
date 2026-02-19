@@ -1,90 +1,370 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useState, useEffect } from "react";
 import Link from "next/link";
+import { ArrowUpRight, Zap, Send, CheckCircle, AlertCircle } from "lucide-react";
 
-// Tools & technologies in moving headline
+// Skills as tags for horizontal scroll
+const SKILL_TAGS = [
+  "Python", "C++", "Java", "JavaScript", "TypeScript", "React", "Next.js",
+  "Django", "Flask", "FastAPI", "LangChain", "OpenAI", "MySQL", "PostgreSQL",
+  "Docker", "Git", "Figma", "UI/UX", "AI/ML", "Visual Design", "Product Design",
+];
+
+// Tools marquee
 const TOOLS = [
   "UMBC", "GitHub", "React", "OpenAI", "LangChain", "MySQL",
   "Python", "C++", "Java", "JavaScript", "TypeScript", "Django", "Flask", "FastAPI",
-  "Git", "Figma", "Jira", "VS Code", "PyCharm", "Docker", "PostgreSQL",
-  "Next.js", "Tailwind", "Node.js", "MongoDB", "Jenkins", "GitHub Actions",
+  "Git", "Figma", "VS Code", "Docker", "PostgreSQL", "Next.js", "Tailwind", "Node.js",
 ];
 
+interface Project {
+  name: string;
+  description: string;
+  technologies: string[];
+  github: string;
+  video?: string;
+  tags?: string[];
+}
+
+interface Resume {
+  id: number;
+  filename: string;
+  url: string;
+  uploaded_at: string;
+}
+
 export default function Home() {
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [resume, setResume] = useState<Resume | null>(null);
+  const [loadingProjects, setLoadingProjects] = useState(true);
+  const [loadingResume, setLoadingResume] = useState(true);
+  const [contactSuccess, setContactSuccess] = useState(false);
+  const [contactError, setContactError] = useState("");
+  const [formData, setFormData] = useState({ name: "", email: "", message: "" });
+  const [formLoading, setFormLoading] = useState(false);
+
+  useEffect(() => {
+    fetch("/api/projects")
+      .then((res) => res.ok ? res.json() : [])
+      .then((data) => setProjects(Array.isArray(data) ? data : []))
+      .finally(() => setLoadingProjects(false));
+    fetch("/api/resume")
+      .then((res) => res.ok ? res.json() : { resume: null })
+      .then((data) => setResume(data?.resume || null))
+      .finally(() => setLoadingResume(false));
+  }, []);
+
+  const handleContactSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setFormLoading(true);
+    setContactError("");
+    setContactSuccess(false);
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setContactSuccess(true);
+        setFormData({ name: "", email: "", message: "" });
+        setTimeout(() => setContactSuccess(false), 5000);
+      } else {
+        setContactError(data.error || "Failed to send");
+      }
+    } catch {
+      setContactError("Network error");
+    } finally {
+      setFormLoading(false);
+    }
+  };
+
+  const handleResumeDownload = () => {
+    if (resume) {
+      const link = document.createElement("a");
+      link.href = resume.url;
+      link.download = resume.filename;
+      link.click();
+    }
+  };
+
+  const sectionClass = "scroll-mt-24 max-w-5xl mx-auto px-6 sm:px-10";
+  const tagClass = "px-4 py-2 rounded-full bg-white/5 border border-white/10 text-white/80 text-sm whitespace-nowrap";
+
   return (
-    <div>
-    <div className="relative min-h-[85vh] flex flex-col justify-center px-6 sm:px-10">
-      {/* Available to Work Badge */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-        className="mb-8"
-      >
-        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-[#C8FF00]/30">
-          <span className="w-2 h-2 rounded-full bg-[#C8FF00] animate-pulse" />
-          <span className="text-sm font-medium text-white/80 tracking-wide">AVAILABLE TO WORK</span>
+    <div className="pt-20">
+      {/* Hero */}
+      <section id="home" className={`${sectionClass} min-h-[85vh] flex flex-col justify-center py-24`}>
+        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-white/90 text-sm mb-8 w-fit">
+          Hello, I&apos;m Fatin 👋
         </div>
-      </motion.div>
-
-      {/* Hero Headline */}
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.7, delay: 0.1 }}
-        className="max-w-4xl"
-      >
-        <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight mb-6">
-          <span className="text-white">Building &amp; Simplifying</span>
+        <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-white leading-tight mb-6">
+          <span className="text-white">Software engineer</span>
           <br />
-          <span className="text-white font-serif" style={{ fontFamily: "var(--font-playfair), serif" }}>
-            <span className="relative inline-block">
-              smart systems
-              <span className="absolute -inset-1 rounded-full border-2 border-[#C8FF00]/50 -z-10" />
-            </span>
-          </span>
-          <br />
-          <span className="text-[#C8FF00]">by design.</span>
+          <span className="text-white/60">crafting smart systems & modern solutions</span>
         </h1>
-        <p className="text-lg sm:text-xl text-white/70 max-w-2xl mb-12">
-          Senior CS Major at UMBC. Translating complex technology into functional, cohesive systems with real-world impact.
-        </p>
-        <div className="flex flex-col sm:flex-row gap-4">
-          <Link 
-            href="/projects" 
-            className="inline-flex px-8 py-3 rounded-lg bg-[#C8FF00] text-black font-bold hover:bg-[#C8FF00]/90 transition-colors"
-          >
-            View Projects
-          </Link>
-          <Link 
-            href="/contact" 
-            className="inline-flex px-8 py-3 rounded-lg border-2 border-[#C8FF00] text-[#C8FF00] font-bold hover:bg-[#C8FF00]/10 transition-colors"
-          >
-            Contact Me
-          </Link>
-        </div>
-      </motion.div>
-    </div>
+        <a
+          href="#contact"
+          onClick={(e) => { e.preventDefault(); document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" }); }}
+          className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#C8FF00] text-black font-semibold hover:bg-[#C8FF00]/90 transition-colors w-fit"
+        >
+          Email me <ArrowUpRight className="w-4 h-4" />
+        </a>
+      </section>
 
-    {/* Moving Headline - Technologies & Platforms */}
-    <section className="py-16 border-t border-white/10 overflow-hidden">
-      <h2 className="text-sm font-medium tracking-[0.2em] text-white/60 text-center mb-10 uppercase">
-        Technologies & Platforms
-      </h2>
-      <div className="relative">
+      {/* Moving headline - Technologies */}
+      <section className="py-16 border-t border-white/10 overflow-hidden">
+        <h2 className="text-sm font-medium tracking-[0.2em] text-white/50 text-center mb-10 uppercase">
+          Technologies & Platforms
+        </h2>
         <div className="flex animate-marquee whitespace-nowrap">
           {[...TOOLS, ...TOOLS].map((tool, i) => (
-            <span
-              key={`${tool}-${i}`}
-              className="mx-6 sm:mx-10 text-white/50 text-lg sm:text-xl font-medium"
-            >
+            <span key={`${tool}-${i}`} className="mx-8 text-white/40 text-lg font-medium">
               {tool}
             </span>
           ))}
         </div>
-      </div>
-    </section>
+      </section>
+
+      {/* About */}
+      <section id="about" className={`${sectionClass} py-24`}>
+        <span className={tagClass}>About</span>
+        <h2 className="text-3xl sm:text-4xl font-bold text-white mt-6 mb-6">
+          Solving real problems with purposeful, user-first thinking
+        </h2>
+        <p className="text-white/70 text-lg max-w-2xl mb-8 leading-relaxed">
+          I&apos;m a software engineer who thrives on turning ambiguity into clarity. Whether it&apos;s building full-stack applications, 
+          integrating AI, or designing seamless user experiences, I approach each problem with empathy, curiosity, and a strong sense of craft — 
+          always putting users first and business goals in focus.
+        </p>
+        <button
+          onClick={handleResumeDownload}
+          disabled={!resume || loadingResume}
+          className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-[#C8FF00] text-black font-semibold hover:bg-[#C8FF00]/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          View Resume <ArrowUpRight className="w-4 h-4" />
+        </button>
+      </section>
+
+      {/* Skills - horizontal tags */}
+      <section className={`${sectionClass} py-24`}>
+        <span className={tagClass}>Skills</span>
+        <h2 className="text-3xl sm:text-4xl font-bold text-white mt-6 mb-10">
+          What I work with
+        </h2>
+        <div className="flex gap-3 overflow-x-auto pb-4 -mx-6 px-6 scrollbar-hide">
+          {SKILL_TAGS.map((skill) => (
+            <span key={skill} className={tagClass}>
+              {skill}
+            </span>
+          ))}
+        </div>
+      </section>
+
+      {/* Work Experience */}
+      <section id="work" className={`${sectionClass} py-24`}>
+        <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+          <div>
+            <span className={tagClass}>Work Experience</span>
+            <h2 className="text-3xl sm:text-4xl font-bold text-white mt-6">
+              And This Is My Work Experience
+            </h2>
+          </div>
+          <button
+            onClick={handleResumeDownload}
+            disabled={!resume || loadingResume}
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-[#C8FF00] text-black font-semibold hover:bg-[#C8FF00]/90 transition-colors w-fit disabled:opacity-50"
+          >
+            View Resume <ArrowUpRight className="w-4 h-4" />
+          </button>
+        </div>
+        <div className="mt-12 space-y-8">
+          <div className="border-b border-white/10 pb-8">
+            <div className="flex flex-col sm:flex-row sm:justify-between gap-2 mb-2">
+              <h3 className="text-white font-semibold text-lg">Senior CS Major</h3>
+              <span className="text-white/50 text-sm">2022 – Present</span>
+            </div>
+            <p className="text-white/60 text-sm mb-4">UMBC</p>
+            <p className="text-white/70 leading-relaxed">
+              Pursuing B.S. in Computer Science with focus on AI/ML, software engineering, and full-stack development. 
+              Building smart systems for real-world impact through coursework and personal projects.
+            </p>
+          </div>
+          <div className="border-b border-white/10 pb-8">
+            <div className="flex flex-col sm:flex-row sm:justify-between gap-2 mb-2">
+              <h3 className="text-white font-semibold text-lg">Software Developer</h3>
+              <span className="text-white/50 text-sm">Projects & Freelance</span>
+            </div>
+            <p className="text-white/60 text-sm mb-4">Independent</p>
+            <p className="text-white/70 leading-relaxed">
+              End-to-end design and development for web applications, AI integrations, and data systems. 
+              Delivered user-centric solutions across multiple tech stacks including Python, JavaScript, and React.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Projects */}
+      <section id="projects" className={`${sectionClass} py-24`}>
+        <span className={tagClass}>Portfolio</span>
+        <h2 className="text-3xl sm:text-4xl font-bold text-white mt-6 mb-12">
+          My Latest Projects
+        </h2>
+        {loadingProjects ? (
+          <p className="text-white/50">Loading projects...</p>
+        ) : projects.length === 0 ? (
+          <p className="text-white/50">No projects yet. Add some in the admin panel!</p>
+        ) : (
+          <div className="space-y-16">
+            {projects.map((project, idx) => (
+              <div key={idx} className="grid md:grid-cols-2 gap-8 items-center">
+                <div className="aspect-video bg-white/5 rounded-xl flex items-center justify-center overflow-hidden border border-white/10">
+                  {project.video && (project.video.includes("youtube") || project.video.includes("vimeo")) ? (
+                    <a href={project.video} target="_blank" rel="noopener noreferrer" className="text-[#C8FF00] text-sm hover:underline">
+                      Watch Video →
+                    </a>
+                  ) : project.video ? (
+                    <video src={project.video} className="w-full h-full object-cover" muted playsInline />
+                  ) : (
+                    <span className="text-white/30 text-sm">No preview</span>
+                  )}
+                </div>
+                <div>
+                  <p className="text-white/50 text-sm mb-1">2024</p>
+                  <h3 className="text-xl font-bold text-white mb-3">{project.name}</h3>
+                  <p className="text-white/70 mb-4 line-clamp-3">{project.description}</p>
+                  <a
+                    href={project.github}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-[#C8FF00] text-black font-semibold hover:bg-[#C8FF00]/90 transition-colors text-sm"
+                  >
+                    View case study <ArrowUpRight className="w-4 h-4" />
+                  </a>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </section>
+
+      {/* Testimonials placeholder */}
+      <section className={`${sectionClass} py-24`}>
+        <span className={tagClass}>Testimonials</span>
+        <h2 className="text-3xl sm:text-4xl font-bold text-white mt-6 mb-4">
+          See what <span className="text-white">others</span> say about me
+        </h2>
+        <p className="text-white/70 mb-6 max-w-xl">
+          I&apos;ve helped build systems that make a real impact. Want to be the next?
+        </p>
+        <a
+          href="#contact"
+          onClick={(e) => { e.preventDefault(); document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" }); }}
+          className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-[#C8FF00] text-black font-semibold hover:bg-[#C8FF00]/90 transition-colors"
+        >
+          Contact <ArrowUpRight className="w-4 h-4" />
+        </a>
+      </section>
+
+      {/* Contact */}
+      <section id="contact" className={`${sectionClass} py-24`}>
+        <span className={tagClass}>Contact</span>
+        <h2 className="text-4xl sm:text-5xl font-bold text-white mt-6 mb-4">
+          Let&apos;s Get in Touch
+        </h2>
+        <p className="text-white/70 text-lg mb-10">
+          Let&apos;s connect and start with your project ASAP.
+        </p>
+        {contactSuccess && (
+          <div className="mb-6 p-4 rounded-lg bg-green-500/20 border border-green-500/30 flex items-center gap-3">
+            <CheckCircle className="w-5 h-5 text-green-400" />
+            <p className="text-green-400">Thank you! I&apos;ll get back soon.</p>
+          </div>
+        )}
+        {contactError && (
+          <div className="mb-6 p-4 rounded-lg bg-red-500/20 border border-red-500/30 flex items-center gap-3">
+            <AlertCircle className="w-5 h-5 text-red-400" />
+            <p className="text-red-400">{contactError}</p>
+          </div>
+        )}
+        <form onSubmit={handleContactSubmit} className="max-w-lg space-y-4">
+          <input
+            type="text"
+            name="name"
+            placeholder="Name"
+            value={formData.name}
+            onChange={(e) => setFormData((p) => ({ ...p, name: e.target.value }))}
+            required
+            className="w-full px-4 py-3 rounded-lg bg-white/5 border border-white/10 text-white placeholder-white/40 focus:outline-none focus:border-[#C8FF00]"
+          />
+          <input
+            type="email"
+            name="email"
+            placeholder="Email"
+            value={formData.email}
+            onChange={(e) => setFormData((p) => ({ ...p, email: e.target.value }))}
+            required
+            className="w-full px-4 py-3 rounded-lg bg-white/5 border border-white/10 text-white placeholder-white/40 focus:outline-none focus:border-[#C8FF00]"
+          />
+          <textarea
+            name="message"
+            placeholder="Message"
+            value={formData.message}
+            onChange={(e) => setFormData((p) => ({ ...p, message: e.target.value }))}
+            required
+            rows={4}
+            className="w-full px-4 py-3 rounded-lg bg-white/5 border border-white/10 text-white placeholder-white/40 focus:outline-none focus:border-[#C8FF00] resize-none"
+          />
+          <button
+            type="submit"
+            disabled={formLoading}
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-[#C8FF00] text-black font-semibold hover:bg-[#C8FF00]/90 transition-colors disabled:opacity-50"
+          >
+            {formLoading ? "Sending..." : "Drop me a message"} <Send className="w-4 h-4" />
+          </button>
+        </form>
+        <p className="text-white/50 mt-6 text-sm">
+          Or email me at{" "}
+          <a href="mailto:fatinm1@umbc.edu" className="text-[#C8FF00] hover:underline">
+            fatinm1@umbc.edu
+          </a>
+        </p>
+      </section>
+
+      {/* Footer */}
+      <footer className="bg-[#111] border-t border-white/10 py-16 px-6 sm:px-10">
+        <div className="max-w-5xl mx-auto flex flex-col md:flex-row md:justify-between gap-12">
+          <div>
+            <h3 className="text-xl font-bold text-white mb-2">Fatin&apos;s Portfolio</h3>
+            <p className="text-white/60 mb-2">Software engineer crafting smart systems & modern solutions</p>
+            <a href="mailto:fatinm1@umbc.edu" className="text-white/60 hover:text-[#C8FF00] transition-colors">
+              fatinm1@umbc.edu
+            </a>
+          </div>
+          <div className="flex gap-16">
+            <div>
+              <h4 className="text-xs font-semibold tracking-wider text-white/50 mb-4">NAVIGATION</h4>
+              <ul className="space-y-2">
+                <li><button onClick={() => document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" })} className="text-white/70 hover:text-white">Work</button></li>
+                <li><button onClick={() => document.getElementById("about")?.scrollIntoView({ behavior: "smooth" })} className="text-white/70 hover:text-white">About</button></li>
+                <li><button onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })} className="text-white/70 hover:text-white text-left">Contact me</button></li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="text-xs font-semibold tracking-wider text-white/50 mb-4">SOCIALS</h4>
+              <ul className="space-y-2">
+                <li><a href="https://github.com/fatinm1" target="_blank" rel="noopener noreferrer" className="text-white/70 hover:text-white">GitHub</a></li>
+                <li><a href="https://www.linkedin.com/in/fatin-mojumder/" target="_blank" rel="noopener noreferrer" className="text-white/70 hover:text-white">LinkedIn</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <p className="max-w-5xl mx-auto mt-12 pt-8 border-t border-white/10 text-white/40 text-sm">
+          Made with love ❤️
+        </p>
+      </footer>
     </div>
   );
 }
