@@ -14,6 +14,7 @@ export default function Navigation() {
     { id: "home", label: "Home", href: "/" },
     { id: "about", label: "About", href: "/#about" },
     { id: "education", label: "Education", href: "/#education" },
+    { id: "stack", label: "Stack", href: "/#stack" },
     { id: "work", label: "Work", href: "/#work" },
     { id: "projects", label: "Projects", href: "/#projects" },
     { id: "contact", label: "Contact", href: "/#contact" },

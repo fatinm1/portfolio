@@ -13,13 +13,6 @@ const slideIn = {
   transition: { duration: 0.5 },
 };
 
-// Skills as tags for horizontal scroll
-const SKILL_TAGS = [
-  "Python", "C++", "Java", "JavaScript", "TypeScript", "React", "Next.js",
-  "Django", "Flask", "FastAPI", "LangChain", "OpenAI", "MySQL", "PostgreSQL",
-  "Docker", "Git", "Figma", "UI/UX", "AI/ML", "Visual Design", "Product Design",
-];
-
 // Stack section - tech icons only (no words)
 const STACK_ICONS = [
   { Icon: SiPython },
@@ -155,20 +148,6 @@ export default function Home() {
         </motion.div>
       </section>
 
-      {/* Stack - icons only, no words */}
-      <section id="stack" className="py-16 border-t border-white/10 overflow-hidden">
-        <div className="max-w-5xl mx-auto px-6 sm:px-10 mb-8">
-          <h2 className="text-2xl sm:text-3xl font-semibold text-white">Stack</h2>
-        </div>
-        <div className="flex animate-marquee items-center gap-10 py-4">
-          {[...STACK_ICONS, ...STACK_ICONS].map(({ Icon }, i) => (
-            <span key={`stack-icon-${i}`} className="flex-shrink-0">
-              <Icon className="w-9 h-9 sm:w-10 sm:h-10 text-white/70" />
-            </span>
-          ))}
-        </div>
-      </section>
-
       {/* About */}
       <motion.section id="about" className={`${sectionClass} py-24`} {...slideIn}>
         <span className={tagClass}>About</span>
@@ -189,29 +168,6 @@ export default function Home() {
         >
           View Resume <ArrowUpRight className="w-4 h-4" />
         </motion.button>
-      </motion.section>
-
-      {/* Skills - horizontal tags */}
-      <motion.section className={`${sectionClass} py-24`} {...slideIn}>
-        <span className={tagClass}>Skills</span>
-        <h2 className="text-3xl sm:text-4xl font-medium text-white mt-6 mb-10">
-          What I work with
-        </h2>
-        <div className="flex gap-3 overflow-x-auto pb-4 -mx-6 px-6 scrollbar-hide">
-          {SKILL_TAGS.map((skill, i) => (
-            <motion.span
-              key={skill}
-              className={`${tagClass} cursor-default`}
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.3, delay: i * 0.02 }}
-              whileHover={{ scale: 1.08, y: -2 }}
-            >
-              {skill}
-            </motion.span>
-          ))}
-        </div>
       </motion.section>
 
       {/* Education */}
@@ -238,6 +194,21 @@ export default function Home() {
             Building smart systems for real-world impact through coursework and personal projects.
           </p>
         </motion.div>
+      </motion.section>
+
+      {/* Stack - tech icons marquee */}
+      <motion.section id="stack" className={`${sectionClass} py-24 border-t border-white/10 overflow-hidden`} {...slideIn}>
+        <span className={tagClass}>Stack</span>
+        <h2 className="text-3xl sm:text-4xl font-medium text-white mt-6 mb-10">
+          What I work with
+        </h2>
+        <div className="flex animate-marquee items-center gap-10 py-4">
+          {[...STACK_ICONS, ...STACK_ICONS].map(({ Icon }, i) => (
+            <span key={`stack-icon-${i}`} className="flex-shrink-0">
+              <Icon className="w-9 h-9 sm:w-10 sm:h-10 text-white/70" />
+            </span>
+          ))}
+        </div>
       </motion.section>
 
       {/* Work Experience */}
