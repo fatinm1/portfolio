@@ -78,7 +78,7 @@ export default function ProjectsPage() {
               rel="noopener noreferrer"
               className="group block"
             >
-              <div className="glass p-6 hover:border-[#C8FF00]/20 transition-colors h-full flex flex-col">
+              <div className="bg-white/5 border border-white/10 p-6 rounded-xl hover:border-[#C8FF00]/20 transition-colors h-full flex flex-col">
                 {/* Placeholder for project screenshot - could add image URL to project model later */}
                 <div className="aspect-video bg-white/5 rounded-lg mb-4 flex items-center justify-center overflow-hidden">
                   {project.video && (project.video.includes("youtube") || project.video.includes("vimeo")) ? (

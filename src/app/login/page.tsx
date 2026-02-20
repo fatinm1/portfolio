@@ -44,7 +44,7 @@ export default function LoginPage() {
   return (
     <div className="max-w-md mx-auto py-12 px-4">
       <h1 className="text-3xl font-medium mb-8 text-center">Admin Login</h1>
-      <div className="glass p-6">
+      <div className="bg-white/5 border border-white/10 p-6 rounded-xl">
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div>
             <label className="block text-sm font-medium mb-2">Username</label>

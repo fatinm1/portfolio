@@ -99,7 +99,7 @@ export default function Home() {
   };
 
   const sectionClass = "scroll-mt-24 max-w-5xl mx-auto px-6 sm:px-10";
-  const tagClass = "glass-subtle px-4 py-2 rounded-full text-white/80 text-sm whitespace-nowrap";
+  const tagClass = "px-4 py-2 rounded-full bg-white/5 border border-white/10 text-white/80 text-sm whitespace-nowrap";
 
   return (
     <div className="pt-20">
@@ -115,7 +115,7 @@ export default function Home() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.1 }}
-            className="glass-subtle inline-flex items-center gap-2 px-4 py-2 rounded-full text-white/90 text-sm mb-8 w-fit"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-white/90 text-sm mb-8 w-fit"
           >
             Hello, I&apos;m Fatin 👋
           </motion.div>
@@ -203,6 +203,32 @@ export default function Home() {
         </div>
       </motion.section>
 
+      {/* Education */}
+      <motion.section id="education" className={`${sectionClass} py-24`} {...slideIn}>
+        <span className={tagClass}>Education</span>
+        <h2 className="text-3xl sm:text-4xl font-medium text-white mt-6 mb-12">
+          Education
+        </h2>
+        <motion.div
+          className="bg-white/5 border border-white/10 p-6 rounded-xl"
+          initial={{ opacity: 0, x: -16 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.4 }}
+          whileHover={{ y: -2 }}
+        >
+          <div className="flex flex-col sm:flex-row sm:justify-between gap-2 mb-2">
+            <h3 className="text-white font-medium text-lg">B.S. Computer Science</h3>
+            <span className="text-white/50 text-sm">2022 – Present</span>
+          </div>
+          <p className="text-white/60 text-sm mb-4">University of Maryland, Baltimore County (UMBC)</p>
+          <p className="text-white/70 leading-relaxed">
+            Senior standing. Focus on AI/ML, software engineering, and full-stack development. 
+            Building smart systems for real-world impact through coursework and personal projects.
+          </p>
+        </motion.div>
+      </motion.section>
+
       {/* Work Experience */}
       <motion.section id="work" className={`${sectionClass} py-24`} {...slideIn}>
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
@@ -224,7 +250,7 @@ export default function Home() {
         </div>
         <div className="mt-12 space-y-6">
           <motion.div
-            className="glass p-6 rounded-xl border-b-0"
+            className="bg-white/5 border border-white/10 p-6 rounded-xl"
             initial={{ opacity: 0, x: -16 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
@@ -232,17 +258,18 @@ export default function Home() {
             whileHover={{ y: -2 }}
           >
             <div className="flex flex-col sm:flex-row sm:justify-between gap-2 mb-2">
-              <h3 className="text-white font-medium text-lg">Senior CS Major</h3>
-              <span className="text-white/50 text-sm">2022 – Present</span>
+              <h3 className="text-white font-medium text-lg">IT Assistant</h3>
+              <span className="text-white/50 text-sm">May 2023 – December 2025</span>
             </div>
-            <p className="text-white/60 text-sm mb-4">UMBC</p>
+            <p className="text-white/60 text-sm mb-4">UMBC Graduate Admissions Office | Baltimore, MD</p>
             <p className="text-white/70 leading-relaxed">
-              Pursuing B.S. in Computer Science with focus on AI/ML, software engineering, and full-stack development. 
-              Building smart systems for real-world impact through coursework and personal projects.
+              Digitized and processed 1,000+ student records with 100% accuracy, supporting enrollment operations. 
+              Streamlined record-keeping through automated folder organization and indexing, reducing processing time by 25%. 
+              Ensured secure handling of sensitive data across digital and physical systems.
             </p>
           </motion.div>
           <motion.div
-            className="glass p-6 rounded-xl"
+            className="bg-white/5 border border-white/10 p-6 rounded-xl"
             initial={{ opacity: 0, x: -16 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
@@ -284,7 +311,7 @@ export default function Home() {
                 transition={{ duration: 0.5, delay: idx * 0.1 }}
               >
                 <motion.div
-                  className="glass aspect-video rounded-xl flex items-center justify-center overflow-hidden"
+                  className="bg-white/5 border border-white/10 aspect-video rounded-xl flex items-center justify-center overflow-hidden"
                   whileHover={{ scale: 1.02 }}
                 >
                   {project.video && (project.video.includes("youtube") || project.video.includes("vimeo")) ? (
@@ -298,7 +325,7 @@ export default function Home() {
                   )}
                 </motion.div>
                 <motion.div
-                  className="glass p-6 rounded-xl"
+                  className="bg-white/5 border border-white/10 p-6 rounded-xl"
                   whileHover={{ y: -4 }}
                 >
                   <p className="text-white/50 text-sm mb-1">2024</p>
@@ -317,31 +344,6 @@ export default function Home() {
             ))}
           </div>
         )}
-      </motion.section>
-
-      {/* Testimonials placeholder */}
-      <motion.section className={`${sectionClass} py-24`} {...slideIn}>
-        <motion.div
-          className="glass p-8 rounded-2xl"
-          whileHover={{ y: -2 }}
-        >
-        <span className={tagClass}>Testimonials</span>
-        <h2 className="text-3xl sm:text-4xl font-medium text-white mt-6 mb-4">
-          See what <span className="text-white">others</span> say about me
-        </h2>
-        <p className="text-white/70 mb-6 max-w-xl">
-          I&apos;ve helped build systems that make a real impact. Want to be the next?
-        </p>
-        <motion.a
-          href="#contact"
-          onClick={(e) => { e.preventDefault(); document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" }); }}
-          className="btn-green inline-flex items-center gap-2"
-          whileHover={{ scale: 1.03 }}
-          whileTap={{ scale: 0.98 }}
-        >
-          Contact <ArrowUpRight className="w-4 h-4" />
-        </motion.a>
-        </motion.div>
       </motion.section>
 
       {/* Contact */}
@@ -367,7 +369,7 @@ export default function Home() {
         )}
         <motion.form
           onSubmit={handleContactSubmit}
-          className="glass max-w-lg space-y-4 p-8 rounded-2xl"
+          className="bg-white/5 border border-white/10 max-w-lg space-y-4 p-8 rounded-2xl"
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -419,7 +421,7 @@ export default function Home() {
       </motion.section>
 
       {/* Footer */}
-      <footer className="glass-dark border-t border-white/10 py-16 px-6 sm:px-10 mt-8">
+      <footer className="bg-[#111] border-t border-white/10 py-16 px-6 sm:px-10 mt-8">
         <div className="max-w-5xl mx-auto flex flex-col md:flex-row md:justify-between gap-12">
           <div>
             <h3 className="text-xl font-medium text-white mb-2">Fatin&apos;s Portfolio</h3>
@@ -434,6 +436,7 @@ export default function Home() {
               <ul className="space-y-2">
                 <li><button onClick={() => document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" })} className="text-white/70 hover:text-white">Work</button></li>
                 <li><button onClick={() => document.getElementById("about")?.scrollIntoView({ behavior: "smooth" })} className="text-white/70 hover:text-white">About</button></li>
+                <li><button onClick={() => document.getElementById("education")?.scrollIntoView({ behavior: "smooth" })} className="text-white/70 hover:text-white">Education</button></li>
                 <li><button onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })} className="text-white/70 hover:text-white text-left">Contact me</button></li>
               </ul>
             </div>

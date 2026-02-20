@@ -53,7 +53,7 @@ export default function SkillsPage() {
       <h1 className="text-3xl font-medium mb-8 text-center">Skills & Experience</h1>
       <div className="grid gap-8 grid-cols-1 lg:grid-cols-2">
         {/* Programming Languages */}
-        <div className="glass p-6">
+        <div className="bg-white/5 border border-white/10 p-6 rounded-xl">
           <h2 className="font-medium text-xl mb-4 text-[#C8FF00]">Programming Languages</h2>
           <div className="space-y-4">
             {skills.programming.map((skill, index) => (
@@ -74,7 +74,7 @@ export default function SkillsPage() {
         </div>
 
         {/* Software & Tools */}
-        <div className="glass p-6">
+        <div className="bg-white/5 border border-white/10 p-6 rounded-xl">
           <h2 className="font-medium text-xl mb-4 text-[#C8FF00]">Software & Tools</h2>
           <div className="space-y-4">
             {skills.softwareTools.map((skill, index) => (
@@ -95,7 +95,7 @@ export default function SkillsPage() {
         </div>
 
         {/* Frameworks & Libraries */}
-        <div className="glass p-6">
+        <div className="bg-white/5 border border-white/10 p-6 rounded-xl">
           <h2 className="font-medium text-xl mb-4 text-[#C8FF00]">Frameworks & Libraries</h2>
           <div className="space-y-4">
             {skills.frameworks.map((skill, index) => (
@@ -116,7 +116,7 @@ export default function SkillsPage() {
         </div>
 
         {/* Databases & DevOps */}
-        <div className="glass p-6">
+        <div className="bg-white/5 border border-white/10 p-6 rounded-xl">
           <h2 className="font-medium text-xl mb-4 text-[#C8FF00]">Databases & DevOps</h2>
           <div className="space-y-4">
             {skills.databasesDevOps.map((skill, index) => (

@@ -149,7 +149,7 @@ export default function ChatbotPage() {
     return (
       <div className="max-w-4xl mx-auto py-12 px-4">
         <h1 className="text-3xl font-medium mb-8 text-center">AI Chatbot</h1>
-        <div className="glass p-6 min-h-[600px] flex items-center justify-center">
+        <div className="bg-white/5 border border-white/10 p-6 rounded-xl min-h-[600px] flex items-center justify-center">
           <div className="text-center">
             <div className="flex space-x-1 mb-4">
               <div className="w-2 h-2 bg-[#C8FF00] rounded-full animate-bounce"></div>
@@ -170,7 +170,7 @@ export default function ChatbotPage() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Chat Interface */}
         <div className="lg:col-span-2">
-          <div className="glass p-6 min-h-[600px] flex flex-col">
+          <div className="bg-white/5 border border-white/10 p-6 rounded-xl min-h-[600px] flex flex-col">
             {/* Chat Header */}
             <div className="flex justify-between items-center mb-4 pb-4 border-b border-white/20">
               <h2 className="text-xl font-medium">Chat with Fatin's AI</h2>
@@ -245,7 +245,7 @@ export default function ChatbotPage() {
 
         {/* Suggestions Sidebar */}
         <div className="lg:col-span-1">
-          <div className="glass p-6">
+          <div className="bg-white/5 border border-white/10 p-6 rounded-xl">
             <h3 className="text-lg font-medium mb-4">Suggested Questions</h3>
             <div className="space-y-2">
               {SUGGESTED_QUESTIONS.map((question, index) => (

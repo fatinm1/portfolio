@@ -101,7 +101,7 @@ export default function ContactPage() {
     <div className="max-w-2xl mx-auto py-12 px-4">
       <h1 className="text-3xl font-medium mb-8 text-center">Contact Me</h1>
       
-      <div className="glass p-8">
+      <div className="bg-white/5 border border-white/10 p-8 rounded-xl">
         {/* Contact Information */}
         <div className="mb-8">
           <h2 className="text-xl font-medium mb-6 text-center">Get In Touch</h2>

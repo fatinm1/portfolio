@@ -306,7 +306,7 @@ export default function AdminPage() {
       
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
         {/* Add/Edit Project Section */}
-        <div className="glass p-6">
+        <div className="bg-white/5 border border-white/10 p-6 rounded-xl">
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-xl font-medium">
               {editingProject ? 'Edit Project' : 'Add New Project'}
@@ -413,7 +413,7 @@ export default function AdminPage() {
         </div>
 
         {/* Project Management Section */}
-        <div className="glass p-6">
+        <div className="bg-white/5 border border-white/10 p-6 rounded-xl">
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-xl font-medium">Project Management</h2>
             <button
@@ -484,7 +484,7 @@ export default function AdminPage() {
         </div>
 
         {/* Resume Management Section */}
-        <div className="glass p-6">
+        <div className="bg-white/5 border border-white/10 p-6 rounded-xl">
           <h2 className="text-xl font-medium mb-6">Resume Management</h2>
           
           <div className="space-y-4">
@@ -546,7 +546,7 @@ export default function AdminPage() {
         </div>
 
         {/* Contact Messages Section */}
-        <div className="glass p-6">
+        <div className="bg-white/5 border border-white/10 p-6 rounded-xl">
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-xl font-medium">Contact Messages</h2>
             <button

@@ -119,7 +119,7 @@ export default function ChatbotWidget() {
 
       {/* Chat popup */}
       {isOpen && (
-        <div className="fixed bottom-24 right-6 z-50 w-[380px] max-w-[calc(100vw-3rem)] h-[520px] flex flex-col glass rounded-2xl shadow-2xl overflow-hidden border border-white/10">
+        <div className="fixed bottom-24 right-6 z-50 w-[380px] max-w-[calc(100vw-3rem)] h-[520px] flex flex-col bg-black/95 border border-white/10 rounded-2xl shadow-2xl overflow-hidden">
           {/* Header */}
           <div className="flex items-center justify-between px-4 py-3 border-b border-white/10 bg-white/5">
             <span className="font-medium text-white">Chat with Fatin&apos;s AI</span>
