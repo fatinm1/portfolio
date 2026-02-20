@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { ArrowUpRight, Zap, Send, CheckCircle, AlertCircle } from "lucide-react";
+import { ArrowUpRight, Zap, Send, CheckCircle, AlertCircle, Bot } from "lucide-react";
 
 const slideIn = {
   initial: { opacity: 0, y: 20 },
@@ -144,11 +144,23 @@ export default function Home() {
         </motion.div>
       </section>
 
-      {/* Moving headline - Technologies */}
+      {/* Stack - Technologies & Platforms */}
       <section className="py-16 border-t border-white/10 overflow-hidden">
-        <h2 className="text-sm font-medium tracking-[0.2em] text-white/50 text-center mb-10 uppercase">
-          Technologies & Platforms
-        </h2>
+        <div className="max-w-5xl mx-auto px-6 sm:px-10 mb-10">
+          <div className="flex items-end justify-between gap-4">
+            <div>
+              <h2 className="text-2xl sm:text-3xl font-semibold text-white">Stack</h2>
+              <div className="mt-1 h-0.5 w-full max-w-[120px] rounded-full bg-gradient-to-r from-purple-500 via-fuchsia-400 to-orange-400" />
+            </div>
+            <motion.div
+              animate={{ x: [0, 4, 0] }}
+              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+              className="text-purple-400"
+            >
+              <Bot className="w-8 h-8 sm:w-10 sm:h-10" strokeWidth={1.5} />
+            </motion.div>
+          </div>
+        </div>
         <div className="flex animate-marquee whitespace-nowrap">
           {[...TOOLS, ...TOOLS].map((tool, i) => (
             <span key={`${tool}-${i}`} className="mx-8 text-white/40 text-lg font-medium">
