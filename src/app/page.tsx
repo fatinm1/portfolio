@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { ArrowUpRight, Zap, Send, CheckCircle, AlertCircle, Bot } from "lucide-react";
+import { ArrowUpRight, Zap, Send, CheckCircle, AlertCircle, Layers, Code2, Cpu } from "lucide-react";
 
 const slideIn = {
   initial: { opacity: 0, y: 20 },
@@ -19,11 +19,18 @@ const SKILL_TAGS = [
   "Docker", "Git", "Figma", "UI/UX", "AI/ML", "Visual Design", "Product Design",
 ];
 
-// Tools marquee
+// Tools marquee (words)
 const TOOLS = [
   "UMBC", "GitHub", "React", "OpenAI", "LangChain", "MySQL",
   "Python", "C++", "Java", "JavaScript", "TypeScript", "Django", "Flask", "FastAPI",
   "Git", "Figma", "VS Code", "Docker", "PostgreSQL", "Next.js", "Tailwind", "Node.js",
+];
+
+// Icons for Stack marquee
+const STACK_ICONS = [
+  { Icon: Layers, label: "Layers" },
+  { Icon: Code2, label: "Code" },
+  { Icon: Cpu, label: "Stack" },
 ];
 
 interface Project {
@@ -146,20 +153,12 @@ export default function Home() {
 
       {/* Stack - Technologies & Platforms */}
       <section className="py-16 border-t border-white/10 overflow-hidden">
-        <div className="max-w-5xl mx-auto px-6 sm:px-10 mb-10">
-          <div className="flex items-end justify-between gap-4">
-            <div>
-              <h2 className="text-2xl sm:text-3xl font-semibold text-white">Stack</h2>
-              <div className="mt-1 h-0.5 w-full max-w-[120px] rounded-full bg-gradient-to-r from-purple-500 via-fuchsia-400 to-orange-400" />
-            </div>
-            <motion.div
-              animate={{ x: [0, 4, 0] }}
-              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-              className="text-purple-400"
-            >
-              <Bot className="w-8 h-8 sm:w-10 sm:h-10" strokeWidth={1.5} />
-            </motion.div>
-          </div>
+        <div className="flex animate-marquee items-center gap-8 py-4">
+          {[...STACK_ICONS, ...STACK_ICONS].map(({ Icon }, i) => (
+            <span key={`stack-icon-${i}`} className="flex-shrink-0">
+              <Icon className="w-7 h-7 sm:w-8 sm:h-8 text-white/60" strokeWidth={1.5} />
+            </span>
+          ))}
         </div>
         <div className="flex animate-marquee whitespace-nowrap">
           {[...TOOLS, ...TOOLS].map((tool, i) => (
