@@ -105,7 +105,12 @@ export default function Home() {
     <div className="pt-20">
       {/* Hero */}
       <section id="home" className={`${sectionClass} min-h-[85vh] flex flex-col justify-center py-24`}>
-        <motion.div {...fadeInUp} className="space-y-6">
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="space-y-6"
+        >
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
