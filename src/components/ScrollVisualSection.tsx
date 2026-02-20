@@ -18,15 +18,17 @@ function MetallicBlob({ scrollProgress }: { scrollProgress: number }) {
   });
 
   return (
-    <mesh ref={meshRef} scale={2.2}>
+    <mesh ref={meshRef} scale={1.2}>
       <torusKnotGeometry args={[0.6, 0.2, 128, 32]} />
       <meshPhysicalMaterial
         color="#0a0a0a"
-        metalness={0.95}
-        roughness={0.1}
+        metalness={0.9}
+        roughness={0.15}
         envMapIntensity={1.2}
         clearcoat={0.3}
         clearcoatRoughness={0.2}
+        emissive="#C8FF00"
+        emissiveIntensity={0.15}
       />
     </mesh>
   );
@@ -39,6 +41,8 @@ function Scene({ scrollProgress }: { scrollProgress: number }) {
       <directionalLight position={[5, 5, 5]} intensity={1.5} />
       <directionalLight position={[-5, -5, 5]} intensity={0.8} />
       <pointLight position={[0, 0, 5]} intensity={1} color="#ffffff" />
+      <pointLight position={[0, 0, 2]} intensity={2} color="#C8FF00" decay={2} />
+      <pointLight position={[0, 0, -1]} intensity={0.8} color="#C8FF00" decay={2} />
       <Environment preset="night" />
       <MetallicBlob scrollProgress={scrollProgress} />
     </>
@@ -74,7 +78,7 @@ export default function ScrollVisualSection() {
     >
       <motion.div
         style={{ opacity, scale }}
-        className="relative w-full max-w-2xl aspect-square mx-auto"
+        className="relative w-full max-w-md aspect-square mx-auto"
       >
         {mounted && (
           <div className="absolute inset-0 w-full h-full">
