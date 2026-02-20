@@ -156,8 +156,10 @@ export default function Home() {
       </section>
 
       {/* Stack - icons only, no words */}
-      <section id="stack" className="py-16 border-t border-white/10 overflow-hidden" aria-label="Stack">
-        <h2 className="sr-only">Stack</h2>
+      <section id="stack" className="py-16 border-t border-white/10 overflow-hidden">
+        <div className="max-w-5xl mx-auto px-6 sm:px-10 mb-8">
+          <h2 className="text-2xl sm:text-3xl font-semibold text-white">Stack</h2>
+        </div>
         <div className="flex animate-marquee items-center gap-10 py-4">
           {[...STACK_ICONS, ...STACK_ICONS].map(({ Icon }, i) => (
             <span key={`stack-icon-${i}`} className="flex-shrink-0">
