@@ -34,7 +34,7 @@ export default function Navigation() {
         <Link
           href="/"
           onClick={(e) => handleNavClick(e, "home")}
-          className="px-4 py-2 rounded-full bg-white/5 border border-white/10 text-white font-medium text-sm hover:bg-white/10 transition-colors"
+          className="glass-subtle px-4 py-2 rounded-full text-white font-medium text-sm hover:bg-white/10 transition-colors"
         >
           Fatin&apos;s Portfolio
         </Link>
@@ -56,7 +56,7 @@ export default function Navigation() {
             <Link
               href="/#contact"
               onClick={(e) => handleNavClick(e, "contact")}
-              className="px-4 py-2 rounded-full bg-white/5 border border-white/20 text-white text-sm hover:bg-white/10 transition-colors inline-flex items-center gap-2"
+              className="glass-subtle px-4 py-2 rounded-full text-white text-sm hover:bg-white/10 transition-colors inline-flex items-center gap-2"
             >
               <Zap className="w-4 h-4" />
               Get in touch

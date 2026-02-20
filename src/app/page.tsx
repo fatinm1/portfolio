@@ -91,13 +91,13 @@ export default function Home() {
   };
 
   const sectionClass = "scroll-mt-24 max-w-5xl mx-auto px-6 sm:px-10";
-  const tagClass = "px-4 py-2 rounded-full bg-white/5 border border-white/10 text-white/80 text-sm whitespace-nowrap";
+  const tagClass = "glass-subtle px-4 py-2 rounded-full text-white/80 text-sm whitespace-nowrap";
 
   return (
     <div className="pt-20">
       {/* Hero */}
       <section id="home" className={`${sectionClass} min-h-[85vh] flex flex-col justify-center py-24`}>
-        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-white/90 text-sm mb-8 w-fit">
+        <div className="glass-subtle inline-flex items-center gap-2 px-4 py-2 rounded-full text-white/90 text-sm mb-8 w-fit">
           Hello, I&apos;m Fatin 👋
         </div>
         <h1 className="text-4xl sm:text-5xl md:text-6xl font-medium text-white leading-tight mb-6">
@@ -180,8 +180,8 @@ export default function Home() {
             View Resume <ArrowUpRight className="w-4 h-4" />
           </button>
         </div>
-        <div className="mt-12 space-y-8">
-          <div className="border-b border-white/10 pb-8">
+        <div className="mt-12 space-y-6">
+          <div className="glass p-6 rounded-xl border-b-0">
             <div className="flex flex-col sm:flex-row sm:justify-between gap-2 mb-2">
               <h3 className="text-white font-medium text-lg">Senior CS Major</h3>
               <span className="text-white/50 text-sm">2022 – Present</span>
@@ -192,7 +192,7 @@ export default function Home() {
               Building smart systems for real-world impact through coursework and personal projects.
             </p>
           </div>
-          <div className="border-b border-white/10 pb-8">
+          <div className="glass p-6 rounded-xl">
             <div className="flex flex-col sm:flex-row sm:justify-between gap-2 mb-2">
               <h3 className="text-white font-medium text-lg">Software Developer</h3>
               <span className="text-white/50 text-sm">Projects & Freelance</span>
@@ -220,7 +220,7 @@ export default function Home() {
           <div className="space-y-16">
             {projects.map((project, idx) => (
               <div key={idx} className="grid md:grid-cols-2 gap-8 items-center">
-                <div className="aspect-video bg-white/5 rounded-xl flex items-center justify-center overflow-hidden border border-white/10">
+                <div className="glass aspect-video rounded-xl flex items-center justify-center overflow-hidden">
                   {project.video && (project.video.includes("youtube") || project.video.includes("vimeo")) ? (
                     <a href={project.video} target="_blank" rel="noopener noreferrer" className="text-[#C8FF00] text-sm hover:underline">
                       Watch Video →
@@ -231,7 +231,7 @@ export default function Home() {
                     <span className="text-white/30 text-sm">No preview</span>
                   )}
                 </div>
-                <div>
+                <div className="glass p-6 rounded-xl">
                   <p className="text-white/50 text-sm mb-1">2024</p>
                   <h3 className="text-xl font-medium text-white mb-3">{project.name}</h3>
                   <p className="text-white/70 mb-4 line-clamp-3">{project.description}</p>
@@ -252,6 +252,7 @@ export default function Home() {
 
       {/* Testimonials placeholder */}
       <section className={`${sectionClass} py-24`}>
+        <div className="glass p-8 rounded-2xl">
         <span className={tagClass}>Testimonials</span>
         <h2 className="text-3xl sm:text-4xl font-medium text-white mt-6 mb-4">
           See what <span className="text-white">others</span> say about me
@@ -266,6 +267,7 @@ export default function Home() {
         >
           Contact <ArrowUpRight className="w-4 h-4" />
         </a>
+        </div>
       </section>
 
       {/* Contact */}
@@ -289,7 +291,7 @@ export default function Home() {
             <p className="text-red-400">{contactError}</p>
           </div>
         )}
-        <form onSubmit={handleContactSubmit} className="max-w-lg space-y-4">
+        <form onSubmit={handleContactSubmit} className="glass max-w-lg space-y-4 p-8 rounded-2xl">
           <input
             type="text"
             name="name"
@@ -334,7 +336,7 @@ export default function Home() {
       </section>
 
       {/* Footer */}
-      <footer className="bg-[#111] border-t border-white/10 py-16 px-6 sm:px-10">
+      <footer className="glass-dark border-t border-white/10 py-16 px-6 sm:px-10 mt-8">
         <div className="max-w-5xl mx-auto flex flex-col md:flex-row md:justify-between gap-12">
           <div>
             <h3 className="text-xl font-medium text-white mb-2">Fatin&apos;s Portfolio</h3>
