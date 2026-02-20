@@ -5,12 +5,6 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowUpRight, Zap, Send, CheckCircle, AlertCircle } from "lucide-react";
 import { SiPython, SiOpenjdk, SiJavascript, SiC, SiCplusplus, SiFlask, SiFastapi, SiReact, SiNextdotjs, SiDjango, SiPostgresql, SiMysql, SiMongodb } from "react-icons/si";
-import dynamic from "next/dynamic";
-
-const ScrollVisualSection = dynamic(
-  () => import("@/components/ScrollVisualSection"),
-  { ssr: false }
-);
 
 const slideIn = {
   initial: { opacity: 0, y: 20 },
@@ -160,8 +154,6 @@ export default function Home() {
           </motion.a>
         </motion.div>
       </section>
-
-      <ScrollVisualSection />
 
       {/* Stack - icons only, no words */}
       <section id="stack" className="py-16 border-t border-white/10 overflow-hidden">
