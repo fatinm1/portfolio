@@ -295,10 +295,10 @@ export default function AdminPage() {
   return (
     <div className="max-w-6xl mx-auto py-12 px-4">
       <div className="flex justify-between items-center mb-8">
-        <h1 className="text-3xl font-bold">Admin Dashboard</h1>
+        <h1 className="text-3xl font-medium">Admin Dashboard</h1>
         <button
           onClick={handleLogout}
-          className="px-4 py-2 rounded-lg bg-red-500 text-white font-bold shadow hover:bg-red-400 transition-colors"
+          className="px-4 py-2 rounded-lg bg-red-500 text-white font-medium shadow hover:bg-red-400 transition-colors"
         >
           Logout
         </button>
@@ -308,7 +308,7 @@ export default function AdminPage() {
         {/* Add/Edit Project Section */}
         <div className="glass p-6">
           <div className="flex justify-between items-center mb-6">
-            <h2 className="text-xl font-semibold">
+            <h2 className="text-xl font-medium">
               {editingProject ? 'Edit Project' : 'Add New Project'}
             </h2>
             {editingProject && (
@@ -415,7 +415,7 @@ export default function AdminPage() {
         {/* Project Management Section */}
         <div className="glass p-6">
           <div className="flex justify-between items-center mb-6">
-            <h2 className="text-xl font-semibold">Project Management</h2>
+            <h2 className="text-xl font-medium">Project Management</h2>
             <button
               onClick={() => {
                 if (!showProjects) {
@@ -485,7 +485,7 @@ export default function AdminPage() {
 
         {/* Resume Management Section */}
         <div className="glass p-6">
-          <h2 className="text-xl font-semibold mb-6">Resume Management</h2>
+          <h2 className="text-xl font-medium mb-6">Resume Management</h2>
           
           <div className="space-y-4">
             {/* Current Resume */}
@@ -548,7 +548,7 @@ export default function AdminPage() {
         {/* Contact Messages Section */}
         <div className="glass p-6">
           <div className="flex justify-between items-center mb-6">
-            <h2 className="text-xl font-semibold">Contact Messages</h2>
+            <h2 className="text-xl font-medium">Contact Messages</h2>
             <button
               onClick={() => {
                 if (!showContacts) {

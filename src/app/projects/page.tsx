@@ -54,7 +54,7 @@ export default function ProjectsPage() {
     <div className="max-w-6xl mx-auto py-16 px-6 sm:px-10">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-12">
-        <h1 className="text-4xl sm:text-5xl font-bold text-white">Works</h1>
+        <h1 className="text-4xl sm:text-5xl font-medium text-white">Works</h1>
         <Link 
           href="/projects" 
           className="text-[#C8FF00] hover:text-[#C8FF00]/80 transition-colors flex items-center gap-1 text-sm font-medium tracking-wide"
@@ -100,7 +100,7 @@ export default function ProjectsPage() {
                   )}
                 </div>
                 <div className="flex items-start justify-between gap-2 mb-2">
-                  <h2 className="font-semibold text-xl text-white group-hover:text-[#C8FF00] transition-colors flex-1">
+                  <h2 className="font-medium text-xl text-white group-hover:text-[#C8FF00] transition-colors flex-1">
                     {project.name}
                   </h2>
                   <ArrowUpRight className="w-5 h-5 text-[#C8FF00] shrink-0 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />

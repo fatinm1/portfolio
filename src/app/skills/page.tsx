@@ -50,11 +50,11 @@ export default function SkillsPage() {
 
   return (
     <div className="max-w-6xl mx-auto py-12 px-4">
-      <h1 className="text-3xl font-bold mb-8 text-center">Skills & Experience</h1>
+      <h1 className="text-3xl font-medium mb-8 text-center">Skills & Experience</h1>
       <div className="grid gap-8 grid-cols-1 lg:grid-cols-2">
         {/* Programming Languages */}
         <div className="glass p-6">
-          <h2 className="font-semibold text-xl mb-4 text-[#C8FF00]">Programming Languages</h2>
+          <h2 className="font-medium text-xl mb-4 text-[#C8FF00]">Programming Languages</h2>
           <div className="space-y-4">
             {skills.programming.map((skill, index) => (
               <div key={index} className="mb-4">
@@ -75,7 +75,7 @@ export default function SkillsPage() {
 
         {/* Software & Tools */}
         <div className="glass p-6">
-          <h2 className="font-semibold text-xl mb-4 text-[#C8FF00]">Software & Tools</h2>
+          <h2 className="font-medium text-xl mb-4 text-[#C8FF00]">Software & Tools</h2>
           <div className="space-y-4">
             {skills.softwareTools.map((skill, index) => (
               <div key={index} className="mb-4">
@@ -96,7 +96,7 @@ export default function SkillsPage() {
 
         {/* Frameworks & Libraries */}
         <div className="glass p-6">
-          <h2 className="font-semibold text-xl mb-4 text-[#C8FF00]">Frameworks & Libraries</h2>
+          <h2 className="font-medium text-xl mb-4 text-[#C8FF00]">Frameworks & Libraries</h2>
           <div className="space-y-4">
             {skills.frameworks.map((skill, index) => (
               <div key={index} className="mb-4">
@@ -117,7 +117,7 @@ export default function SkillsPage() {
 
         {/* Databases & DevOps */}
         <div className="glass p-6">
-          <h2 className="font-semibold text-xl mb-4 text-[#C8FF00]">Databases & DevOps</h2>
+          <h2 className="font-medium text-xl mb-4 text-[#C8FF00]">Databases & DevOps</h2>
           <div className="space-y-4">
             {skills.databasesDevOps.map((skill, index) => (
               <div key={index} className="mb-4">

@@ -100,7 +100,7 @@ export default function Home() {
         <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-white/90 text-sm mb-8 w-fit">
           Hello, I&apos;m Fatin 👋
         </div>
-        <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-white leading-tight mb-6">
+        <h1 className="text-4xl sm:text-5xl md:text-6xl font-medium text-white leading-tight mb-6">
           <span className="text-white">Software engineer</span>
           <br />
           <span className="text-white/60">crafting smart systems & modern solutions</span>
@@ -131,7 +131,7 @@ export default function Home() {
       {/* About */}
       <section id="about" className={`${sectionClass} py-24`}>
         <span className={tagClass}>About</span>
-        <h2 className="text-3xl sm:text-4xl font-bold text-white mt-6 mb-6">
+        <h2 className="text-3xl sm:text-4xl font-medium text-white mt-6 mb-6">
           Solving real problems with purposeful, user-first thinking
         </h2>
         <p className="text-white/70 text-lg max-w-2xl mb-8 leading-relaxed">
@@ -151,7 +151,7 @@ export default function Home() {
       {/* Skills - horizontal tags */}
       <section className={`${sectionClass} py-24`}>
         <span className={tagClass}>Skills</span>
-        <h2 className="text-3xl sm:text-4xl font-bold text-white mt-6 mb-10">
+        <h2 className="text-3xl sm:text-4xl font-medium text-white mt-6 mb-10">
           What I work with
         </h2>
         <div className="flex gap-3 overflow-x-auto pb-4 -mx-6 px-6 scrollbar-hide">
@@ -168,7 +168,7 @@ export default function Home() {
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
           <div>
             <span className={tagClass}>Work Experience</span>
-            <h2 className="text-3xl sm:text-4xl font-bold text-white mt-6">
+            <h2 className="text-3xl sm:text-4xl font-medium text-white mt-6">
               And This Is My Work Experience
             </h2>
           </div>
@@ -183,7 +183,7 @@ export default function Home() {
         <div className="mt-12 space-y-8">
           <div className="border-b border-white/10 pb-8">
             <div className="flex flex-col sm:flex-row sm:justify-between gap-2 mb-2">
-              <h3 className="text-white font-semibold text-lg">Senior CS Major</h3>
+              <h3 className="text-white font-medium text-lg">Senior CS Major</h3>
               <span className="text-white/50 text-sm">2022 – Present</span>
             </div>
             <p className="text-white/60 text-sm mb-4">UMBC</p>
@@ -194,7 +194,7 @@ export default function Home() {
           </div>
           <div className="border-b border-white/10 pb-8">
             <div className="flex flex-col sm:flex-row sm:justify-between gap-2 mb-2">
-              <h3 className="text-white font-semibold text-lg">Software Developer</h3>
+              <h3 className="text-white font-medium text-lg">Software Developer</h3>
               <span className="text-white/50 text-sm">Projects & Freelance</span>
             </div>
             <p className="text-white/60 text-sm mb-4">Independent</p>
@@ -209,7 +209,7 @@ export default function Home() {
       {/* Projects */}
       <section id="projects" className={`${sectionClass} py-24`}>
         <span className={tagClass}>Portfolio</span>
-        <h2 className="text-3xl sm:text-4xl font-bold text-white mt-6 mb-12">
+        <h2 className="text-3xl sm:text-4xl font-medium text-white mt-6 mb-12">
           My Latest Projects
         </h2>
         {loadingProjects ? (
@@ -233,7 +233,7 @@ export default function Home() {
                 </div>
                 <div>
                   <p className="text-white/50 text-sm mb-1">2024</p>
-                  <h3 className="text-xl font-bold text-white mb-3">{project.name}</h3>
+                  <h3 className="text-xl font-medium text-white mb-3">{project.name}</h3>
                   <p className="text-white/70 mb-4 line-clamp-3">{project.description}</p>
                   <a
                     href={project.github}
@@ -253,7 +253,7 @@ export default function Home() {
       {/* Testimonials placeholder */}
       <section className={`${sectionClass} py-24`}>
         <span className={tagClass}>Testimonials</span>
-        <h2 className="text-3xl sm:text-4xl font-bold text-white mt-6 mb-4">
+        <h2 className="text-3xl sm:text-4xl font-medium text-white mt-6 mb-4">
           See what <span className="text-white">others</span> say about me
         </h2>
         <p className="text-white/70 mb-6 max-w-xl">
@@ -271,7 +271,7 @@ export default function Home() {
       {/* Contact */}
       <section id="contact" className={`${sectionClass} py-24`}>
         <span className={tagClass}>Contact</span>
-        <h2 className="text-4xl sm:text-5xl font-bold text-white mt-6 mb-4">
+        <h2 className="text-4xl sm:text-5xl font-medium text-white mt-6 mb-4">
           Let&apos;s Get in Touch
         </h2>
         <p className="text-white/70 text-lg mb-10">
@@ -337,7 +337,7 @@ export default function Home() {
       <footer className="bg-[#111] border-t border-white/10 py-16 px-6 sm:px-10">
         <div className="max-w-5xl mx-auto flex flex-col md:flex-row md:justify-between gap-12">
           <div>
-            <h3 className="text-xl font-bold text-white mb-2">Fatin&apos;s Portfolio</h3>
+            <h3 className="text-xl font-medium text-white mb-2">Fatin&apos;s Portfolio</h3>
             <p className="text-white/60 mb-2">Software engineer crafting smart systems & modern solutions</p>
             <a href="mailto:fatinm1@umbc.edu" className="text-white/60 hover:text-[#C8FF00] transition-colors">
               fatinm1@umbc.edu
@@ -345,7 +345,7 @@ export default function Home() {
           </div>
           <div className="flex gap-16">
             <div>
-              <h4 className="text-xs font-semibold tracking-wider text-white/50 mb-4">NAVIGATION</h4>
+              <h4 className="text-xs font-medium tracking-wider text-white/50 mb-4">NAVIGATION</h4>
               <ul className="space-y-2">
                 <li><button onClick={() => document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" })} className="text-white/70 hover:text-white">Work</button></li>
                 <li><button onClick={() => document.getElementById("about")?.scrollIntoView({ behavior: "smooth" })} className="text-white/70 hover:text-white">About</button></li>
@@ -353,7 +353,7 @@ export default function Home() {
               </ul>
             </div>
             <div>
-              <h4 className="text-xs font-semibold tracking-wider text-white/50 mb-4">SOCIALS</h4>
+              <h4 className="text-xs font-medium tracking-wider text-white/50 mb-4">SOCIALS</h4>
               <ul className="space-y-2">
                 <li><a href="https://github.com/fatinm1" target="_blank" rel="noopener noreferrer" className="text-white/70 hover:text-white">GitHub</a></li>
                 <li><a href="https://www.linkedin.com/in/fatin-mojumder/" target="_blank" rel="noopener noreferrer" className="text-white/70 hover:text-white">LinkedIn</a></li>

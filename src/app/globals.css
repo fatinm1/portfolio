@@ -25,7 +25,7 @@ body {
   background: linear-gradient(to bottom, #C8FF00 0%, #A7ED57 50%, #9BE04D 100%);
   border: 1px solid #7AB82E;
   color: #1a1a1a;
-  font-weight: 600;
+  font-weight: 500;
   border-radius: 9999px;
   padding: 0.75rem 1.5rem;
   transition: box-shadow 0.2s, transform 0.15s;

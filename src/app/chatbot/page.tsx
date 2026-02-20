@@ -148,7 +148,7 @@ export default function ChatbotPage() {
   if (!isClient) {
     return (
       <div className="max-w-4xl mx-auto py-12 px-4">
-        <h1 className="text-3xl font-bold mb-8 text-center">AI Chatbot</h1>
+        <h1 className="text-3xl font-medium mb-8 text-center">AI Chatbot</h1>
         <div className="glass p-6 min-h-[600px] flex items-center justify-center">
           <div className="text-center">
             <div className="flex space-x-1 mb-4">
@@ -165,7 +165,7 @@ export default function ChatbotPage() {
 
   return (
     <div className="max-w-4xl mx-auto py-12 px-4">
-      <h1 className="text-3xl font-bold mb-8 text-center">AI Chatbot</h1>
+      <h1 className="text-3xl font-medium mb-8 text-center">AI Chatbot</h1>
       
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Chat Interface */}
@@ -173,7 +173,7 @@ export default function ChatbotPage() {
           <div className="glass p-6 min-h-[600px] flex flex-col">
             {/* Chat Header */}
             <div className="flex justify-between items-center mb-4 pb-4 border-b border-white/20">
-              <h2 className="text-xl font-semibold">Chat with Fatin's AI</h2>
+              <h2 className="text-xl font-medium">Chat with Fatin's AI</h2>
               <button
                 onClick={clearChat}
                 className="px-3 py-1 rounded-lg bg-red-500/20 text-red-400 text-sm hover:bg-red-500/30 transition-colors"
@@ -246,7 +246,7 @@ export default function ChatbotPage() {
         {/* Suggestions Sidebar */}
         <div className="lg:col-span-1">
           <div className="glass p-6">
-            <h3 className="text-lg font-semibold mb-4">Suggested Questions</h3>
+            <h3 className="text-lg font-medium mb-4">Suggested Questions</h3>
             <div className="space-y-2">
               {SUGGESTED_QUESTIONS.map((question, index) => (
                 <button
@@ -261,7 +261,7 @@ export default function ChatbotPage() {
             </div>
             
             <div className="mt-6 p-4 bg-[#C8FF00]/10 rounded-lg">
-              <h4 className="font-semibold text-[#C8FF00] mb-2">💡 Tips</h4>
+              <h4 className="font-medium text-[#C8FF00] mb-2">💡 Tips</h4>
               <ul className="text-xs text-white/70 space-y-1">
                 <li>• Ask about specific projects</li>
                 <li>• Inquire about skills and experience</li>

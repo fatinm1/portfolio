@@ -43,7 +43,7 @@ export default function LoginPage() {
 
   return (
     <div className="max-w-md mx-auto py-12 px-4">
-      <h1 className="text-3xl font-bold mb-8 text-center">Admin Login</h1>
+      <h1 className="text-3xl font-medium mb-8 text-center">Admin Login</h1>
       <div className="glass p-6">
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div>

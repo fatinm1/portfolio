@@ -99,12 +99,12 @@ export default function ContactPage() {
 
   return (
     <div className="max-w-2xl mx-auto py-12 px-4">
-      <h1 className="text-3xl font-bold mb-8 text-center">Contact Me</h1>
+      <h1 className="text-3xl font-medium mb-8 text-center">Contact Me</h1>
       
       <div className="glass p-8">
         {/* Contact Information */}
         <div className="mb-8">
-          <h2 className="text-xl font-semibold mb-6 text-center">Get In Touch</h2>
+          <h2 className="text-xl font-medium mb-6 text-center">Get In Touch</h2>
           <div className="space-y-4">
             <a 
               href="mailto:fatinm1@umbc.edu" 
@@ -147,7 +147,7 @@ export default function ContactPage() {
 
         {/* Contact Form */}
         <div className="border-t border-white/20 pt-8">
-          <h3 className="text-lg font-semibold mb-4">Send a Message</h3>
+          <h3 className="text-lg font-medium mb-4">Send a Message</h3>
           
           {success && (
             <div className="mb-4 p-4 rounded-lg bg-green-500/20 border border-green-500/30 flex items-center gap-3">
@@ -228,7 +228,7 @@ export default function ContactPage() {
 
         {/* Resume Section */}
         <div id="resume" className="border-t border-white/20 pt-8 mt-8 scroll-mt-24">
-          <h3 className="text-lg font-semibold mb-4">Resume</h3>
+          <h3 className="text-lg font-medium mb-4">Resume</h3>
           <div className="flex items-center gap-3 p-4 rounded-lg bg-white/5 border border-white/10">
             <Download className="w-5 h-5 text-[#C8FF00]" />
             <div className="flex-1">

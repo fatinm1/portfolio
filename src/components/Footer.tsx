@@ -18,7 +18,7 @@ export default function Footer() {
             <p className="text-base font-medium mb-1">Got an idea?</p>
             <Link 
               href="/contact" 
-              className="text-4xl sm:text-5xl lg:text-6xl font-bold hover:underline"
+              className="text-4xl sm:text-5xl lg:text-6xl font-medium hover:underline"
             >
               LET&apos;S TALK
             </Link>
@@ -27,7 +27,7 @@ export default function Footer() {
           {/* Right - Columns */}
           <div className="flex flex-wrap gap-12 sm:gap-16">
             <div>
-              <h4 className="text-xs font-semibold tracking-widest mb-4 opacity-70">SITEMAPS</h4>
+              <h4 className="text-xs font-medium tracking-widest mb-4 opacity-70">SITEMAPS</h4>
               <ul className="space-y-2">
                 <li><Link href="/" className="hover:underline">Home</Link></li>
                 <li><Link href="/skills" className="hover:underline">About</Link></li>
@@ -36,14 +36,14 @@ export default function Footer() {
               </ul>
             </div>
             <div>
-              <h4 className="text-xs font-semibold tracking-widest mb-4 opacity-70">SOCIALS</h4>
+              <h4 className="text-xs font-medium tracking-widest mb-4 opacity-70">SOCIALS</h4>
               <ul className="space-y-2">
                 <li><a href="https://github.com/fatinm1" target="_blank" rel="noopener noreferrer" className="hover:underline">GitHub</a></li>
                 <li><a href="https://www.linkedin.com/in/fatin-mojumder/" target="_blank" rel="noopener noreferrer" className="hover:underline">LinkedIn</a></li>
               </ul>
             </div>
             <div>
-              <h4 className="text-xs font-semibold tracking-widest mb-4 opacity-70">CONTACT</h4>
+              <h4 className="text-xs font-medium tracking-widest mb-4 opacity-70">CONTACT</h4>
               <ul className="space-y-2">
                 <li>UMBC, Maryland</li>
                 <li><a href="mailto:fatinm1@umbc.edu" className="hover:underline">fatinm1@umbc.edu</a></li>
