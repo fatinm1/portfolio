@@ -111,7 +111,7 @@ export default function ChatbotWidget() {
       {/* Floating button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-[#C8FF00] text-black shadow-lg hover:bg-[#C8FF00]/90 transition-all hover:scale-105 flex items-center justify-center"
+        className="chatbot-fab fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-[#C8FF00] text-black shadow-lg hover:bg-[#C8FF00]/90 transition-all duration-300 hover:scale-110 flex items-center justify-center"
         aria-label="Open chatbot"
       >
         <MessageCircle className="w-7 h-7" />

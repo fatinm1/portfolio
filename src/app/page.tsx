@@ -2,7 +2,15 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { motion } from "framer-motion";
 import { ArrowUpRight, Zap, Send, CheckCircle, AlertCircle } from "lucide-react";
+
+const slideIn = {
+  initial: { opacity: 0, y: 20 },
+  whileInView: { opacity: 1, y: 0 },
+  viewport: { once: true, margin: "-50px" },
+  transition: { duration: 0.5 },
+};
 
 // Skills as tags for horizontal scroll
 const SKILL_TAGS = [
@@ -97,21 +105,38 @@ export default function Home() {
     <div className="pt-20">
       {/* Hero */}
       <section id="home" className={`${sectionClass} min-h-[85vh] flex flex-col justify-center py-24`}>
-        <div className="glass-subtle inline-flex items-center gap-2 px-4 py-2 rounded-full text-white/90 text-sm mb-8 w-fit">
-          Hello, I&apos;m Fatin 👋
-        </div>
-        <h1 className="text-4xl sm:text-5xl md:text-6xl font-medium text-white leading-tight mb-6">
-          <span className="text-white">Software engineer</span>
-          <br />
-          <span className="text-white/60">crafting smart systems & modern solutions</span>
-        </h1>
-        <a
-          href="#contact"
-          onClick={(e) => { e.preventDefault(); document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" }); }}
-          className="btn-green inline-flex items-center gap-2 w-fit"
-        >
-          Email me <ArrowUpRight className="w-4 h-4" />
-        </a>
+        <motion.div {...fadeInUp} className="space-y-6">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+            className="glass-subtle inline-flex items-center gap-2 px-4 py-2 rounded-full text-white/90 text-sm mb-8 w-fit"
+          >
+            Hello, I&apos;m Fatin 👋
+          </motion.div>
+          <motion.h1
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="text-4xl sm:text-5xl md:text-6xl font-medium text-white leading-tight mb-6"
+          >
+            <span className="text-white">Software engineer</span>
+            <br />
+            <span className="text-white/60">crafting smart systems & modern solutions</span>
+          </motion.h1>
+          <motion.a
+            href="#contact"
+            onClick={(e) => { e.preventDefault(); document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" }); }}
+            className="btn-green inline-flex items-center gap-2 w-fit"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.4 }}
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.98 }}
+          >
+            Email me <ArrowUpRight className="w-4 h-4" />
+          </motion.a>
+        </motion.div>
       </section>
 
       {/* Moving headline - Technologies */}
@@ -129,7 +154,7 @@ export default function Home() {
       </section>
 
       {/* About */}
-      <section id="about" className={`${sectionClass} py-24`}>
+      <motion.section id="about" className={`${sectionClass} py-24`} {...slideIn}>
         <span className={tagClass}>About</span>
         <h2 className="text-3xl sm:text-4xl font-medium text-white mt-6 mb-6">
           Solving real problems with purposeful, user-first thinking
@@ -139,32 +164,42 @@ export default function Home() {
           integrating AI, or designing seamless user experiences, I approach each problem with empathy, curiosity, and a strong sense of craft — 
           always putting users first and business goals in focus.
         </p>
-        <button
+        <motion.button
           onClick={handleResumeDownload}
           disabled={!resume || loadingResume}
           className="btn-green inline-flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+          whileHover={{ scale: 1.03 }}
+          whileTap={{ scale: 0.98 }}
         >
           View Resume <ArrowUpRight className="w-4 h-4" />
-        </button>
-      </section>
+        </motion.button>
+      </motion.section>
 
       {/* Skills - horizontal tags */}
-      <section className={`${sectionClass} py-24`}>
+      <motion.section className={`${sectionClass} py-24`} {...slideIn}>
         <span className={tagClass}>Skills</span>
         <h2 className="text-3xl sm:text-4xl font-medium text-white mt-6 mb-10">
           What I work with
         </h2>
         <div className="flex gap-3 overflow-x-auto pb-4 -mx-6 px-6 scrollbar-hide">
-          {SKILL_TAGS.map((skill) => (
-            <span key={skill} className={tagClass}>
+          {SKILL_TAGS.map((skill, i) => (
+            <motion.span
+              key={skill}
+              className={`${tagClass} cursor-default`}
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.3, delay: i * 0.02 }}
+              whileHover={{ scale: 1.08, y: -2 }}
+            >
               {skill}
-            </span>
+            </motion.span>
           ))}
         </div>
-      </section>
+      </motion.section>
 
       {/* Work Experience */}
-      <section id="work" className={`${sectionClass} py-24`}>
+      <motion.section id="work" className={`${sectionClass} py-24`} {...slideIn}>
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
           <div>
             <span className={tagClass}>Work Experience</span>
@@ -172,16 +207,25 @@ export default function Home() {
               And This Is My Work Experience
             </h2>
           </div>
-          <button
+          <motion.button
             onClick={handleResumeDownload}
             disabled={!resume || loadingResume}
             className="btn-green inline-flex items-center gap-2 w-fit"
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.98 }}
           >
             View Resume <ArrowUpRight className="w-4 h-4" />
-          </button>
+          </motion.button>
         </div>
         <div className="mt-12 space-y-6">
-          <div className="glass p-6 rounded-xl border-b-0">
+          <motion.div
+            className="glass p-6 rounded-xl border-b-0"
+            initial={{ opacity: 0, x: -16 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.4 }}
+            whileHover={{ y: -2 }}
+          >
             <div className="flex flex-col sm:flex-row sm:justify-between gap-2 mb-2">
               <h3 className="text-white font-medium text-lg">Senior CS Major</h3>
               <span className="text-white/50 text-sm">2022 – Present</span>
@@ -191,8 +235,15 @@ export default function Home() {
               Pursuing B.S. in Computer Science with focus on AI/ML, software engineering, and full-stack development. 
               Building smart systems for real-world impact through coursework and personal projects.
             </p>
-          </div>
-          <div className="glass p-6 rounded-xl">
+          </motion.div>
+          <motion.div
+            className="glass p-6 rounded-xl"
+            initial={{ opacity: 0, x: -16 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.4, delay: 0.1 }}
+            whileHover={{ y: -2 }}
+          >
             <div className="flex flex-col sm:flex-row sm:justify-between gap-2 mb-2">
               <h3 className="text-white font-medium text-lg">Software Developer</h3>
               <span className="text-white/50 text-sm">Projects & Freelance</span>
@@ -202,12 +253,12 @@ export default function Home() {
               End-to-end design and development for web applications, AI integrations, and data systems. 
               Delivered user-centric solutions across multiple tech stacks including Python, JavaScript, and React.
             </p>
-          </div>
+          </motion.div>
         </div>
-      </section>
+      </motion.section>
 
       {/* Projects */}
-      <section id="projects" className={`${sectionClass} py-24`}>
+      <motion.section id="projects" className={`${sectionClass} py-24`} {...slideIn}>
         <span className={tagClass}>Portfolio</span>
         <h2 className="text-3xl sm:text-4xl font-medium text-white mt-6 mb-12">
           My Latest Projects
@@ -219,8 +270,18 @@ export default function Home() {
         ) : (
           <div className="space-y-16">
             {projects.map((project, idx) => (
-              <div key={idx} className="grid md:grid-cols-2 gap-8 items-center">
-                <div className="glass aspect-video rounded-xl flex items-center justify-center overflow-hidden">
+              <motion.div
+                key={idx}
+                className="grid md:grid-cols-2 gap-8 items-center"
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: idx * 0.1 }}
+              >
+                <motion.div
+                  className="glass aspect-video rounded-xl flex items-center justify-center overflow-hidden"
+                  whileHover={{ scale: 1.02 }}
+                >
                   {project.video && (project.video.includes("youtube") || project.video.includes("vimeo")) ? (
                     <a href={project.video} target="_blank" rel="noopener noreferrer" className="text-[#C8FF00] text-sm hover:underline">
                       Watch Video →
@@ -230,8 +291,11 @@ export default function Home() {
                   ) : (
                     <span className="text-white/30 text-sm">No preview</span>
                   )}
-                </div>
-                <div className="glass p-6 rounded-xl">
+                </motion.div>
+                <motion.div
+                  className="glass p-6 rounded-xl"
+                  whileHover={{ y: -4 }}
+                >
                   <p className="text-white/50 text-sm mb-1">2024</p>
                   <h3 className="text-xl font-medium text-white mb-3">{project.name}</h3>
                   <p className="text-white/70 mb-4 line-clamp-3">{project.description}</p>
@@ -243,16 +307,19 @@ export default function Home() {
                   >
                     View case study <ArrowUpRight className="w-4 h-4" />
                   </a>
-                </div>
-              </div>
+                </motion.div>
+              </motion.div>
             ))}
           </div>
         )}
-      </section>
+      </motion.section>
 
       {/* Testimonials placeholder */}
-      <section className={`${sectionClass} py-24`}>
-        <div className="glass p-8 rounded-2xl">
+      <motion.section className={`${sectionClass} py-24`} {...slideIn}>
+        <motion.div
+          className="glass p-8 rounded-2xl"
+          whileHover={{ y: -2 }}
+        >
         <span className={tagClass}>Testimonials</span>
         <h2 className="text-3xl sm:text-4xl font-medium text-white mt-6 mb-4">
           See what <span className="text-white">others</span> say about me
@@ -260,18 +327,20 @@ export default function Home() {
         <p className="text-white/70 mb-6 max-w-xl">
           I&apos;ve helped build systems that make a real impact. Want to be the next?
         </p>
-        <a
+        <motion.a
           href="#contact"
           onClick={(e) => { e.preventDefault(); document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" }); }}
           className="btn-green inline-flex items-center gap-2"
+          whileHover={{ scale: 1.03 }}
+          whileTap={{ scale: 0.98 }}
         >
           Contact <ArrowUpRight className="w-4 h-4" />
-        </a>
-        </div>
-      </section>
+        </motion.a>
+        </motion.div>
+      </motion.section>
 
       {/* Contact */}
-      <section id="contact" className={`${sectionClass} py-24`}>
+      <motion.section id="contact" className={`${sectionClass} py-24`} {...slideIn}>
         <span className={tagClass}>Contact</span>
         <h2 className="text-4xl sm:text-5xl font-medium text-white mt-6 mb-4">
           Let&apos;s Get in Touch
@@ -291,7 +360,14 @@ export default function Home() {
             <p className="text-red-400">{contactError}</p>
           </div>
         )}
-        <form onSubmit={handleContactSubmit} className="glass max-w-lg space-y-4 p-8 rounded-2xl">
+        <motion.form
+          onSubmit={handleContactSubmit}
+          className="glass max-w-lg space-y-4 p-8 rounded-2xl"
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+        >
           <input
             type="text"
             name="name"
@@ -319,21 +395,23 @@ export default function Home() {
             rows={4}
             className="w-full px-4 py-3 rounded-lg bg-white/5 border border-white/10 text-white placeholder-white/40 focus:outline-none focus:border-[#C8FF00] resize-none"
           />
-          <button
+          <motion.button
             type="submit"
             disabled={formLoading}
             className="btn-green inline-flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
           >
             {formLoading ? "Sending..." : "Drop me a message"} <Send className="w-4 h-4" />
-          </button>
-        </form>
+          </motion.button>
+        </motion.form>
         <p className="text-white/50 mt-6 text-sm">
           Or email me at{" "}
           <a href="mailto:fatinm1@umbc.edu" className="text-[#C8FF00] hover:underline">
             fatinm1@umbc.edu
           </a>
         </p>
-      </section>
+      </motion.section>
 
       {/* Footer */}
       <footer className="glass-dark border-t border-white/10 py-16 px-6 sm:px-10 mt-8">

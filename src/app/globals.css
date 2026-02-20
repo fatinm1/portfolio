@@ -33,6 +33,20 @@ body {
 .btn-green:hover:not(:disabled) {
   box-shadow: 0 4px 20px rgba(200, 255, 0, 0.35);
 }
+
+/* Smooth transitions for inputs and interactive elements */
+input, textarea, select {
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+a {
+  transition: color 0.2s ease, opacity 0.2s ease;
+}
+
+/* Hover glow for glass cards */
+.glass:hover {
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(255, 255, 255, 0.05);
+}
 .btn-green:disabled {
   opacity: 0.5;
   cursor: not-allowed;
@@ -93,4 +107,14 @@ body {
 }
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
+}
+
+/* Chatbot floating button pulse */
+@keyframes subtle-pulse {
+  0%, 100% { box-shadow: 0 4px 20px rgba(200, 255, 0, 0.3); }
+  50% { box-shadow: 0 4px 28px rgba(200, 255, 0, 0.45); }
+}
+
+.chatbot-fab {
+  animation: subtle-pulse 2.5s ease-in-out infinite;
 }
