@@ -3,7 +3,8 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { ArrowUpRight, Zap, Send, CheckCircle, AlertCircle, Layers, Code2, Cpu } from "lucide-react";
+import { ArrowUpRight, Zap, Send, CheckCircle, AlertCircle } from "lucide-react";
+import { SiPython, SiOpenjdk, SiJavascript, SiC, SiCplusplus, SiFlask, SiFastapi, SiReact, SiNextdotjs, SiDjango, SiPostgresql, SiMysql, SiMongodb } from "react-icons/si";
 
 const slideIn = {
   initial: { opacity: 0, y: 20 },
@@ -19,18 +20,21 @@ const SKILL_TAGS = [
   "Docker", "Git", "Figma", "UI/UX", "AI/ML", "Visual Design", "Product Design",
 ];
 
-// Tools marquee (words)
-const TOOLS = [
-  "UMBC", "GitHub", "React", "OpenAI", "LangChain", "MySQL",
-  "Python", "C++", "Java", "JavaScript", "TypeScript", "Django", "Flask", "FastAPI",
-  "Git", "Figma", "VS Code", "Docker", "PostgreSQL", "Next.js", "Tailwind", "Node.js",
-];
-
-// Icons for Stack marquee
+// Stack section - tech icons only (no words)
 const STACK_ICONS = [
-  { Icon: Layers, label: "Layers" },
-  { Icon: Code2, label: "Code" },
-  { Icon: Cpu, label: "Stack" },
+  { Icon: SiPython },
+  { Icon: SiOpenjdk },
+  { Icon: SiJavascript },
+  { Icon: SiC },
+  { Icon: SiCplusplus },
+  { Icon: SiFlask },
+  { Icon: SiFastapi },
+  { Icon: SiReact },
+  { Icon: SiNextdotjs },
+  { Icon: SiDjango },
+  { Icon: SiPostgresql },
+  { Icon: SiMysql },
+  { Icon: SiMongodb },
 ];
 
 interface Project {
@@ -151,19 +155,13 @@ export default function Home() {
         </motion.div>
       </section>
 
-      {/* Stack - Technologies & Platforms */}
-      <section className="py-16 border-t border-white/10 overflow-hidden">
-        <div className="flex animate-marquee items-center gap-8 py-4">
+      {/* Stack - icons only, no words */}
+      <section id="stack" className="py-16 border-t border-white/10 overflow-hidden" aria-label="Stack">
+        <h2 className="sr-only">Stack</h2>
+        <div className="flex animate-marquee items-center gap-10 py-4">
           {[...STACK_ICONS, ...STACK_ICONS].map(({ Icon }, i) => (
             <span key={`stack-icon-${i}`} className="flex-shrink-0">
-              <Icon className="w-7 h-7 sm:w-8 sm:h-8 text-white/60" strokeWidth={1.5} />
-            </span>
-          ))}
-        </div>
-        <div className="flex animate-marquee whitespace-nowrap">
-          {[...TOOLS, ...TOOLS].map((tool, i) => (
-            <span key={`${tool}-${i}`} className="mx-8 text-white/40 text-lg font-medium">
-              {tool}
+              <Icon className="w-9 h-9 sm:w-10 sm:h-10 text-white/70" />
             </span>
           ))}
         </div>
