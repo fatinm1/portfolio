@@ -2,15 +2,27 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowUpRight, Zap, Send, CheckCircle, AlertCircle } from "lucide-react";
 import { SiPython, SiOpenjdk, SiJavascript, SiC, SiCplusplus, SiFlask, SiFastapi, SiReact, SiNextdotjs, SiDjango, SiPostgresql, SiMysql, SiMongodb } from "react-icons/si";
 
 const slideIn = {
-  initial: { opacity: 0, y: 20 },
+  initial: { opacity: 0, y: 32 },
   whileInView: { opacity: 1, y: 0 },
+  viewport: { once: true, margin: "-80px" },
+  transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] },
+};
+
+const staggerContainer = {
+  initial: {},
+  whileInView: { transition: { staggerChildren: 0.08, delayChildren: 0.1 } },
   viewport: { once: true, margin: "-50px" },
-  transition: { duration: 0.5 },
+};
+
+const staggerItem = {
+  initial: { opacity: 0, y: 24 },
+  whileInView: { opacity: 1, y: 0 },
+  transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] },
 };
 
 // Stack section - tech icons only (no words)
@@ -105,10 +117,25 @@ export default function Home() {
   const sectionClass = "scroll-mt-24 max-w-5xl mx-auto px-6 sm:px-10";
   const tagClass = "px-4 py-2 rounded-full bg-white/5 border border-white/10 text-white/80 text-sm whitespace-nowrap";
 
+  const { scrollYProgress } = useScroll();
+  const progressWidth = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
+  const heroY = useTransform(scrollYProgress, [0, 0.25], [0, 80]);
+  const heroOpacity = useTransform(scrollYProgress, [0, 0.15], [1, 0.6]);
+
   return (
     <div className="pt-20">
+      {/* Scroll progress bar */}
+      <motion.div
+        className="fixed top-0 left-0 right-0 h-0.5 bg-[#C8FF00] origin-left z-50"
+        style={{ scaleX: progressWidth }}
+      />
+
       {/* Hero */}
-      <section id="home" className={`${sectionClass} min-h-[85vh] flex flex-col justify-center py-24`}>
+      <motion.section
+        id="home"
+        style={{ y: heroY, opacity: heroOpacity }}
+        className={`${sectionClass} min-h-[85vh] flex flex-col justify-center py-24`}
+      >
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
@@ -146,23 +173,37 @@ export default function Home() {
             Email me <ArrowUpRight className="w-4 h-4" />
           </motion.a>
         </motion.div>
-      </section>
+      </motion.section>
 
       {/* About */}
-      <motion.section id="about" className={`${sectionClass} py-24`} {...slideIn}>
-        <span className={tagClass}>About</span>
-        <h2 className="text-3xl sm:text-4xl font-medium text-white mt-6 mb-6">
+      <motion.section
+        id="about"
+        className={`${sectionClass} py-24`}
+        initial="initial"
+        whileInView="whileInView"
+        viewport={{ once: true, margin: "-80px" }}
+        variants={staggerContainer}
+      >
+        <motion.span className={tagClass} variants={staggerItem} />
+        <motion.h2
+          className="text-3xl sm:text-4xl font-medium text-white mt-6 mb-6"
+          variants={staggerItem}
+        >
           Solving real problems with purposeful, user-first thinking
-        </h2>
-        <p className="text-white/70 text-lg max-w-2xl mb-8 leading-relaxed">
+        </motion.h2>
+        <motion.p
+          className="text-white/70 text-lg max-w-2xl mb-8 leading-relaxed"
+          variants={staggerItem}
+        >
           I&apos;m a software engineer who thrives on turning ambiguity into clarity. Whether it&apos;s building full-stack applications, 
           integrating AI, or designing seamless user experiences, I approach each problem with empathy, curiosity, and a strong sense of craft — 
           always putting users first and business goals in focus.
-        </p>
+        </motion.p>
         <motion.button
           onClick={handleResumeDownload}
           disabled={!resume || loadingResume}
           className="btn-green inline-flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+          variants={staggerItem}
           whileHover={{ scale: 1.03 }}
           whileTap={{ scale: 0.98 }}
         >
@@ -171,11 +212,21 @@ export default function Home() {
       </motion.section>
 
       {/* Education */}
-      <motion.section id="education" className={`${sectionClass} py-24`} {...slideIn}>
-        <span className={tagClass}>Education</span>
-        <h2 className="text-3xl sm:text-4xl font-medium text-white mt-6 mb-12">
+      <motion.section
+        id="education"
+        className={`${sectionClass} py-24`}
+        initial="initial"
+        whileInView="whileInView"
+        viewport={{ once: true, margin: "-80px" }}
+        variants={staggerContainer}
+      >
+        <motion.span className={tagClass} variants={staggerItem} />
+        <motion.h2
+          className="text-3xl sm:text-4xl font-medium text-white mt-6 mb-12"
+          variants={staggerItem}
+        >
           Education
-        </h2>
+        </motion.h2>
         <motion.div
           className="bg-white/5 border border-white/10 p-6 rounded-xl"
           initial={{ opacity: 0, x: -16 }}
@@ -197,33 +248,57 @@ export default function Home() {
       </motion.section>
 
       {/* Stack - tech icons marquee */}
-      <motion.section id="stack" className={`${sectionClass} py-24 border-t border-white/10 overflow-hidden`} {...slideIn}>
-        <span className={tagClass}>Stack</span>
-        <h2 className="text-3xl sm:text-4xl font-medium text-white mt-6 mb-10">
+      <motion.section
+        id="stack"
+        className={`${sectionClass} py-24 border-t border-white/10 overflow-hidden`}
+        initial="initial"
+        whileInView="whileInView"
+        viewport={{ once: true, margin: "-80px" }}
+        variants={staggerContainer}
+      >
+        <motion.span className={tagClass} variants={staggerItem} />
+        <motion.h2
+          className="text-3xl sm:text-4xl font-medium text-white mt-6 mb-10"
+          variants={staggerItem}
+        >
           What I work with
-        </h2>
-        <div className="flex animate-marquee items-center gap-10 py-4">
+        </motion.h2>
+        <motion.div
+          className="flex animate-marquee items-center gap-10 py-4"
+          variants={staggerItem}
+        >
           {[...STACK_ICONS, ...STACK_ICONS].map(({ Icon }, i) => (
             <span key={`stack-icon-${i}`} className="flex-shrink-0">
               <Icon className="w-9 h-9 sm:w-10 sm:h-10 text-white/70" />
             </span>
           ))}
-        </div>
+        </motion.div>
       </motion.section>
 
       {/* Work Experience */}
-      <motion.section id="work" className={`${sectionClass} py-24`} {...slideIn}>
+      <motion.section
+        id="work"
+        className={`${sectionClass} py-24`}
+        initial="initial"
+        whileInView="whileInView"
+        viewport={{ once: true, margin: "-80px" }}
+        variants={staggerContainer}
+      >
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
           <div>
-            <span className={tagClass}>Work Experience</span>
-            <h2 className="text-3xl sm:text-4xl font-medium text-white mt-6">
+            <motion.span className={tagClass} variants={staggerItem} />
+            <motion.h2
+              className="text-3xl sm:text-4xl font-medium text-white mt-6"
+              variants={staggerItem}
+            >
               And This Is My Work Experience
-            </h2>
+            </motion.h2>
           </div>
           <motion.button
             onClick={handleResumeDownload}
             disabled={!resume || loadingResume}
             className="btn-green inline-flex items-center gap-2 w-fit"
+            variants={staggerItem}
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.98 }}
           >
@@ -272,11 +347,21 @@ export default function Home() {
       </motion.section>
 
       {/* Projects */}
-      <motion.section id="projects" className={`${sectionClass} py-24`} {...slideIn}>
-        <span className={tagClass}>Portfolio</span>
-        <h2 className="text-3xl sm:text-4xl font-medium text-white mt-6 mb-12">
+      <motion.section
+        id="projects"
+        className={`${sectionClass} py-24`}
+        initial="initial"
+        whileInView="whileInView"
+        viewport={{ once: true, margin: "-80px" }}
+        variants={staggerContainer}
+      >
+        <motion.span className={tagClass} variants={staggerItem} />
+        <motion.h2
+          className="text-3xl sm:text-4xl font-medium text-white mt-6 mb-12"
+          variants={staggerItem}
+        >
           My Latest Projects
-        </h2>
+        </motion.h2>
         {loadingProjects ? (
           <p className="text-white/50">Loading projects...</p>
         ) : projects.length === 0 ? (
@@ -329,14 +414,27 @@ export default function Home() {
       </motion.section>
 
       {/* Contact */}
-      <motion.section id="contact" className={`${sectionClass} py-24`} {...slideIn}>
-        <span className={tagClass}>Contact</span>
-        <h2 className="text-4xl sm:text-5xl font-medium text-white mt-6 mb-4">
+      <motion.section
+        id="contact"
+        className={`${sectionClass} py-24`}
+        initial="initial"
+        whileInView="whileInView"
+        viewport={{ once: true, margin: "-80px" }}
+        variants={staggerContainer}
+      >
+        <motion.span className={tagClass} variants={staggerItem} />
+        <motion.h2
+          className="text-4xl sm:text-5xl font-medium text-white mt-6 mb-4"
+          variants={staggerItem}
+        >
           Let&apos;s Get in Touch
-        </h2>
-        <p className="text-white/70 text-lg mb-10">
+        </motion.h2>
+        <motion.p
+          className="text-white/70 text-lg mb-10"
+          variants={staggerItem}
+        >
           Let&apos;s connect and start with your project ASAP.
-        </p>
+        </motion.p>
         {contactSuccess && (
           <div className="mb-6 p-4 rounded-lg bg-green-500/20 border border-green-500/30 flex items-center gap-3">
             <CheckCircle className="w-5 h-5 text-green-400" />
@@ -431,9 +529,6 @@ export default function Home() {
             </div>
           </div>
         </div>
-        <p className="max-w-5xl mx-auto mt-12 pt-8 border-t border-white/10 text-white/40 text-sm">
-          Made with love ❤️
-        </p>
       </footer>
     </div>
   );
