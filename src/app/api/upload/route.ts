@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { writeFile, mkdir } from 'fs/promises';
 import path from 'path';
+import { getUploadsRoot } from '@/lib/uploads';
+
+export const runtime = 'nodejs';
 
 export async function POST(req: NextRequest) {
   try {
@@ -20,11 +23,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'File size too large (max 10MB)' }, { status: 400 });
     }
 
-    // Use Railway volume storage or fallback to local
-    const uploadsDir = process.env.RAILWAY_VOLUME_MOUNT_PATH 
-      ? path.join(process.env.RAILWAY_VOLUME_MOUNT_PATH, 'uploads')
-      : path.join(process.cwd(), 'public', 'uploads');
-    
+    const uploadsDir = getUploadsRoot();
     await mkdir(uploadsDir, { recursive: true });
 
     // Generate unique filename
@@ -43,7 +42,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ 
       success: true, 
       filename: filename,
-      url: `/uploads/${filename}`
+      url: `/api/uploads/${filename}`
     });
   } catch (error) {
     console.error('Upload error:', error);
