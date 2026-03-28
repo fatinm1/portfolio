@@ -47,7 +47,7 @@ interface Project {
   description: string;
   technologies: string[];
   github: string;
-  video?: string;
+  photo?: string;
   tags?: string[];
 }
 
@@ -381,12 +381,12 @@ export default function Home() {
                   className="bg-white/5 border border-white/10 aspect-video rounded-xl flex items-center justify-center overflow-hidden"
                   whileHover={{ scale: 1.02 }}
                 >
-                  {project.video && (project.video.includes("youtube") || project.video.includes("vimeo")) ? (
-                    <a href={project.video} target="_blank" rel="noopener noreferrer" className="text-[#C8FF00] text-sm hover:underline">
-                      Watch Video →
-                    </a>
-                  ) : project.video ? (
-                    <video src={project.video} className="w-full h-full object-cover" muted playsInline />
+                  {project.photo ? (
+                    <img
+                      src={project.photo}
+                      alt={`${project.name} preview`}
+                      className="w-full h-full object-cover"
+                    />
                   ) : (
                     <span className="text-white/30 text-sm">No preview</span>
                   )}

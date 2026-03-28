@@ -33,12 +33,16 @@ export async function GET(
     
     if (ext === '.pdf') {
       contentType = 'application/pdf';
+    } else if (ext === '.jpg' || ext === '.jpeg') {
+      contentType = 'image/jpeg';
+    } else if (ext === '.png') {
+      contentType = 'image/png';
+    } else if (ext === '.webp') {
+      contentType = 'image/webp';
+    } else if (ext === '.gif') {
+      contentType = 'image/gif';
     } else if (ext === '.mp4') {
       contentType = 'video/mp4';
-    } else if (ext === '.avi') {
-      contentType = 'video/x-msvideo';
-    } else if (ext === '.mov') {
-      contentType = 'video/quicktime';
     } else if (ext === '.webm') {
       contentType = 'video/webm';
     }

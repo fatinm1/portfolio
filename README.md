@@ -19,7 +19,7 @@ A modern, futuristic portfolio website built with Next.js, featuring an AI chatb
 
 ### 📁 Project Management
 - **Dynamic project uploads** with admin authentication
-- **Video demo support** (file upload + YouTube/Vimeo URLs)
+- **Project photo** (image upload or image URL)
 - **Technology tags** and project categorization
 - **GitHub integration** for code links
 - **MySQL database** for persistent storage
@@ -27,13 +27,13 @@ A modern, futuristic portfolio website built with Next.js, featuring an AI chatb
 ### 🔐 Security Features
 - **Password-protected admin panel** with bcrypt hashing
 - **Session-based authentication** with HTTP-only cookies
-- **File upload validation** (video files only, 100MB limit)
+- **File upload validation** (project photos: images only, 10MB limit)
 - **Secure API endpoints** with proper error handling
 
 ### 📱 Pages
 - **Home**: Hero section with animated background
 - **Skills**: Interactive skill display with experience levels
-- **Projects**: Dynamic project showcase with video demos
+- **Projects**: Dynamic project showcase with photo previews
 - **Chatbot**: AI-powered assistant for questions about Fatin
 - **Contact**: Contact form and social media links
 - **Admin**: Secure project management interface
@@ -167,7 +167,7 @@ src/
    - **Description**: Detailed project description
    - **Technologies**: Comma-separated tech stack
    - **GitHub**: Repository link
-   - **Video Demo**: Upload file or enter URL
+   - **Project photo**: Upload an image or paste an image URL
    - **Tags**: Comma-separated categories
 4. Click "Add Project" to save
 

@@ -22,7 +22,7 @@ interface ProjectRow {
   description: string;
   technologies: string;
   github: string;
-  video: string | null;
+  photo: string | null;
   tags: string | null;
   created_at: Date;
 }
@@ -62,11 +62,26 @@ export const initDatabase = async (): Promise<void> => {
         description TEXT NOT NULL,
         technologies JSON NOT NULL,
         github VARCHAR(500) NOT NULL,
-        video VARCHAR(500),
+        photo VARCHAR(500),
         tags JSON,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       )
     `);
+
+    // Migrate legacy `video` column to `photo` (existing deployments)
+    try {
+      const [colRows] = await connection.execute(
+        `SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS
+         WHERE TABLE_SCHEMA = ? AND TABLE_NAME = 'projects' AND COLUMN_NAME IN ('video', 'photo')`,
+        [dbConfig.database]
+      );
+      const colNames = (colRows as { COLUMN_NAME: string }[]).map((r) => r.COLUMN_NAME);
+      if (colNames.includes('video') && !colNames.includes('photo')) {
+        await connection.execute('ALTER TABLE projects CHANGE video photo VARCHAR(500)');
+      }
+    } catch {
+      // ignore migration errors (e.g. permissions)
+    }
 
     // Create admin users table
     await connection.execute(`
@@ -127,11 +142,15 @@ export const initDatabase = async (): Promise<void> => {
 export const getProjects = async (): Promise<any[]> => {
   try {
     const [rows] = await pool.execute('SELECT * FROM projects ORDER BY created_at DESC');
-    return (rows as ProjectRow[]).map(row => ({
-      ...row,
-      technologies: typeof row.technologies === 'string' ? JSON.parse(row.technologies) : row.technologies,
-      tags: row.tags ? (typeof row.tags === 'string' ? JSON.parse(row.tags) : row.tags) : []
-    }));
+    return (rows as ProjectRow[]).map((row) => {
+      const r = row as ProjectRow & { video?: string | null };
+      return {
+        ...row,
+        photo: row.photo ?? r.video ?? null,
+        technologies: typeof row.technologies === 'string' ? JSON.parse(row.technologies) : row.technologies,
+        tags: row.tags ? (typeof row.tags === 'string' ? JSON.parse(row.tags) : row.tags) : [],
+      };
+    });
   } catch (error) {
     console.error('Error getting projects:', error);
     throw error;
@@ -141,13 +160,13 @@ export const getProjects = async (): Promise<any[]> => {
 export const addProject = async (project: any): Promise<void> => {
   try {
     await pool.execute(
-      'INSERT INTO projects (name, description, technologies, github, video, tags) VALUES (?, ?, ?, ?, ?, ?)',
+      'INSERT INTO projects (name, description, technologies, github, photo, tags) VALUES (?, ?, ?, ?, ?, ?)',
       [
         project.name,
         project.description,
         JSON.stringify(project.technologies),
         project.github,
-        project.video || null,
+        project.photo || null,
         JSON.stringify(project.tags || [])
       ]
     );
@@ -167,10 +186,12 @@ export const getProjectById = async (id: number): Promise<any> => {
     }
     
     const row = projectRows[0];
+    const r = row as ProjectRow & { video?: string | null };
     return {
       ...row,
+      photo: row.photo ?? r.video ?? null,
       technologies: typeof row.technologies === 'string' ? JSON.parse(row.technologies) : row.technologies,
-      tags: row.tags ? (typeof row.tags === 'string' ? JSON.parse(row.tags) : row.tags) : []
+      tags: row.tags ? (typeof row.tags === 'string' ? JSON.parse(row.tags) : row.tags) : [],
     };
   } catch (error) {
     console.error('Error getting project by ID:', error);
@@ -181,13 +202,13 @@ export const getProjectById = async (id: number): Promise<any> => {
 export const updateProject = async (id: number, project: any): Promise<void> => {
   try {
     await pool.execute(
-      'UPDATE projects SET name = ?, description = ?, technologies = ?, github = ?, video = ?, tags = ? WHERE id = ?',
+      'UPDATE projects SET name = ?, description = ?, technologies = ?, github = ?, photo = ?, tags = ? WHERE id = ?',
       [
         project.name,
         project.description,
         JSON.stringify(project.technologies),
         project.github,
-        project.video || null,
+        project.photo || null,
         JSON.stringify(project.tags || []),
         id
       ]

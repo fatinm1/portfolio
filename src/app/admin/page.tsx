@@ -9,7 +9,7 @@ interface ProjectForm {
   description: string;
   technologies: string;
   github: string;
-  video?: string;
+  photo?: string;
   tags: string;
 }
 
@@ -19,7 +19,7 @@ interface Project {
   description: string;
   technologies: string[];
   github: string;
-  video?: string;
+  photo?: string;
   tags?: string[];
   created_at: string;
 }
@@ -157,7 +157,7 @@ export default function AdminPage() {
 
     try {
       const formData = new FormData();
-      formData.append('video', file);
+      formData.append('photo', file);
 
       const response = await fetch('/api/upload', {
         method: 'POST',
@@ -167,7 +167,7 @@ export default function AdminPage() {
       if (response.ok) {
         const data = await response.json();
         setUploadedFile(data.url);
-        setValue('video', data.url);
+        setValue('photo', data.url);
         setMessage("File uploaded successfully!");
       } else {
         const errorData = await response.json();
@@ -186,9 +186,9 @@ export default function AdminPage() {
     setValue('description', project.description);
     setValue('technologies', project.technologies.join(', '));
     setValue('github', project.github);
-    setValue('video', project.video || '');
+    setValue('photo', project.photo || '');
     setValue('tags', project.tags?.join(', ') || '');
-    setUploadedFile(project.video || '');
+    setUploadedFile(project.photo || '');
   };
 
   const handleCancelEdit = () => {
@@ -243,7 +243,7 @@ export default function AdminPage() {
         description: data.description,
         technologies: data.technologies.split(',').map(tech => tech.trim()),
         github: data.github,
-        video: data.video || undefined,
+        photo: data.photo || undefined,
         tags: data.tags.split(',').map(tag => tag.trim())
       };
 
@@ -373,19 +373,19 @@ export default function AdminPage() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium mb-2">Video Demo</label>
+              <label className="block text-sm font-medium mb-2">Project photo</label>
               <div className="space-y-2">
                 <input
                   type="file"
-                  accept="video/*"
+                  accept="image/*"
                   onChange={handleFileUpload}
                   disabled={uploadingFile}
                   className="w-full rounded-lg px-4 py-2 bg-white/10 border border-white/20 text-white focus:outline-none focus:border-cyan-400"
                 />
                 <input
-                  {...register("video")}
+                  {...register("photo")}
                   className="w-full rounded-lg px-4 py-2 bg-white/10 border border-white/20 text-white focus:outline-none focus:border-cyan-400"
-                  placeholder="Or enter YouTube/Vimeo URL"
+                  placeholder="Or paste image URL (https://...)"
                 />
                 {uploadedFile && (
                   <p className="text-green-400 text-sm">File uploaded: {uploadedFile}</p>

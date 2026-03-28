@@ -9,7 +9,7 @@ interface Project {
   description: string;
   technologies: string[];
   github: string;
-  video?: string;
+  photo?: string;
   tags?: string[];
 }
 
@@ -81,20 +81,12 @@ export default function ProjectsPage() {
               <div className="bg-white/5 border border-white/10 p-6 rounded-xl hover:border-[#C8FF00]/20 transition-colors h-full flex flex-col">
                 {/* Placeholder for project screenshot - could add image URL to project model later */}
                 <div className="aspect-video bg-white/5 rounded-lg mb-4 flex items-center justify-center overflow-hidden">
-                  {project.video && (project.video.includes("youtube") || project.video.includes("vimeo")) ? (
-                    <div className="w-full h-full flex items-center justify-center">
-                      <a
-                        href={project.video}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        onClick={(e) => e.stopPropagation()}
-                        className="text-[#C8FF00] text-sm hover:underline"
-                      >
-                        Watch Video Demo →
-                      </a>
-                    </div>
-                  ) : project.video ? (
-                    <video src={project.video} className="w-full h-full object-cover" muted playsInline />
+                  {project.photo ? (
+                    <img
+                      src={project.photo}
+                      alt={`${project.name} preview`}
+                      className="w-full h-full object-cover"
+                    />
                   ) : (
                     <div className="text-white/30 text-sm">No preview</div>
                   )}
