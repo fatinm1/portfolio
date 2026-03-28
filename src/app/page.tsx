@@ -5,6 +5,7 @@ import Link from "next/link";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowUpRight, Zap, Send, CheckCircle, AlertCircle } from "lucide-react";
 import { SiPython, SiOpenjdk, SiJavascript, SiC, SiCplusplus, SiFlask, SiFastapi, SiReact, SiNextdotjs, SiDjango, SiPostgresql, SiMysql, SiMongodb } from "react-icons/si";
+import { ExpandableDescription } from "@/components/ExpandableDescription";
 
 const slideIn = {
   initial: { opacity: 0, y: 32 },
@@ -396,7 +397,11 @@ export default function Home() {
                   whileHover={{ y: -4 }}
                 >
                   <h3 className="text-xl font-medium text-white mb-3">{project.name}</h3>
-                  <p className="text-white/70 mb-4 line-clamp-3">{project.description}</p>
+                  <ExpandableDescription
+                    text={project.description}
+                    className="text-white/70 leading-relaxed"
+                    lines={3}
+                  />
                   <a
                     href={project.github}
                     target="_blank"

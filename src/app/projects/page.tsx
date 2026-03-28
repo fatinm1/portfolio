@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
+import { ExpandableDescription } from "@/components/ExpandableDescription";
 
 interface Project {
   name: string;
@@ -71,15 +72,16 @@ export default function ProjectsPage() {
       ) : (
         <div className="grid gap-8 grid-cols-1 md:grid-cols-2">
           {projects.map((project, idx) => (
-            <a
+            <div
               key={idx}
-              href={project.github}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group block"
+              className="bg-white/5 border border-white/10 p-6 rounded-xl hover:border-[#C8FF00]/20 transition-colors h-full flex flex-col"
             >
-              <div className="bg-white/5 border border-white/10 p-6 rounded-xl hover:border-[#C8FF00]/20 transition-colors h-full flex flex-col">
-                {/* Placeholder for project screenshot - could add image URL to project model later */}
+              <a
+                href={project.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group block"
+              >
                 <div className="aspect-video bg-white/5 rounded-lg mb-4 flex items-center justify-center overflow-hidden">
                   {project.photo ? (
                     <img
@@ -97,21 +99,25 @@ export default function ProjectsPage() {
                   </h2>
                   <ArrowUpRight className="w-5 h-5 text-[#C8FF00] shrink-0 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                 </div>
-                <p className="text-white/70 text-sm mb-4 line-clamp-2">{project.description}</p>
-                <div className="flex flex-wrap gap-2 text-xs mb-3">
-                  {project.tags?.slice(0, 3).map((tag) => (
-                    <span key={tag} className="px-2 py-1 rounded bg-[#C8FF00]/10 text-[#C8FF00]/90">
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-                {project.technologies && project.technologies.length > 0 && (
-                  <div className="flex flex-wrap gap-2 text-xs text-white/50 mt-auto">
-                    {project.technologies.slice(0, 4).join(" • ")}
-                  </div>
-                )}
+              </a>
+              <ExpandableDescription
+                text={project.description}
+                className="text-white/70 text-sm leading-relaxed"
+                lines={2}
+              />
+              <div className="flex flex-wrap gap-2 text-xs mb-3">
+                {project.tags?.slice(0, 3).map((tag) => (
+                  <span key={tag} className="px-2 py-1 rounded bg-[#C8FF00]/10 text-[#C8FF00]/90">
+                    {tag}
+                  </span>
+                ))}
               </div>
-            </a>
+              {project.technologies && project.technologies.length > 0 && (
+                <div className="flex flex-wrap gap-2 text-xs text-white/50 mt-auto">
+                  {project.technologies.slice(0, 4).join(" • ")}
+                </div>
+              )}
+            </div>
           ))}
         </div>
       )}
