@@ -167,7 +167,7 @@ export default function AdminPage() {
       if (response.ok) {
         const data = await response.json();
         setUploadedFile(data.url);
-        setValue('photo', data.url);
+        setValue("photo", data.url, { shouldDirty: true, shouldTouch: true });
         setMessage("File uploaded successfully!");
       } else {
         const errorData = await response.json();
@@ -238,12 +238,13 @@ export default function AdminPage() {
     setMessage("");
     
     try {
+      const photoTrimmed = (data.photo || uploadedFile || "").trim();
       const projectData = {
         name: data.name,
         description: data.description,
         technologies: data.technologies.split(',').map(tech => tech.trim()),
         github: data.github,
-        photo: data.photo || undefined,
+        photo: photoTrimmed || null,
         tags: data.tags.split(',').map(tag => tag.trim())
       };
 

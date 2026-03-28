@@ -201,6 +201,15 @@ export const getProjectById = async (id: number): Promise<any> => {
 
 export const updateProject = async (id: number, project: any): Promise<void> => {
   try {
+    const existing = await getProjectById(id);
+    if (!existing) {
+      throw new Error('Project not found');
+    }
+    const photo =
+      Object.prototype.hasOwnProperty.call(project, "photo")
+        ? project.photo
+        : existing.photo ?? null;
+
     await pool.execute(
       'UPDATE projects SET name = ?, description = ?, technologies = ?, github = ?, photo = ?, tags = ? WHERE id = ?',
       [
@@ -208,7 +217,7 @@ export const updateProject = async (id: number, project: any): Promise<void> => 
         project.description,
         JSON.stringify(project.technologies),
         project.github,
-        project.photo || null,
+        photo || null,
         JSON.stringify(project.tags || []),
         id
       ]
