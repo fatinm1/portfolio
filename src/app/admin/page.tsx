@@ -474,9 +474,6 @@ export default function AdminPage() {
                         <span className="bg-gray-600/30 px-2 py-1 rounded text-xs">+{project.technologies.length - 3} more</span>
                       )}
                     </div>
-                    <p className="text-white/60 text-xs">
-                      Created: {new Date(project.created_at).toLocaleDateString()}
-                    </p>
                   </div>
                 ))
               )}

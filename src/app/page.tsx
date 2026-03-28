@@ -395,7 +395,6 @@ export default function Home() {
                   className="bg-white/5 border border-white/10 p-6 rounded-xl"
                   whileHover={{ y: -4 }}
                 >
-                  <p className="text-white/50 text-sm mb-1">2024</p>
                   <h3 className="text-xl font-medium text-white mb-3">{project.name}</h3>
                   <p className="text-white/70 mb-4 line-clamp-3">{project.description}</p>
                   <a
