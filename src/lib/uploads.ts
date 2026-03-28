@@ -1,3 +1,4 @@
+import { readFile } from "fs/promises";
 import path from "path";
 
 /**
@@ -24,4 +25,26 @@ export function resolveUploadFile(relativePath: string): string | null {
     return null;
   }
   return joined;
+}
+
+export async function readUploadFileBuffer(relativePath: string): Promise<Buffer | null> {
+  const fullPath = resolveUploadFile(relativePath);
+  if (!fullPath) return null;
+  try {
+    return await readFile(fullPath);
+  } catch {
+    return null;
+  }
+}
+
+export function contentTypeForExtension(ext: string): string {
+  const e = ext.toLowerCase();
+  if (e === ".jpg" || e === ".jpeg") return "image/jpeg";
+  if (e === ".png") return "image/png";
+  if (e === ".webp") return "image/webp";
+  if (e === ".gif") return "image/gif";
+  if (e === ".pdf") return "application/pdf";
+  if (e === ".mp4") return "video/mp4";
+  if (e === ".webm") return "video/webm";
+  return "application/octet-stream";
 }

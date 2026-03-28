@@ -42,7 +42,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ 
       success: true, 
       filename: filename,
-      url: `/api/uploads/${filename}`
+      url: `/uploads/${filename}`
     });
   } catch (error) {
     console.error('Upload error:', error);

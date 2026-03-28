@@ -4,7 +4,6 @@ import { readUploadFileBuffer, contentTypeForExtension } from "@/lib/uploads";
 
 export const runtime = "nodejs";
 
-/** Same files as GET /uploads/* — kept for DB URLs stored as /api/uploads/... */
 export async function GET(
   _request: NextRequest,
   { params }: { params: Promise<{ path: string[] }> }
@@ -31,7 +30,7 @@ export async function GET(
       },
     });
   } catch (error) {
-    console.error("API uploads GET error:", error);
+    console.error("Uploads GET error:", error);
     return NextResponse.json({ error: "File not found" }, { status: 404 });
   }
 }
