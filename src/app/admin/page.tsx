@@ -11,6 +11,8 @@ interface ProjectForm {
   github: string;
   photo?: string;
   tags: string;
+  hasLiveDemo?: boolean;
+  liveUrl?: string;
 }
 
 interface Project {
@@ -20,6 +22,7 @@ interface Project {
   technologies: string[];
   github: string;
   photo?: string;
+  live_url?: string | null;
   tags?: string[];
   created_at: string;
 }
@@ -58,7 +61,16 @@ export default function AdminPage() {
   const [deletingProject, setDeletingProject] = useState<number | null>(null);
   const router = useRouter();
   
-  const { register, handleSubmit, reset, setValue, formState: { errors } } = useForm<ProjectForm>();
+  const { register, handleSubmit, reset, setValue, watch, formState: { errors } } = useForm<ProjectForm>({
+    defaultValues: {
+      hasLiveDemo: false,
+      liveUrl: "",
+      tags: "",
+      photo: "",
+    },
+  });
+
+  const hasLiveDemoWatch = watch("hasLiveDemo");
 
   // Check authentication on mount
   const checkAuth = useCallback(async () => {
@@ -189,6 +201,9 @@ export default function AdminPage() {
     setValue('photo', project.photo || '');
     setValue('tags', project.tags?.join(', ') || '');
     setUploadedFile(project.photo || '');
+    const live = (project.live_url || "").trim();
+    setValue("hasLiveDemo", !!live);
+    setValue("liveUrl", live);
   };
 
   const handleCancelEdit = () => {
@@ -238,13 +253,21 @@ export default function AdminPage() {
     setMessage("");
     
     try {
+      const hosted = data.hasLiveDemo === true;
+      if (hosted && !(data.liveUrl || "").trim()) {
+        setMessage('Add a live demo URL or uncheck "Project is deployed".');
+        setLoading(false);
+        return;
+      }
       const photoTrimmed = (data.photo || uploadedFile || "").trim();
+      const liveUrlTrimmed = hosted ? (data.liveUrl || "").trim() : "";
       const projectData = {
         name: data.name,
         description: data.description,
         technologies: data.technologies.split(',').map(tech => tech.trim()),
         github: data.github,
         photo: photoTrimmed || null,
+        live_url: liveUrlTrimmed || null,
         tags: data.tags.split(',').map(tag => tag.trim())
       };
 
@@ -371,6 +394,30 @@ export default function AdminPage() {
                 placeholder="https://github.com/username/project"
               />
               {errors.github && <p className="text-red-400 text-sm mt-1">{errors.github.message}</p>}
+            </div>
+
+            <div className="rounded-lg border border-white/15 p-4 space-y-3">
+              <label className="flex items-center gap-3 cursor-pointer">
+                <input
+                  type="checkbox"
+                  {...register("hasLiveDemo")}
+                  className="rounded border-white/30 bg-white/10 w-4 h-4"
+                />
+                <span className="text-sm font-medium text-white">Project is deployed (show Live demo)</span>
+              </label>
+              <p className="text-xs text-white/50">
+                Turn on only if the app is hosted online. Leave off for repos-only projects — visitors will only see GitHub.
+              </p>
+              {hasLiveDemoWatch && (
+                <div>
+                  <label className="block text-sm font-medium mb-2">Live demo URL *</label>
+                  <input
+                    {...register("liveUrl")}
+                    className="w-full rounded-lg px-4 py-2 bg-white/10 border border-white/20 text-white focus:outline-none focus:border-cyan-400"
+                    placeholder="https://my-app.vercel.app"
+                  />
+                </div>
+              )}
             </div>
 
             <div>

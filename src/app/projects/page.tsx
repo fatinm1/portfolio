@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, Github } from "lucide-react";
 import { ExpandableDescription } from "@/components/ExpandableDescription";
 
 interface Project {
@@ -11,6 +11,7 @@ interface Project {
   technologies: string[];
   github: string;
   photo?: string;
+  live_url?: string | null;
   tags?: string[];
 }
 
@@ -105,6 +106,27 @@ export default function ProjectsPage() {
                 className="text-white/70 text-sm leading-relaxed"
                 lines={2}
               />
+              <div className="flex flex-wrap gap-2 mb-3">
+                <a
+                  href={project.github}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 text-xs px-4 py-2 rounded-full border border-white/20 bg-white/5 text-white hover:bg-white/10 transition-colors"
+                >
+                  <Github className="w-3.5 h-3.5" />
+                  GitHub
+                </a>
+                {project.live_url?.trim() ? (
+                  <a
+                    href={project.live_url.trim()}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn-green inline-flex items-center gap-2 text-xs px-4 py-2"
+                  >
+                    Live demo <ArrowUpRight className="w-3.5 h-3.5" />
+                  </a>
+                ) : null}
+              </div>
               <div className="flex flex-wrap gap-2 text-xs mb-3">
                 {project.tags?.slice(0, 3).map((tag) => (
                   <span key={tag} className="px-2 py-1 rounded bg-[#C8FF00]/10 text-[#C8FF00]/90">

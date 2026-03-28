@@ -23,6 +23,7 @@ interface ProjectRow {
   technologies: string;
   github: string;
   photo: string | null;
+  live_url: string | null;
   tags: string | null;
   created_at: Date;
 }
@@ -63,10 +64,24 @@ export const initDatabase = async (): Promise<void> => {
         technologies JSON NOT NULL,
         github VARCHAR(500) NOT NULL,
         photo VARCHAR(500),
+        live_url VARCHAR(500),
         tags JSON,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       )
     `);
+
+    try {
+      const [liveCols] = await connection.execute(
+        `SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS
+         WHERE TABLE_SCHEMA = ? AND TABLE_NAME = 'projects' AND COLUMN_NAME = 'live_url'`,
+        [dbConfig.database]
+      );
+      if ((liveCols as { COLUMN_NAME: string }[]).length === 0) {
+        await connection.execute("ALTER TABLE projects ADD COLUMN live_url VARCHAR(500) NULL");
+      }
+    } catch {
+      // ignore
+    }
 
     // Migrate legacy `video` column to `photo` (existing deployments)
     try {
@@ -160,13 +175,14 @@ export const getProjects = async (): Promise<any[]> => {
 export const addProject = async (project: any): Promise<void> => {
   try {
     await pool.execute(
-      'INSERT INTO projects (name, description, technologies, github, photo, tags) VALUES (?, ?, ?, ?, ?, ?)',
+      'INSERT INTO projects (name, description, technologies, github, photo, live_url, tags) VALUES (?, ?, ?, ?, ?, ?, ?)',
       [
         project.name,
         project.description,
         JSON.stringify(project.technologies),
         project.github,
         project.photo || null,
+        project.live_url || null,
         JSON.stringify(project.tags || [])
       ]
     );
@@ -210,14 +226,19 @@ export const updateProject = async (id: number, project: any): Promise<void> => 
         ? project.photo
         : existing.photo ?? null;
 
+    const live_url = Object.prototype.hasOwnProperty.call(project, "live_url")
+      ? project.live_url
+      : existing.live_url ?? null;
+
     await pool.execute(
-      'UPDATE projects SET name = ?, description = ?, technologies = ?, github = ?, photo = ?, tags = ? WHERE id = ?',
+      'UPDATE projects SET name = ?, description = ?, technologies = ?, github = ?, photo = ?, live_url = ?, tags = ? WHERE id = ?',
       [
         project.name,
         project.description,
         JSON.stringify(project.technologies),
         project.github,
         photo || null,
+        live_url || null,
         JSON.stringify(project.tags || []),
         id
       ]

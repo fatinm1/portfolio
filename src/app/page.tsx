@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { ArrowUpRight, Zap, Send, CheckCircle, AlertCircle } from "lucide-react";
+import { ArrowUpRight, Zap, Send, CheckCircle, AlertCircle, Github } from "lucide-react";
 import { SiPython, SiOpenjdk, SiJavascript, SiC, SiCplusplus, SiFlask, SiFastapi, SiReact, SiNextdotjs, SiDjango, SiPostgresql, SiMysql, SiMongodb } from "react-icons/si";
 import { ExpandableDescription } from "@/components/ExpandableDescription";
 
@@ -49,6 +49,7 @@ interface Project {
   technologies: string[];
   github: string;
   photo?: string;
+  live_url?: string | null;
   tags?: string[];
 }
 
@@ -402,14 +403,27 @@ export default function Home() {
                     className="text-white/70 leading-relaxed"
                     lines={3}
                   />
-                  <a
-                    href={project.github}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="btn-green inline-flex items-center gap-2 text-sm px-5 py-2.5"
-                  >
-                    View case study <ArrowUpRight className="w-4 h-4" />
-                  </a>
+                  <div className="flex flex-wrap gap-3">
+                    <a
+                      href={project.github}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 text-sm px-5 py-2.5 rounded-full border border-white/20 bg-white/5 text-white hover:bg-white/10 transition-colors"
+                    >
+                      <Github className="w-4 h-4" />
+                      GitHub
+                    </a>
+                    {project.live_url?.trim() ? (
+                      <a
+                        href={project.live_url.trim()}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="btn-green inline-flex items-center gap-2 text-sm px-5 py-2.5"
+                      >
+                        Live demo <ArrowUpRight className="w-4 h-4" />
+                      </a>
+                    ) : null}
+                  </div>
                 </motion.div>
               </motion.div>
             ))}
