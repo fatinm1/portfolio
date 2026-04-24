@@ -1,6 +1,6 @@
 # Fatin Mojumder - Portfolio Website
 
-A modern, futuristic portfolio website built with Next.js, featuring an AI chatbot, dynamic project management, and secure admin panel.
+A modern, futuristic portfolio website built with Next.js, featuring an AI chatbot, dynamic project management, and secure admin panel
 
 ## ✨ Features
 
