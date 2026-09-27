@@ -16,16 +16,20 @@ export async function GET(
     }
 
     const relative = segments.join("/");
+    const contentType = contentTypeForExtension(path.extname(relative));
+    if (!contentType) {
+      return NextResponse.json({ error: "File not found" }, { status: 404 });
+    }
+
     const buffer = await readUploadFileBuffer(relative);
     if (!buffer) {
       return NextResponse.json({ error: "File not found" }, { status: 404 });
     }
 
-    const ext = path.extname(relative);
-
     return new NextResponse(buffer, {
       headers: {
-        "Content-Type": contentTypeForExtension(ext),
+        "Content-Type": contentType,
+        "X-Content-Type-Options": "nosniff",
         "Content-Disposition": "inline",
         "Cache-Control": "public, max-age=31536000, immutable",
       },

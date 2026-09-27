@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { initDatabase, getContacts } from '@/lib/database';
+import { requireAdmin } from '@/lib/auth';
 
 let dbInitialized = false;
 
@@ -11,6 +12,9 @@ const ensureDatabase = async () => {
 };
 
 export async function GET(req: NextRequest) {
+  const unauthorized = await requireAdmin(req);
+  if (unauthorized) return unauthorized;
+
   try {
     await ensureDatabase();
     

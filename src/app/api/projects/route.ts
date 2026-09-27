@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { initDatabase, getProjects, addProject } from '@/lib/database';
+import { requireAdmin } from '@/lib/auth';
+import { validateProjectInput } from '@/lib/security';
 
 let dbInitialized = false;
 
@@ -22,14 +24,18 @@ export async function GET() {
 }
 
 export async function POST(req: NextRequest) {
+  const unauthorized = await requireAdmin(req);
+  if (unauthorized) return unauthorized;
+
   try {
-    await ensureDatabase();
     const body = await req.json();
-    
-    // Validate required fields
-    if (!body.name || !body.description || !body.technologies || !body.github) {
-      return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
+
+    const validationError = validateProjectInput(body);
+    if (validationError) {
+      return NextResponse.json({ error: validationError }, { status: 400 });
     }
+
+    await ensureDatabase();
 
     await addProject(body);
     return NextResponse.json({ success: true });

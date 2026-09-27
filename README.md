@@ -121,8 +121,8 @@ A modern, futuristic portfolio website built with Next.js, featuring an AI chatb
 ### Admin Access
 - **Login URL**: `/login`
 - **Admin panel**: `/admin`
-- **Default credentials**: `fatinm1` / `Bd2222Mo?`
-- **Set up admin credentials** by editing the database or using the default user created on first run
+- **First admin account**: set `ADMIN_USERNAME` and `ADMIN_PASSWORD` (12+ characters). The account is created on first run only if no admin exists yet.
+- **Sessions**: set `SESSION_SECRET` to a random string of at least 32 characters (`openssl rand -base64 48`). Without it, admin login is disabled in production.
 
 ### Database
 - **MySQL database** with automatic table creation
@@ -201,7 +201,7 @@ src/
 ## 🔒 Security Notes
 
 ### Production Deployment
-1. **Change default admin password** immediately
+1. **Set `SESSION_SECRET`, `ADMIN_USERNAME` and `ADMIN_PASSWORD`** (there is no default admin account)
 2. **Set secure environment variables**
 3. **Use HTTPS** for production
 4. **Configure proper CORS** if needed
@@ -220,9 +220,12 @@ DB_PASSWORD=your_mysql_password
 DB_NAME=portfolio
 DB_PORT=3306
 
-# Optional security enhancements
-JWT_SECRET=your_jwt_secret_here
+# Required for admin login (32+ random characters)
 SESSION_SECRET=your_session_secret_here
+
+# Creates the first admin account if none exists
+ADMIN_USERNAME=your_admin_username
+ADMIN_PASSWORD=a_long_unique_password
 ```
 
 ## 🛠️ Development

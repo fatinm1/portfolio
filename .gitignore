@@ -23,6 +23,11 @@ data/portfolio.db-journal
 *.sqlite3
 
 # Uploads (keep the directory but ignore files)
+public/uploads/*.jpg
+public/uploads/*.jpeg
+public/uploads/*.png
+public/uploads/*.webp
+public/uploads/*.gif
 public/uploads/*.pdf
 public/uploads/*.mp4
 public/uploads/*.mov

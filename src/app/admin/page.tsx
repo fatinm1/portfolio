@@ -74,11 +74,20 @@ export default function AdminPage() {
 
   // Check authentication on mount
   const checkAuth = useCallback(async () => {
-    // Temporarily bypass auth check to fix deployment
-    setIsAuthenticated(true);
-    fetchProjects();
-    fetchResume();
-  }, []);
+    try {
+      const response = await fetch('/api/auth', { cache: 'no-store' });
+      const data = response.ok ? await response.json() : { authenticated: false };
+      if (!data.authenticated) {
+        router.replace('/login');
+        return;
+      }
+      setIsAuthenticated(true);
+      fetchProjects();
+      fetchResume();
+    } catch {
+      router.replace('/login');
+    }
+  }, [router]);
 
   useEffect(() => {
     checkAuth();
@@ -118,6 +127,10 @@ export default function AdminPage() {
     setLoadingContacts(true);
     try {
       const response = await fetch('/api/contacts');
+      if (response.status === 401) {
+        router.replace('/login');
+        return;
+      }
       if (response.ok) {
         const data = await response.json();
         setContacts(data.contacts);

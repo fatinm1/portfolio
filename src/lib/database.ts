@@ -135,15 +135,20 @@ export const initDatabase = async (): Promise<void> => {
     );
     const adminCount = (adminRows as any)[0].count;
 
+    // Seed the first admin from env vars only; never ship a default password.
     if (adminCount === 0) {
-      const defaultPassword = 'Bd2222Mo?'; // Default admin password
-      const hash = await bcrypt.hash(defaultPassword, 10);
-      
-      await connection.execute(
-        'INSERT INTO admin_users (username, password_hash) VALUES (?, ?)',
-        ['fatinm1', hash]
-      );
-      console.log('Default admin user created successfully');
+      const username = process.env.ADMIN_USERNAME;
+      const password = process.env.ADMIN_PASSWORD;
+      if (username && password && password.length >= 12) {
+        const hash = await bcrypt.hash(password, 12);
+        await connection.execute(
+          'INSERT INTO admin_users (username, password_hash) VALUES (?, ?)',
+          [username, hash]
+        );
+        console.log('Admin user created from ADMIN_USERNAME / ADMIN_PASSWORD');
+      } else {
+        console.warn('No admin user exists. Set ADMIN_USERNAME and ADMIN_PASSWORD (12+ chars) to create one.');
+      }
     }
 
     connection.release();
@@ -258,6 +263,8 @@ export const deleteProject = async (id: number): Promise<void> => {
   }
 };
 
+const DUMMY_HASH = bcrypt.hashSync('timing-equalizer', 10);
+
 export const verifyAdmin = async (username: string, password: string): Promise<boolean> => {
   try {
     const [rows] = await pool.execute(
@@ -266,6 +273,8 @@ export const verifyAdmin = async (username: string, password: string): Promise<b
     );
     
     if ((rows as AdminRow[]).length === 0) {
+      // Compare against a dummy hash so unknown usernames take the same time.
+      await bcrypt.compare(password, DUMMY_HASH);
       return false;
     }
     

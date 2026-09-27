@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { initDatabase, getProjectById, updateProject, deleteProject } from '@/lib/database';
+import { requireAdmin } from '@/lib/auth';
+import { validateProjectInput } from '@/lib/security';
 
 let dbInitialized = false;
 
@@ -40,8 +42,10 @@ export async function PUT(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  const unauthorized = await requireAdmin(request);
+  if (unauthorized) return unauthorized;
+
   try {
-    await ensureDatabase();
     const { id } = await params;
     const projectId = parseInt(id);
     
@@ -51,10 +55,12 @@ export async function PUT(
 
     const body = await request.json();
     
-    // Validate required fields
-    if (!body.name || !body.description || !body.technologies || !body.github) {
-      return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
+    const validationError = validateProjectInput(body);
+    if (validationError) {
+      return NextResponse.json({ error: validationError }, { status: 400 });
     }
+
+    await ensureDatabase();
 
     // Check if project exists
     const existingProject = await getProjectById(projectId);
@@ -74,6 +80,9 @@ export async function DELETE(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  const unauthorized = await requireAdmin(request);
+  if (unauthorized) return unauthorized;
+
   try {
     await ensureDatabase();
     const { id } = await params;

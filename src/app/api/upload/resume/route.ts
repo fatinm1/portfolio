@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { writeFile, mkdir } from 'fs/promises';
 import path from 'path';
 import { initDatabase, saveResume } from '@/lib/database';
+import { getUploadsRoot, isPdf } from '@/lib/uploads';
+import { requireAdmin } from '@/lib/auth';
 
 let dbInitialized = false;
 
@@ -13,19 +15,15 @@ const ensureDatabase = async () => {
 };
 
 export async function POST(req: NextRequest) {
-  try {
-    await ensureDatabase();
-    
-    const formData = await req.formData();
-    const file = formData.get('resume') as File;
-    
-    if (!file) {
-      return NextResponse.json({ error: 'No file uploaded' }, { status: 400 });
-    }
+  const unauthorized = await requireAdmin(req);
+  if (unauthorized) return unauthorized;
 
-    // Validate file type
-    if (file.type !== 'application/pdf') {
-      return NextResponse.json({ error: 'Only PDF files are allowed' }, { status: 400 });
+  try {
+    const formData = await req.formData();
+    const file = formData.get('resume');
+    
+    if (!file || !(file instanceof File)) {
+      return NextResponse.json({ error: 'No file uploaded' }, { status: 400 });
     }
 
     // Validate file size (max 10MB)
@@ -34,10 +32,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'File size must be less than 10MB' }, { status: 400 });
     }
 
-    // Use Railway volume storage or fallback to local
-    const uploadsDir = process.env.RAILWAY_VOLUME_MOUNT_PATH 
-      ? path.join(process.env.RAILWAY_VOLUME_MOUNT_PATH, 'uploads')
-      : path.join(process.cwd(), 'public', 'uploads');
+    const uploadsDir = getUploadsRoot();
     
     await mkdir(uploadsDir, { recursive: true });
 
@@ -46,9 +41,12 @@ export async function POST(req: NextRequest) {
     const filename = `resume_${timestamp}.pdf`;
     const filepath = path.join(uploadsDir, filename);
 
-    // Convert file to buffer and save
-    const bytes = await file.arrayBuffer();
-    const buffer = Buffer.from(bytes);
+    // Validate the actual file contents, not the client-supplied MIME type
+    const buffer = Buffer.from(await file.arrayBuffer());
+    if (!isPdf(buffer)) {
+      return NextResponse.json({ error: 'Only PDF files are allowed' }, { status: 400 });
+    }
+    await ensureDatabase();
     await writeFile(filepath, buffer);
 
     // Return the public URL
