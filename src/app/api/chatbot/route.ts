@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { ChatbotService } from '@/lib/openai';
+import { ChatbotService } from '@/lib/chatbot';
 import { rateLimit } from '@/lib/security';
 
 const MAX_MESSAGE_LENGTH = 1000;
@@ -38,12 +38,15 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: `Message must be under ${MAX_MESSAGE_LENGTH} characters` }, { status: 400 });
     }
 
-    const response = await ChatbotService.generateResponse(message, sanitizeHistory(conversationHistory));
+    const { response, usingFallback } = await ChatbotService.generateResponse(
+      message,
+      sanitizeHistory(conversationHistory)
+    );
     
     return NextResponse.json({ 
       response,
       timestamp: new Date().toISOString(),
-      usingFallback: !process.env.OPENAI_API_KEY || process.env.OPENAI_API_KEY === 'your_openai_api_key_here'
+      usingFallback
     });
   } catch (error) {
     console.error('Chatbot API error:', error);

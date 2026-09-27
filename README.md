@@ -11,9 +11,9 @@ A modern, futuristic portfolio website built with Next.js, featuring an AI chatb
 - **Smooth animations** using Framer Motion
 
 ### 🤖 AI Chatbot
-- **OpenAI GPT-3.5 integration** for intelligent responses
+- **Groq-hosted open model** (`openai/gpt-oss-120b`, free tier) for intelligent responses
 - **Conversation history** for context-aware conversations
-- **Fallback mode** when OpenAI is unavailable
+- **Fallback mode** when the AI API is unavailable or rate limited
 - **Suggested questions** for easy interaction
 - **Real-time chat interface** with typing indicators
 
@@ -44,7 +44,7 @@ A modern, futuristic portfolio website built with Next.js, featuring an AI chatb
 - Node.js 18+ 
 - npm or yarn
 - MySQL database (local or cloud)
-- OpenAI API key (optional, for enhanced chatbot)
+- Groq API key (optional, free, for the AI chatbot)
 
 ### Installation
 
@@ -65,7 +65,7 @@ A modern, futuristic portfolio website built with Next.js, featuring an AI chatb
    cp env.example .env.local
    
    # Edit .env.local and add your configuration
-   OPENAI_API_KEY=your_openai_api_key_here
+   AI_API_KEY=your_groq_api_key_here
    DB_HOST=localhost
    DB_USER=root
    DB_PASSWORD=your_mysql_password
@@ -89,13 +89,14 @@ A modern, futuristic portfolio website built with Next.js, featuring an AI chatb
 
 ## 🔧 Configuration
 
-### OpenAI API Setup (Optional)
-1. Get an API key from [OpenAI](https://platform.openai.com/)
+### Chatbot AI Setup (Optional, free)
+1. Create a free API key at [Groq](https://console.groq.com/keys)
 2. Add it to your `.env.local` file:
    ```
-   OPENAI_API_KEY=sk-your-api-key-here
+   AI_API_KEY=gsk_your-api-key-here
    ```
-3. The chatbot will use fallback responses if no API key is provided
+3. The chatbot will use fallback responses if no API key is provided or the free-tier rate limit is hit
+4. Any OpenAI-compatible provider works: set `AI_BASE_URL` and `AI_MODEL` to switch
 
 ### MySQL Database Setup
 1. **Local Development**:
@@ -152,7 +153,7 @@ src/
 │   └── page.tsx           # Homepage
 ├── lib/                   # Utility libraries
 │   ├── database.ts        # MySQL database operations
-│   ├── openai.ts          # OpenAI service
+│   ├── chatbot.ts         # AI chatbot service (Groq by default)
 │   └── upload.ts          # File upload utilities
 └── components/            # Reusable components
 ```
@@ -193,7 +194,7 @@ src/
 3. Messages include name, email, and timestamp
 
 ### Customization
-- **Profile info**: Edit `src/lib/openai.ts` for chatbot context
+- **Profile info**: Edit `src/lib/chatbot.ts` for chatbot context
 - **Skills**: Update `src/app/skills/page.tsx` with your skills
 - **Contact info**: Modify `src/app/contact/page.tsx`
 - **Styling**: Customize Tailwind classes in components
@@ -210,8 +211,8 @@ src/
 
 ### Environment Variables
 ```bash
-# Required for OpenAI integration
-OPENAI_API_KEY=your_openai_api_key_here
+# Optional: AI chatbot (free Groq key)
+AI_API_KEY=your_groq_api_key_here
 
 # Required for MySQL database
 DB_HOST=your_mysql_host

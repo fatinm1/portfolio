@@ -1,17 +1,27 @@
 import OpenAI from 'openai';
 import { getProjects } from './database';
 
-// Only create OpenAI client if API key is available
-const createOpenAIClient = () => {
-  if (!process.env.OPENAI_API_KEY || process.env.OPENAI_API_KEY === 'your_openai_api_key_here') {
+// Any OpenAI-compatible chat API works; defaults to Groq's free tier.
+const AI_BASE_URL = process.env.AI_BASE_URL || 'https://api.groq.com/openai/v1';
+const AI_MODEL = process.env.AI_MODEL || 'openai/gpt-oss-120b';
+
+// Only create the client if an API key is available; otherwise use keyword fallback replies.
+const createAIClient = () => {
+  if (!process.env.AI_API_KEY) {
     return null;
   }
   return new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY,
+    apiKey: process.env.AI_API_KEY,
+    baseURL: AI_BASE_URL,
+    timeout: 20_000,
+    maxRetries: 1,
   });
 };
 
-const openai = createOpenAIClient();
+const aiClient = createAIClient();
+
+// gpt-oss models reason before answering; keep that short and out of the reply.
+const isReasoningModel = AI_MODEL.includes('gpt-oss');
 
 interface ChatMessage {
   role: 'system' | 'user' | 'assistant';
@@ -51,8 +61,9 @@ INSTRUCTIONS:
 4. If asked about skills, provide the comprehensive skills list with experience levels
 5. If asked about contact info, direct them to the Contact page
 6. If asked about resume, mention he's a Senior CS Major at UMBC and direct them to contact him
-7. Keep responses concise but informative
+7. Keep responses concise but informative (under about 120 words)
 8. If you don't know something specific, say so and suggest they contact Fatin directly
+9. Reply in plain text only: no Markdown, tables, headings, or asterisks
 
 Remember: You're representing Fatin professionally, so be enthusiastic about his work and skills!`;
     } catch (error) {
@@ -61,13 +72,16 @@ Remember: You're representing Fatin professionally, so be enthusiastic about his
     }
   }
 
-  static async generateResponse(userMessage: string, conversationHistory: ChatMessage[] = []): Promise<string> {
-    try {
-      // If no OpenAI client is available, use fallback immediately
-      if (!openai) {
-        return this.getFallbackResponse(userMessage);
-      }
+  static async generateResponse(
+    userMessage: string,
+    conversationHistory: ChatMessage[] = []
+  ): Promise<{ response: string; usingFallback: boolean }> {
+    // If no AI client is available, use fallback immediately
+    if (!aiClient) {
+      return { response: await this.getFallbackResponse(userMessage), usingFallback: true };
+    }
 
+    try {
       const systemPrompt = await this.getSystemPrompt();
       
       const messages: ChatMessage[] = [
@@ -76,21 +90,31 @@ Remember: You're representing Fatin professionally, so be enthusiastic about his
         { role: 'user', content: userMessage }
       ];
 
-      const completion = await openai.chat.completions.create({
-        model: 'gpt-3.5-turbo',
-        messages: messages as any,
-        max_tokens: 300,
+      const completion = await aiClient.chat.completions.create({
+        model: AI_MODEL,
+        messages,
         temperature: 0.7,
-        presence_penalty: 0.1,
-        frequency_penalty: 0.1,
-      });
+        ...(isReasoningModel
+          ? {
+              // Reasoning tokens count toward the cap, so leave room beyond the visible reply.
+              max_completion_tokens: 1024,
+              reasoning_effort: 'low' as const,
+              // Groq-specific: omit the reasoning text from the response.
+              include_reasoning: false,
+            }
+          : { max_tokens: 300 }),
+      } as OpenAI.Chat.ChatCompletionCreateParamsNonStreaming);
 
-      return completion.choices[0]?.message?.content || 'Sorry I am not able to answer this question. Please ask me about Fatin\'s skills, projects, experience, or goals.';
+      const content = completion.choices[0]?.message?.content?.trim();
+      if (!content) {
+        return { response: await this.getFallbackResponse(userMessage), usingFallback: true };
+      }
+      return { response: content, usingFallback: false };
     } catch (error) {
-      console.error('OpenAI API error:', error);
+      console.error('AI API error:', error);
       
-      // Fallback to keyword-based responses if OpenAI fails
-      return this.getFallbackResponse(userMessage);
+      // Fallback to keyword-based responses if the AI API fails (e.g. rate limited)
+      return { response: await this.getFallbackResponse(userMessage), usingFallback: true };
     }
   }
 
