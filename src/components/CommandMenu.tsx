@@ -18,7 +18,8 @@ type Item = {
 };
 
 const STATIC_ITEMS: Item[] = [
-  { id: "s-work", group: "Sections", label: "Experience", keywords: "work jobs timeline education", href: "/#work" },
+  { id: "s-work", group: "Sections", label: "Experience", keywords: "work jobs timeline", href: "/#work" },
+  { id: "s-education", group: "Sections", label: "Education", keywords: "degree umbc school university", href: "/#education" },
   { id: "s-projects", group: "Sections", label: "Projects", keywords: "work portfolio", href: "/#projects" },
   { id: "s-writing", group: "Sections", label: "Latest writing", keywords: "blog post article", href: "/#writing" },
   { id: "s-contact", group: "Sections", label: "Contact", keywords: "message hire email form", href: "/#contact" },

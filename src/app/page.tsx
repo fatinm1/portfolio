@@ -2,6 +2,7 @@ import SilkBackground from "@/components/SilkBackground";
 import Hero from "@/components/home/Hero";
 import Stats from "@/components/home/Stats";
 import Experience from "@/components/home/Experience";
+import Education from "@/components/home/Education";
 import ProjectsSection from "@/components/home/ProjectsSection";
 import TechMarquee from "@/components/home/TechMarquee";
 import GitHubActivity from "@/components/home/GitHubActivity";
@@ -16,6 +17,7 @@ export default function Home() {
         <Hero />
         <Stats />
         <Experience />
+        <Education />
         <ProjectsSection />
         <TechMarquee />
         <GitHubActivity />

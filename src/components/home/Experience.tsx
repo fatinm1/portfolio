@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { Reveal, SectionHeading, SILK_EASE } from "./Reveal";
+import { RowHeading, cardClass } from "./TimelineRow";
 
 const JOBS = [
   {
@@ -31,17 +32,6 @@ const JOBS = [
   },
 ];
 
-const EDUCATION = {
-  mono: "BS",
-  role: "B.S. Computer Science",
-  org: "University of Maryland, Baltimore County",
-  dates: "Expected Dec 2026",
-};
-
-const cardClass = "silk-soft rounded-2xl border border-border bg-white/[.02]";
-const monoBadgeClass =
-  "flex h-[38px] flex-[0_0_38px] items-center justify-center rounded-[10px] border border-[#26262b] bg-[#15151a] font-mono text-xs text-[#8b8b93]";
-
 function TimelineDot({ active }: { active: boolean }) {
   return (
     <span
@@ -52,23 +42,6 @@ function TimelineDot({ active }: { active: boolean }) {
         boxShadow: active ? "0 0 12px var(--accent)" : "none",
       }}
     />
-  );
-}
-
-function RowHeading({ mono, role, org, dates }: { mono: string; role: string; org: string; dates: string }) {
-  return (
-    <>
-      <span aria-hidden="true" className={monoBadgeClass}>
-        {mono}
-      </span>
-      <span className="flex min-w-0 flex-auto flex-col gap-[3px]">
-        <span className="font-medium">{role}</span>
-        <span className="text-[13px] text-[#8b8b93]">{org}</span>
-        {/* On phones the date sits under the org so the title keeps its width */}
-        <span className="font-mono text-xs text-faint sm:hidden">{dates}</span>
-      </span>
-      <span className="hidden shrink-0 font-mono text-xs text-faint sm:inline">{dates}</span>
-    </>
   );
 }
 
@@ -133,14 +106,6 @@ export default function Experience() {
               </li>
             );
           })}
-          <li className="relative">
-            <TimelineDot active={false} />
-            <div className={`${cardClass} flex items-center gap-3.5 px-5 py-[18px]`}>
-              <RowHeading {...EDUCATION} />
-              {/* Chevron-width spacer keeps the date aligned with the rows above */}
-              <span aria-hidden="true" className="hidden w-4 shrink-0 sm:inline" />
-            </div>
-          </li>
         </ol>
       </div>
     </Reveal>
