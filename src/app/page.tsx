@@ -43,6 +43,30 @@ const STACK_ICONS = [
   { Icon: SiMongodb },
 ];
 
+const EXPERIENCE = [
+  {
+    role: "Undergraduate Research Assistant",
+    org: "UMBC Computer Science",
+    dates: "2026",
+    detail:
+      "Built a Python tool that checked 60+ quantum simulation runs against reference solutions, cutting manual review from 4 hours to 5 minutes.",
+  },
+  {
+    role: "Part Time Software Engineer (Contract)",
+    org: "JMC Family Office",
+    dates: "2025",
+    detail:
+      "Built the API and data model for an AI contract review prototype with the firm's VP. Review time went from 40 to 5 minutes per document in testing.",
+  },
+  {
+    role: "Information Technology Assistant",
+    org: "UMBC Graduate Admissions",
+    dates: "2023 to 2025",
+    detail:
+      "Processed records for 5,000+ applicants a cycle and wrote Python scripts to automate parts of data entry.",
+  },
+];
+
 interface Project {
   name: string;
   description: string;
@@ -236,13 +260,9 @@ export default function Home() {
         >
           <div className="flex flex-col sm:flex-row sm:justify-between gap-2 mb-2">
             <h3 className="text-white font-medium text-lg">B.S. Computer Science</h3>
-            <span className="text-white/50 text-sm">2022 – Present</span>
+            <span className="text-white/50 text-sm">Expected December 2026</span>
           </div>
-          <p className="text-white/60 text-sm mb-4">University of Maryland, Baltimore County (UMBC)</p>
-          <p className="text-white/70 leading-relaxed">
-            Senior standing. Focus on AI/ML, software engineering, and full-stack development. 
-            Building smart systems for real-world impact through coursework and personal projects.
-          </p>
+          <p className="text-white/60 text-sm">University of Maryland, Baltimore County</p>
         </motion.div>
       </motion.section>
 
@@ -303,43 +323,24 @@ export default function Home() {
           </motion.button>
         </div>
         <div className="mt-12 space-y-6">
-          <motion.div
-            className="bg-white/5 border border-white/10 p-6 rounded-xl"
-            initial={{ opacity: 0, x: -16 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.4 }}
-            whileHover={{ y: -2 }}
-          >
-            <div className="flex flex-col sm:flex-row sm:justify-between gap-2 mb-2">
-              <h3 className="text-white font-medium text-lg">IT Assistant</h3>
-              <span className="text-white/50 text-sm">May 2023 – December 2025</span>
-            </div>
-            <p className="text-white/60 text-sm mb-4">UMBC Graduate Admissions Office | Baltimore, MD</p>
-            <p className="text-white/70 leading-relaxed">
-              Digitized and processed 1,000+ student records with 100% accuracy, supporting enrollment operations. 
-              Streamlined record-keeping through automated folder organization and indexing, reducing processing time by 25%. 
-              Ensured secure handling of sensitive data across digital and physical systems.
-            </p>
-          </motion.div>
-          <motion.div
-            className="bg-white/5 border border-white/10 p-6 rounded-xl"
-            initial={{ opacity: 0, x: -16 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.4, delay: 0.1 }}
-            whileHover={{ y: -2 }}
-          >
-            <div className="flex flex-col sm:flex-row sm:justify-between gap-2 mb-2">
-              <h3 className="text-white font-medium text-lg">Software Developer</h3>
-              <span className="text-white/50 text-sm">Projects & Freelance</span>
-            </div>
-            <p className="text-white/60 text-sm mb-4">Independent</p>
-            <p className="text-white/70 leading-relaxed">
-              End-to-end design and development for web applications, AI integrations, and data systems. 
-              Delivered user-centric solutions across multiple tech stacks including Python, JavaScript, and React.
-            </p>
-          </motion.div>
+          {EXPERIENCE.map((job, idx) => (
+            <motion.div
+              key={job.role}
+              className="bg-white/5 border border-white/10 p-6 rounded-xl"
+              initial={{ opacity: 0, x: -16 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4, delay: idx * 0.1 }}
+              whileHover={{ y: -2 }}
+            >
+              <div className="flex flex-col sm:flex-row sm:justify-between gap-2 mb-2">
+                <h3 className="text-white font-medium text-lg">{job.role}</h3>
+                <span className="text-white/50 text-sm">{job.dates}</span>
+              </div>
+              <p className="text-white/60 text-sm mb-4">{job.org}</p>
+              <p className="text-white/70 leading-relaxed">{job.detail}</p>
+            </motion.div>
+          ))}
         </div>
       </motion.section>
 
