@@ -38,8 +38,9 @@ export default function Hero() {
       </span>
 
       <h1 className="silk-up silk-u3 m-0 text-[clamp(34px,5vw,50px)] font-semibold leading-[1.12] tracking-[-0.04em]">
-        <span className="silk-shimmer">Fatin Mojumder</span>{" "}
-        <span className="font-normal text-[#8b8b93]">is a software engineer building</span>{" "}
+        <span className="font-normal text-[#8b8b93]">Hi, I am </span>
+        <span className="silk-shimmer">Fatin</span>
+        <span className="font-normal text-[#8b8b93]">, a software engineer building</span>{" "}
         <span className="silk-swap">
           {WORDS.map((word, i) => {
             // 0 = showing, 1 = waiting below, 2 = just left upwards
