@@ -50,11 +50,12 @@ body {
   gap: 80px;
 }
 
-/* Silk animated background (components/SilkBackground.tsx); values from docs/redesign/silk-mockup.dc.html */
+/* Silk animated background (components/SilkBackground.tsx); values from docs/redesign/silk-mockup.dc.html.
+   z-index -1 places it under the page content inside <main>'s stacking context. */
 .silk-bg {
   position: fixed;
   inset: 0;
-  z-index: 0;
+  z-index: -1;
   pointer-events: none;
   overflow: hidden;
 }
@@ -108,7 +109,7 @@ body {
   position: fixed;
   left: 0;
   top: 0;
-  z-index: 0;
+  z-index: -1;
   width: 420px;
   height: 420px;
   margin: -210px 0 0 -210px;
@@ -168,27 +169,106 @@ a {
   border-radius: 8px;
 }
 
-/* Moving headline marquee */
-@keyframes marquee {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-50%);
-  }
+/* Silk effects (values from docs/redesign/silk-mockup.dc.html) */
+
+/* Load stagger: rise 16px and un-blur, 80ms apart */
+.silk-up { animation: silk-up 1s var(--ease) both; }
+.silk-u2 { animation-delay: .08s; }
+.silk-u3 { animation-delay: .16s; }
+.silk-u4 { animation-delay: .24s; }
+.silk-u5 { animation-delay: .32s; }
+.silk-u6 { animation-delay: .4s; }
+
+/* Light sweep across the name */
+.silk-shimmer {
+  background: linear-gradient(100deg, #ededed 35%, #ffffff 45%, #b9c96a 50%, #ededed 60%);
+  background-size: 250% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: silk-shimmer 7s linear infinite;
 }
 
-.animate-marquee {
-  animation: marquee 30s linear infinite;
+/* Rotating word: all words share one grid cell so the line never shifts */
+.silk-swap { display: inline-grid; vertical-align: bottom; overflow: hidden; height: 1.12em; }
+.silk-swap > span {
+  grid-area: 1 / 1;
+  white-space: nowrap;
+  transition: transform .7s var(--ease), opacity .7s var(--ease), filter .7s var(--ease);
 }
 
-/* Hide horizontal scrollbar for skills */
-.scrollbar-hide {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+/* Pills and arrows */
+.silk-pill { position: relative; overflow: hidden; transition: background .25s, color .25s, transform .25s; }
+.silk-pill:hover { transform: translateY(-1px); }
+.silk-ghost:hover { background: #ededed; color: #0a0a0a; }
+.silk-primary::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(110deg, transparent 30%, rgba(255, 255, 255, .55) 50%, transparent 70%);
+  transform: translateX(-120%);
+  transition: transform .8s var(--ease);
 }
-.scrollbar-hide::-webkit-scrollbar {
-  display: none;
+.silk-primary:hover::after { transform: translateX(120%); }
+.silk-arrow { display: inline-block; transition: transform .35s var(--ease); }
+a:hover .silk-arrow, .silk-pill:hover .silk-arrow { transform: translate(3px, -3px); }
+
+/* Cards: lift on hover, thumbnail zoom */
+.silk-soft { transition: background .35s ease, border-color .35s ease, transform .35s var(--ease); }
+.silk-soft:hover { background: rgba(255, 255, 255, .045); border-color: rgba(255, 255, 255, .14); transform: translateY(-3px); }
+.silk-thumb { transition: transform .8s var(--ease), filter .8s var(--ease); }
+.silk-card:hover .silk-thumb, .silk-beam:hover .silk-thumb { transform: scale(1.05); filter: brightness(1.15); }
+
+/* Featured project: light beam circling a 1px border gap */
+.silk-beam { position: relative; border-radius: 18px; padding: 1px; overflow: hidden; }
+.silk-beam::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 200%;
+  aspect-ratio: 1;
+  margin: -100% 0 0 -100%;
+  background: conic-gradient(from 0deg, transparent 0 300deg, var(--accent) 340deg, transparent 360deg);
+  animation: silk-swirl 5s linear infinite;
+}
+.silk-beam > * { position: relative; }
+
+/* Availability / Live dot: expanding ring */
+.silk-ping { position: relative; }
+.silk-ping::after {
+  content: "";
+  position: absolute;
+  inset: -3px;
+  border-radius: 999px;
+  border: 1px solid var(--success);
+  animation: silk-ping 2s cubic-bezier(0, 0, .2, 1) infinite;
+}
+
+/* Tech marquee: duplicated list slides -50% */
+.silk-marquee { display: flex; gap: 36px; width: max-content; animation: silk-slide 30s linear infinite; }
+
+/* Writing card: border turns into a lime to indigo gradient on hover */
+.silk-glowborder { position: relative; border-radius: 18px; padding: 1px; background: var(--border); transition: background .5s var(--ease); }
+.silk-glowborder:hover { background: linear-gradient(120deg, var(--accent), var(--secondary)); }
+
+/* Experience accordion: grid-template-rows 0fr -> 1fr */
+.silk-acc { display: grid; transition: grid-template-rows .5s var(--ease), opacity .4s var(--ease); }
+.silk-chev { transition: transform .4s var(--ease); }
+
+@keyframes silk-up { from { opacity: 0; transform: translateY(16px); filter: blur(6px); } to { opacity: 1; transform: none; filter: none; } }
+@keyframes silk-shimmer { from { background-position: 150% 0; } to { background-position: -100% 0; } }
+@keyframes silk-ping { 0% { transform: scale(1); opacity: .8; } 80%, 100% { transform: scale(2.2); opacity: 0; } }
+@keyframes silk-slide { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .silk-up, .silk-shimmer, .silk-beam::before, .silk-ping::after { animation: none; }
+  .silk-swap > span, .silk-pill, .silk-primary::after, .silk-arrow, .silk-soft, .silk-thumb,
+  .silk-glowborder, .silk-acc, .silk-chev { transition: none; }
+  /* Show the stack as a static, wrapping list instead of scrolling it */
+  .silk-marquee { animation: none; flex-wrap: wrap; width: auto; row-gap: 8px; }
+  .silk-marquee [data-duplicate] { display: none; }
 }
 
 /* Chatbot floating button pulse */

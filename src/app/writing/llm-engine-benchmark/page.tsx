@@ -57,7 +57,7 @@ function Table({ head, rows, bold }: { head: string[]; rows: string[][]; bold?: 
 
 export default function LlmEngineBenchmarkPost() {
   return (
-    <article className="max-w-3xl mx-auto px-6 pt-32 pb-24">
+    <article className="max-w-3xl mx-auto px-6 pt-16 pb-8">
       <Link href="/writing" className="text-sm text-white/50 hover:text-white transition-colors">
         &larr; Writing
       </Link>

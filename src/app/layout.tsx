@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import Navigation from "@/components/Navigation";
+import SiteHeader from "@/components/SiteHeader";
+import SiteFooter from "@/components/SiteFooter";
 import ChatbotWidget from "@/components/ChatbotWidget";
 
 const geistSans = Geist({
@@ -29,8 +30,10 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
       <body className="bg-background min-h-screen text-foreground">
-        <Navigation />
-        <main>{children}</main>
+        <SiteHeader />
+        {/* Own stacking context so a page's SilkBackground (z-index -1) sits just beneath its content */}
+        <main className="relative z-[1]">{children}</main>
+        <SiteFooter />
         <ChatbotWidget />
       </body>
     </html>
