@@ -18,6 +18,13 @@ const nextConfig: NextConfig = {
   async headers() {
     return [{ source: "/:path*", headers: securityHeaders }];
   },
+  // Old standalone pages replaced by homepage sections; keep existing links working.
+  async redirects() {
+    return [
+      { source: "/skills", destination: "/", permanent: true },
+      { source: "/contact", destination: "/#contact", permanent: true },
+    ];
+  },
 };
 
 export default nextConfig;
