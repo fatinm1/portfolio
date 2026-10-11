@@ -67,6 +67,32 @@ export default function LlmEngineBenchmarkPost() {
       </h1>
       <p className="text-white/50 text-sm mb-10">October 2026 · Fatin Mojumder</p>
 
+      <div className="rounded-xl border border-[#C8FF00]/30 bg-[#C8FF00]/5 p-6 mb-10">
+        <p className="text-[#C8FF00] font-medium mb-3">The short version</p>
+        <ul className="list-disc pl-5 space-y-2 text-white/80">
+          <li>
+            I wrote my own program for running an AI language model on a laptop, then raced it
+            against llama.cpp, the most widely used open source tool for the same job.
+          </li>
+          <li>
+            Mine wrote 12.6 tokens per second (a token is roughly a word). llama.cpp managed 27.5 on
+            a single CPU core, and 109 using the laptop&apos;s GPU.
+          </li>
+          <li>
+            The main reason: my engine unpacks the model into a format six times larger, so it moves
+            far more data through memory for every word. In my tests, the fixes roughly doubled to
+            quadrupled its speed.
+          </li>
+        </ul>
+      </div>
+
+      <H2>Some background</H2>
+      <P>
+        Chat assistants like ChatGPT run on large language models. A model is mostly a huge list of
+        numbers (its &quot;weights&quot;), and producing each word means doing math with all of them.
+        Usually that happens on big servers, but smaller models can run directly on a laptop, with no
+        internet and no API key.
+      </P>
       <P>
         I built{" "}
         <a
@@ -76,11 +102,69 @@ export default function LlmEngineBenchmarkPost() {
           rel="noopener noreferrer"
         >
           LLM Engine
-        </a>
-        , a C++ inference engine that runs Llama 3.2 on a CPU with no ML libraries: my own GGUF
-        parser, tokenizer, transformer forward pass, KV cache and sampler. It works, but llama.cpp
-        is much faster. I wanted to know exactly why, so I measured it.
+        </a>{" "}
+        to learn how that works from the ground up. It&apos;s a C++ program that loads Meta&apos;s
+        Llama 3.2 model and chats with it on a regular CPU, and I wrote every part myself: reading the
+        model file, splitting text into tokens, the math for each layer of the model, and picking the
+        next word. No machine learning libraries.
       </P>
+      <P>
+        <a
+          href="https://github.com/ggml-org/llama.cpp"
+          className="text-[#C8FF00] hover:underline"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          llama.cpp
+        </a>{" "}
+        is the open source project most people use to run models locally, built and tuned by hundreds
+        of contributors. My engine works, but llama.cpp is much faster. I wanted to know exactly why,
+        so I measured both on my MacBook.
+      </P>
+
+      <details className="rounded-xl border border-white/10 bg-white/5 p-5 mb-5 group">
+        <summary className="cursor-pointer text-white font-medium">
+          A few terms used below
+        </summary>
+        <dl className="mt-4 space-y-3 text-white/80 text-sm">
+          <div>
+            <dt className="text-white font-medium">Token</dt>
+            <dd>A word or piece of a word. Models read and write text one token at a time.</dd>
+          </div>
+          <div>
+            <dt className="text-white font-medium">Prompt speed vs. generation speed</dt>
+            <dd>
+              Prompt speed is how fast the model reads your message. Generation speed is how fast it
+              writes the reply. Both are measured in tokens per second (tok/s).
+            </dd>
+          </div>
+          <div>
+            <dt className="text-white font-medium">Quantization</dt>
+            <dd>
+              Storing each weight in fewer bits (here about 5 instead of 32) so the model is smaller
+              and faster to read, with very little loss in quality.
+            </dd>
+          </div>
+          <div>
+            <dt className="text-white font-medium">Matrix vector product</dt>
+            <dd>
+              The core math step: multiplying a big grid of weights by a list of numbers. Producing
+              one token takes over a hundred of these.
+            </dd>
+          </div>
+          <div>
+            <dt className="text-white font-medium">Memory bandwidth</dt>
+            <dd>
+              How fast data can move from memory to the processor, in GB per second. For models like
+              this, it&apos;s often the real speed limit.
+            </dd>
+          </div>
+          <div>
+            <dt className="text-white font-medium">Thread</dt>
+            <dd>One line of work on one processor core. More threads can use more cores at once.</dd>
+          </div>
+        </dl>
+      </details>
 
       <H2>Setup</H2>
       <ul className="list-disc pl-6 space-y-2 text-white/80 mb-5">

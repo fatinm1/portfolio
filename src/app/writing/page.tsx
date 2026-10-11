@@ -11,7 +11,7 @@ const posts = [
     href: "/writing/llm-engine-benchmark",
     title: "Why llama.cpp generates text almost 9x faster than my from scratch LLM engine",
     summary:
-      "I benchmarked my C++ inference engine against llama.cpp on an Apple M4, found where the time and memory go, and tested the fixes.",
+      "I built my own program for running an AI language model on a laptop, raced it against llama.cpp, the most popular open source one, and dug into why mine is slower.",
     date: "October 2026",
   },
 ];
