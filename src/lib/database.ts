@@ -1,4 +1,5 @@
 import mysql from 'mysql2/promise';
+import type { ResultSetHeader } from 'mysql2/promise';
 import bcrypt from 'bcryptjs';
 
 // Database configuration
@@ -25,6 +26,8 @@ interface ProjectRow {
   photo: string | null;
   live_url: string | null;
   tags: string | null;
+  status: string | null;
+  featured: number;
   created_at: Date;
 }
 
@@ -66,6 +69,8 @@ export const initDatabase = async (): Promise<void> => {
         photo VARCHAR(500),
         live_url VARCHAR(500),
         tags JSON,
+        status VARCHAR(50),
+        featured TINYINT(1) NOT NULL DEFAULT 0,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       )
     `);
@@ -78,6 +83,24 @@ export const initDatabase = async (): Promise<void> => {
       );
       if ((liveCols as { COLUMN_NAME: string }[]).length === 0) {
         await connection.execute("ALTER TABLE projects ADD COLUMN live_url VARCHAR(500) NULL");
+      }
+    } catch {
+      // ignore
+    }
+
+    // Add homepage `status` badge and `featured` flag (existing deployments)
+    try {
+      const [cols] = await connection.execute(
+        `SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS
+         WHERE TABLE_SCHEMA = ? AND TABLE_NAME = 'projects' AND COLUMN_NAME IN ('status', 'featured')`,
+        [dbConfig.database]
+      );
+      const existing = (cols as { COLUMN_NAME: string }[]).map((r) => r.COLUMN_NAME);
+      if (!existing.includes('status')) {
+        await connection.execute("ALTER TABLE projects ADD COLUMN status VARCHAR(50) NULL");
+      }
+      if (!existing.includes('featured')) {
+        await connection.execute("ALTER TABLE projects ADD COLUMN featured TINYINT(1) NOT NULL DEFAULT 0");
       }
     } catch {
       // ignore
@@ -159,18 +182,27 @@ export const initDatabase = async (): Promise<void> => {
 };
 
 // Database operations
+const toProject = (row: ProjectRow) => {
+  const r = row as ProjectRow & { video?: string | null };
+  return {
+    ...row,
+    photo: row.photo ?? r.video ?? null,
+    technologies: typeof row.technologies === 'string' ? JSON.parse(row.technologies) : row.technologies,
+    tags: row.tags ? (typeof row.tags === 'string' ? JSON.parse(row.tags) : row.tags) : [],
+    status: row.status ?? null,
+    featured: Boolean(row.featured),
+  };
+};
+
+// Only one project is featured on the homepage at a time.
+const clearOtherFeatured = async (keepId: number): Promise<void> => {
+  await pool.execute('UPDATE projects SET featured = 0 WHERE id <> ?', [keepId]);
+};
+
 export const getProjects = async (): Promise<any[]> => {
   try {
     const [rows] = await pool.execute('SELECT * FROM projects ORDER BY created_at DESC');
-    return (rows as ProjectRow[]).map((row) => {
-      const r = row as ProjectRow & { video?: string | null };
-      return {
-        ...row,
-        photo: row.photo ?? r.video ?? null,
-        technologies: typeof row.technologies === 'string' ? JSON.parse(row.technologies) : row.technologies,
-        tags: row.tags ? (typeof row.tags === 'string' ? JSON.parse(row.tags) : row.tags) : [],
-      };
-    });
+    return (rows as ProjectRow[]).map(toProject);
   } catch (error) {
     console.error('Error getting projects:', error);
     throw error;
@@ -179,8 +211,8 @@ export const getProjects = async (): Promise<any[]> => {
 
 export const addProject = async (project: any): Promise<void> => {
   try {
-    await pool.execute(
-      'INSERT INTO projects (name, description, technologies, github, photo, live_url, tags) VALUES (?, ?, ?, ?, ?, ?, ?)',
+    const [result] = await pool.execute(
+      'INSERT INTO projects (name, description, technologies, github, photo, live_url, tags, status, featured) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
       [
         project.name,
         project.description,
@@ -188,9 +220,14 @@ export const addProject = async (project: any): Promise<void> => {
         project.github,
         project.photo || null,
         project.live_url || null,
-        JSON.stringify(project.tags || [])
+        JSON.stringify(project.tags || []),
+        project.status?.trim() || null,
+        project.featured ? 1 : 0
       ]
     );
+    if (project.featured) {
+      await clearOtherFeatured((result as ResultSetHeader).insertId);
+    }
   } catch (error) {
     console.error('Error adding project:', error);
     throw error;
@@ -206,14 +243,7 @@ export const getProjectById = async (id: number): Promise<any> => {
       return null;
     }
     
-    const row = projectRows[0];
-    const r = row as ProjectRow & { video?: string | null };
-    return {
-      ...row,
-      photo: row.photo ?? r.video ?? null,
-      technologies: typeof row.technologies === 'string' ? JSON.parse(row.technologies) : row.technologies,
-      tags: row.tags ? (typeof row.tags === 'string' ? JSON.parse(row.tags) : row.tags) : [],
-    };
+    return toProject(projectRows[0]);
   } catch (error) {
     console.error('Error getting project by ID:', error);
     throw error;
@@ -226,17 +256,14 @@ export const updateProject = async (id: number, project: any): Promise<void> => 
     if (!existing) {
       throw new Error('Project not found');
     }
-    const photo =
-      Object.prototype.hasOwnProperty.call(project, "photo")
-        ? project.photo
-        : existing.photo ?? null;
-
-    const live_url = Object.prototype.hasOwnProperty.call(project, "live_url")
-      ? project.live_url
-      : existing.live_url ?? null;
+    const has = (key: string) => Object.prototype.hasOwnProperty.call(project, key);
+    const photo = has("photo") ? project.photo : existing.photo ?? null;
+    const live_url = has("live_url") ? project.live_url : existing.live_url ?? null;
+    const status = has("status") ? project.status?.trim() || null : existing.status;
+    const featured = has("featured") ? Boolean(project.featured) : existing.featured;
 
     await pool.execute(
-      'UPDATE projects SET name = ?, description = ?, technologies = ?, github = ?, photo = ?, live_url = ?, tags = ? WHERE id = ?',
+      'UPDATE projects SET name = ?, description = ?, technologies = ?, github = ?, photo = ?, live_url = ?, tags = ?, status = ?, featured = ? WHERE id = ?',
       [
         project.name,
         project.description,
@@ -245,9 +272,14 @@ export const updateProject = async (id: number, project: any): Promise<void> => 
         photo || null,
         live_url || null,
         JSON.stringify(project.tags || []),
+        status,
+        featured ? 1 : 0,
         id
       ]
     );
+    if (featured) {
+      await clearOtherFeatured(id);
+    }
   } catch (error) {
     console.error('Error updating project:', error);
     throw error;

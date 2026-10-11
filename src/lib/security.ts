@@ -82,6 +82,10 @@ export function validateProjectInput(body: unknown): string | null {
     if (!isHttpUrl(p.live_url) || (p.live_url as string).length > 500) return "Live demo URL must be an http(s) URL";
   }
 
+  if (p.status !== undefined && p.status !== null && (typeof p.status !== "string" || p.status.length > 50))
+    return "Status must be 50 characters or fewer";
+  if (p.featured !== undefined && typeof p.featured !== "boolean") return "Invalid featured flag";
+
   if (p.photo !== undefined && p.photo !== null && p.photo !== "") {
     const photo = p.photo;
     const isLocalUpload =

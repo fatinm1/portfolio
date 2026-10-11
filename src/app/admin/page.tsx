@@ -13,6 +13,8 @@ interface ProjectForm {
   tags: string;
   hasLiveDemo?: boolean;
   liveUrl?: string;
+  status?: string;
+  featured?: boolean;
 }
 
 interface Project {
@@ -24,6 +26,8 @@ interface Project {
   photo?: string;
   live_url?: string | null;
   tags?: string[];
+  status?: string | null;
+  featured?: boolean;
   created_at: string;
 }
 
@@ -67,6 +71,8 @@ export default function AdminPage() {
       liveUrl: "",
       tags: "",
       photo: "",
+      status: "",
+      featured: false,
     },
   });
 
@@ -217,6 +223,8 @@ export default function AdminPage() {
     const live = (project.live_url || "").trim();
     setValue("hasLiveDemo", !!live);
     setValue("liveUrl", live);
+    setValue("status", project.status || "");
+    setValue("featured", !!project.featured);
   };
 
   const handleCancelEdit = () => {
@@ -281,7 +289,9 @@ export default function AdminPage() {
         github: data.github,
         photo: photoTrimmed || null,
         live_url: liveUrlTrimmed || null,
-        tags: data.tags.split(',').map(tag => tag.trim())
+        tags: data.tags.split(',').map(tag => tag.trim()),
+        status: (data.status || "").trim() || null,
+        featured: data.featured === true
       };
 
       if (editingProject) {
@@ -462,6 +472,32 @@ export default function AdminPage() {
                 placeholder="Web, AI, Mobile (comma-separated)"
               />
             </div>
+
+            <div>
+              <label className="block text-sm font-medium mb-2">Status badge</label>
+              <input
+                {...register("status")}
+                list="project-status-options"
+                maxLength={50}
+                className="w-full rounded-lg px-4 py-2 bg-white/10 border border-white/20 text-white focus:outline-none focus:border-cyan-400"
+                placeholder="Live, Open source, Prototype, Team of 4 (optional)"
+              />
+              <datalist id="project-status-options">
+                <option value="Live" />
+                <option value="Open source" />
+                <option value="Prototype" />
+                <option value="Team of 4" />
+              </datalist>
+            </div>
+
+            <label className="flex items-center gap-3 cursor-pointer">
+              <input
+                type="checkbox"
+                {...register("featured")}
+                className="rounded border-white/30 bg-white/10 w-4 h-4"
+              />
+              <span className="text-sm font-medium text-white">Featured on homepage (replaces the current featured project)</span>
+            </label>
 
             <button
               type="submit"
