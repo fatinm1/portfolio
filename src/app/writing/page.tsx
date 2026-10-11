@@ -3,7 +3,7 @@ import Link from "next/link";
 import SilkBackground from "@/components/SilkBackground";
 
 export const metadata: Metadata = {
-  title: "Writing | Fatin Mojumder",
+  title: "Writing",
   description: "Technical writeups by Fatin Mojumder.",
 };
 

@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import SiteHeader from "@/components/SiteHeader";
@@ -19,9 +19,32 @@ const geistMono = Geist_Mono({
   display: "swap",
 });
 
+const SITE_TITLE = "Fatin Mojumder, Software Engineer";
+const SITE_DESCRIPTION =
+  "Software engineer building AI agents, inference engines and full stack apps. CS at UMBC, graduating December 2026 and open to new grad roles from January 2027.";
+
 export const metadata: Metadata = {
-  title: "Fatin Mojumder - Portfolio",
-  description: "Senior CS Major at UMBC - Building smart systems for real-world impact",
+  metadataBase: new URL("https://fatin.dev"),
+  title: { default: SITE_TITLE, template: "%s | Fatin Mojumder" },
+  description: SITE_DESCRIPTION,
+  openGraph: {
+    type: "website",
+    url: "/",
+    siteName: "Fatin Mojumder",
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+    locale: "en_US",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+  },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#040406",
+  colorScheme: "dark",
 };
 
 export default function RootLayout({

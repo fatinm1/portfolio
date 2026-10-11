@@ -2,10 +2,21 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import SilkBackground from "@/components/SilkBackground";
 
+const POST_TITLE = "Why llama.cpp is almost 9x faster than my LLM engine";
+const POST_DESCRIPTION =
+  "Benchmarking my from scratch C++ inference engine against llama.cpp on an Apple M4, and what I'd fix first.";
+
 export const metadata: Metadata = {
-  title: "Why llama.cpp is almost 9x faster than my LLM engine | Fatin Mojumder",
-  description:
-    "Benchmarking my from scratch C++ inference engine against llama.cpp on an Apple M4, and what I'd fix first.",
+  title: POST_TITLE,
+  description: POST_DESCRIPTION,
+  openGraph: {
+    type: "article",
+    url: "/writing/llm-engine-benchmark",
+    title: POST_TITLE,
+    description: POST_DESCRIPTION,
+    // A page-level openGraph replaces the inherited one, so re-add the site share image.
+    images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: "Fatin Mojumder" }],
+  },
 };
 
 function H2({ children }: { children: React.ReactNode }) {
