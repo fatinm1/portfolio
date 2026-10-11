@@ -28,48 +28,65 @@ interface ChatMessage {
   content: string;
 }
 
+// Keep in sync with the homepage (src/components/home/*).
+const PROFILE = `FATIN'S PROFILE:
+- Name: Fatin Mojumder, software engineer based in Elkridge, MD
+- Education: B.S. Computer Science, University of Maryland, Baltimore County (UMBC). He is a senior in his final year, graduating December 2026
+- Availability: open to new grad software engineering roles starting January 2027
+- Focus: AI agents, LLM inference engines, and full stack apps
+- Currently: writing an LLM inference engine in C++ and measuring exactly why it is slower than llama.cpp. It runs Llama 3.2 at 12.6 tokens per second on an Apple M4. The writeup is on the Writing page (/writing/llm-engine-benchmark).
+
+EXPERIENCE:
+- Undergraduate Research Assistant, UMBC Computer Science (2026): Built a Python tool that checked 60+ quantum simulation runs against reference solutions, cutting manual review from 4 hours to 5 minutes.
+- Part Time Software Engineer (Contract), JMC Family Office (2025): Built the API and data model for an AI contract review prototype with the firm's VP. Review time went from 40 to 5 minutes per document in testing.
+- Information Technology Assistant, UMBC Graduate Admissions (2023 to 2025): Processed records for 5,000+ applicants a cycle and wrote Python scripts to automate parts of data entry.
+
+SKILLS:
+- Languages: Python, C++, TypeScript, JavaScript, Java, C, HTML, CSS
+- Frameworks and libraries: Next.js, React, FastAPI, Django, Flask, LangChain
+- AI: LLM inference, multi-agent systems, MCP, OpenAI and Llama models
+- Data and infrastructure: PostgreSQL, MySQL, Oracle Database, Docker, GitHub Actions, Jenkins
+- Tools: Git, Figma, Jira
+
+CONTACT:
+- Email: fatinm1@umbc.edu
+- GitHub: github.com/fatinm1
+- LinkedIn: linkedin.com/in/fatin-mojumder
+- Or the contact form at the bottom of the homepage`;
+
 export class ChatbotService {
   private static async getSystemPrompt(): Promise<string> {
+    let projectsContext = 'Project details are unavailable right now; suggest the Projects section of the homepage.';
     try {
       const projects = await getProjects();
-      
-      const projectsContext = projects.length > 0 
-        ? projects.map(p => `- ${p.name}: ${p.description} (Technologies: ${p.technologies.join(', ')})`).join('\n')
-        : 'No projects available yet.';
+      projectsContext = projects.length > 0
+        ? projects.map(p => `- ${p.name}${p.status ? ` [${p.status}]` : ''}: ${p.description} (Technologies: ${p.technologies.join(', ')})`).join('\n')
+        : 'No projects listed yet.';
+    } catch (error) {
+      console.error('Error getting projects for context:', error);
+    }
 
-      return `You are Fatin Mojumder's AI assistant. You help people learn about Fatin and his work.
+    return `You are Fatin Mojumder's AI assistant on his portfolio site. You help visitors, often recruiters, learn about Fatin and his work.
 
-FATIN'S PROFILE:
-- Name: Fatin Mojumder
-- Title: Senior CS Major at UMBC
-- Tagline: "Building smart systems for real-world impact"
-- Key Skills: 
-  Programming: C++ (3 years), Python (4 years), Java (2 years), JavaScript (2 years), TypeScript (2 years), React (2 years), C (1 year), HTML (2 years), CSS (2 years), UI/UX Principles (2 years)
-  Software and Tools: Git (3 years), Figma (2 years), Jira (1 year), Visual Studio Code (3 years), PyCharm (2 years), Fusion 360 (1 year), ArcGIS (1 year), ChatGPT (2 years), Claude (1 year)
-  Frameworks & Libraries: Django (2 years), Flask (2 years), FastAPI (1 year), LangChain (2 years), LLaMA (1 year), OpenAI (2 years)
-  Databases & DevOps: MySQL (2 years), Oracle Database (1 year), PostgreSQL (1 year), GitHub Actions (1 year), Docker (1 year), Jenkins (1 year)
-- Interests: AI/ML, Software Engineering, Problem Solving
-- Goals: Building smart systems that make real-world impact, particularly interested in AI/ML applications
+${PROFILE}
 
 FATIN'S PROJECTS:
 ${projectsContext}
 
 INSTRUCTIONS:
 1. Be helpful, friendly, and professional
-2. Answer questions about Fatin's skills, experience, projects, and goals
+2. Answer questions about Fatin's skills, experience, projects, availability and goals using only the facts above
 3. If asked about specific projects, provide details from the project list
-4. If asked about skills, provide the comprehensive skills list with experience levels
-5. If asked about contact info, direct them to the Contact page
-6. If asked about resume, mention he's a Senior CS Major at UMBC and direct them to contact him
+4. If asked about hiring or availability, say he is open to new grad roles starting January 2027 and share his email
+5. If asked about contact info, give his email and mention the contact form on the homepage
+6. If asked about his resume, point to the Resume button at the top of the homepage
 7. Keep responses concise but informative (under about 120 words)
-8. If you don't know something specific, say so and suggest they contact Fatin directly
+8. If you don't know something specific, say so and suggest emailing Fatin directly
 9. Reply in plain text only: no Markdown, tables, headings, or asterisks
+10. Do not use em dashes; use commas or separate sentences instead
+11. Write the email address exactly as fatinm1@umbc.edu
 
-Remember: You're representing Fatin professionally, so be enthusiastic about his work and skills!`;
-    } catch (error) {
-      console.error('Error getting projects for context:', error);
-      return `You are Fatin Mojumder's AI assistant. Fatin is a Senior CS Major at UMBC passionate about building smart systems for real-world impact.`;
-    }
+Remember: You're representing Fatin professionally, so be enthusiastic about his work!`;
   }
 
   static async generateResponse(
@@ -105,7 +122,8 @@ Remember: You're representing Fatin professionally, so be enthusiastic about his
           : { max_tokens: 300 }),
       } as OpenAI.Chat.ChatCompletionCreateParamsNonStreaming);
 
-      const content = completion.choices[0]?.message?.content?.trim();
+      // Strip zero-width characters the model sometimes inserts (they break copied email addresses).
+      const content = completion.choices[0]?.message?.content?.replace(/[\u200B-\u200D\u2060\uFEFF]/g, '').trim();
       if (!content) {
         return { response: await this.getFallbackResponse(userMessage), usingFallback: true };
       }
@@ -125,41 +143,35 @@ Remember: You're representing Fatin professionally, so be enthusiastic about his
       const projects = await getProjects();
       
       if (lowerMessage.includes('who') && lowerMessage.includes('fatin')) {
-        return `Fatin Mojumder is a Senior CS Major at UMBC. He's passionate about building smart systems for real-world impact, with expertise in AI/ML, software engineering, and web development.`;
+        return `Fatin Mojumder is a software engineer finishing a B.S. in Computer Science at UMBC (December 2026). He builds AI agents, LLM inference engines and full stack apps, and is open to new grad roles starting January 2027.`;
       }
-      
-      if (lowerMessage.includes('skill') || lowerMessage.includes('technology')) {
-        return `Fatin has extensive skills across multiple areas:
 
-Programming: C++ (3 years), Python (4 years), Java (2 years), JavaScript (2 years), TypeScript (2 years), React (2 years), C (1 year), HTML (2 years), CSS (2 years), UI/UX Principles (2 years)
-
-Software and Tools: Git (3 years), Figma (2 years), Jira (1 year), Visual Studio Code (3 years), PyCharm (2 years), Fusion 360 (1 year), ArcGIS (1 year), ChatGPT (2 years), Claude (1 year)
-
-Frameworks & Libraries: Django (2 years), Flask (2 years), FastAPI (1 year), LangChain (2 years), LLaMA (1 year), OpenAI (2 years)
-
-Databases & DevOps: MySQL (2 years), Oracle Database (1 year), PostgreSQL (1 year), GitHub Actions (1 year), Docker (1 year), Jenkins (1 year)
-
-He's particularly strong in AI/ML, software engineering, and web development. You can also visit the Skills page for a visual representation of his experience levels.`;
+      if (['hire', 'hiring', 'role', 'job', 'available', 'availability', 'grad', 'intern'].some((w) => lowerMessage.includes(w))) {
+        return `Fatin is open to new grad software engineering roles starting January 2027. You can reach him at fatinm1@umbc.edu or through the contact form at the bottom of the homepage.`;
       }
-      
+
+      if (lowerMessage.includes('skill') || lowerMessage.includes('technology') || lowerMessage.includes('stack')) {
+        return `Fatin works mostly in Python, C++ and TypeScript. He builds with Next.js, React, FastAPI, Django and LangChain, uses PostgreSQL, MySQL and Docker, and focuses on LLM inference and multi-agent systems.`;
+      }
+
       if (lowerMessage.includes('project')) {
         if (projects.length === 0) {
-          return `Fatin is currently working on building his project portfolio. Check back soon for updates!`;
+          return `Fatin's projects are listed in the Projects section of the homepage.`;
         }
         const projectNames = projects.map((p: any) => p.name).join(', ');
-        return `Fatin has worked on several projects including: ${projectNames}. You can find more details about each project on the Projects page.`;
+        return `Fatin has worked on several projects including: ${projectNames}. You can find more details about each one in the Projects section of the homepage.`;
       }
-      
-      if (lowerMessage.includes('resume') || lowerMessage.includes('experience')) {
-        return `Fatin is a Senior CS Major at UMBC with a strong foundation in computer science and practical experience in software development. You can contact him for his full resume.`;
+
+      if (lowerMessage.includes('resume') || lowerMessage.includes('experience') || lowerMessage.includes('work')) {
+        return `Fatin has been an Undergraduate Research Assistant in UMBC Computer Science, a part time software engineer at JMC Family Office building an AI contract review prototype, and an IT Assistant at UMBC Graduate Admissions. His resume is linked from the Resume button at the top of the homepage.`;
       }
-      
-      if (lowerMessage.includes('contact') || lowerMessage.includes('email')) {
-        return `You can reach Fatin through the Contact page on this website, or connect with him on LinkedIn and GitHub.`;
+
+      if (lowerMessage.includes('contact') || lowerMessage.includes('email') || lowerMessage.includes('reach')) {
+        return `You can email Fatin at fatinm1@umbc.edu, use the contact form at the bottom of the homepage, or find him on GitHub (fatinm1) and LinkedIn (fatin-mojumder).`;
       }
-      
+
       if (lowerMessage.includes('goal') || lowerMessage.includes('future')) {
-        return `Fatin is focused on building smart systems that make a real-world impact. He's particularly interested in AI/ML applications and software engineering challenges.`;
+        return `Fatin wants to build AI systems that hold up in the real world, especially agents and fast LLM inference. He is looking for a new grad role starting January 2027.`;
       }
 
       return `Sorry I am not able to answer this question. Please ask me about Fatin's skills, projects, experience, or goals.`;
