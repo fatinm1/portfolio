@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import SilkBackground from "@/components/SilkBackground";
 
 export const metadata: Metadata = {
   title: "Writing | Fatin Mojumder",
@@ -18,22 +19,28 @@ const posts = [
 
 export default function WritingPage() {
   return (
-    <div className="max-w-3xl mx-auto px-6 pt-16 pb-8">
-      <h1 className="text-3xl sm:text-4xl font-medium text-white mb-10">Writing</h1>
-      <ul className="space-y-6">
-        {posts.map((post) => (
-          <li key={post.href}>
-            <Link
-              href={post.href}
-              className="block p-6 rounded-xl bg-white/5 border border-white/10 hover:border-[#C8FF00]/50 transition-colors"
-            >
-              <p className="text-white/50 text-sm mb-2">{post.date}</p>
-              <h2 className="text-xl font-medium text-white mb-2">{post.title}</h2>
-              <p className="text-white/70">{post.summary}</p>
-            </Link>
-          </li>
-        ))}
-      </ul>
-    </div>
+    <>
+      <SilkBackground />
+      <div className="content-column pt-20">
+        <section className="flex flex-col gap-3.5">
+          <h1 className="silk-up m-0 mb-4 text-[clamp(30px,4vw,40px)] font-semibold tracking-[-0.04em]">Writing</h1>
+          <ul className="m-0 flex list-none flex-col gap-3.5 p-0">
+            {posts.map((post) => (
+              <li key={post.href}>
+                <Link href={post.href} className="silk-glowborder block">
+                  <div className="flex flex-col gap-2 rounded-[17px] bg-[#0a0a0d] p-6">
+                    <span className="font-mono text-xs text-accent">{post.date}</span>
+                    <h2 className="m-0 text-[19px] font-semibold leading-[1.35] text-foreground">
+                      {post.title} <span className="silk-arrow text-[#8b8b93]">↗</span>
+                    </h2>
+                    <p className="m-0 text-sm leading-[1.6] text-[#8b8b93]">{post.summary}</p>
+                  </div>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
+      </div>
+    </>
   );
 }
