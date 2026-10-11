@@ -40,6 +40,16 @@ body {
   font-family: var(--font-geist-sans), ui-sans-serif, system-ui, "Segoe UI", sans-serif;
 }
 
+/* Main content column: 720px of content centered, 24px gutters, 80px between sections */
+.content-column {
+  max-width: calc(720px + 2 * 24px);
+  margin-inline: auto;
+  padding-inline: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 80px;
+}
+
 /* Green CTA button - glossy lime style */
 .btn-green {
   background: linear-gradient(to bottom, #C8FF00 0%, #A7ED57 50%, #9BE04D 100%);

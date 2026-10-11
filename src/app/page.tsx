@@ -141,7 +141,7 @@ export default function Home() {
     }
   };
 
-  const sectionClass = "scroll-mt-24 max-w-5xl mx-auto px-6 sm:px-10";
+  const sectionClass = "scroll-mt-24";
 
   const { scrollYProgress } = useScroll();
   const progressWidth = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
@@ -156,357 +156,359 @@ export default function Home() {
         style={{ scaleX: progressWidth }}
       />
 
-      {/* Hero */}
-      <motion.section
-        id="home"
-        style={{ y: heroY, opacity: heroOpacity }}
-        className={`${sectionClass} min-h-[85vh] flex flex-col justify-center py-24`}
-      >
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="space-y-6"
+      <div className="content-column">
+        {/* Hero */}
+        <motion.section
+          id="home"
+          style={{ y: heroY, opacity: heroOpacity }}
+          className={`${sectionClass} min-h-[85vh] flex flex-col justify-center`}
         >
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-white/90 text-sm mb-8 w-fit"
-          >
-            Hello, I&apos;m Fatin 👋
-          </motion.div>
-          <motion.h1
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="text-4xl sm:text-5xl md:text-6xl font-medium text-white leading-tight mb-6"
+            transition={{ duration: 0.5 }}
+            className="space-y-6"
           >
-            <span className="text-white">Software engineer</span>
-            <br />
-            <span className="text-white/60">crafting smart systems & modern solutions</span>
-          </motion.h1>
-          <motion.a
-            href="#contact"
-            onClick={(e) => { e.preventDefault(); document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" }); }}
-            className="btn-green inline-flex items-center gap-2 w-fit"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.4 }}
-            whileHover={{ scale: 1.03 }}
-            whileTap={{ scale: 0.98 }}
-          >
-            Email me <ArrowUpRight className="w-4 h-4" />
-          </motion.a>
-        </motion.div>
-      </motion.section>
-
-      {/* About */}
-      <motion.section
-        id="about"
-        className={`${sectionClass} py-24`}
-        initial="initial"
-        whileInView="whileInView"
-        viewport={{ once: true, margin: "-80px" }}
-        variants={staggerContainer}
-      >
-        <motion.h2
-          className="text-3xl sm:text-4xl font-medium text-white mb-6"
-          variants={staggerItem}
-        >
-          Solving real problems with purposeful, user-first thinking
-        </motion.h2>
-        <motion.p
-          className="text-white/70 text-lg max-w-2xl mb-8 leading-relaxed"
-          variants={staggerItem}
-        >
-          I&apos;m a software engineer who thrives on turning ambiguity into clarity. Whether it&apos;s building full-stack applications, 
-          integrating AI, or designing seamless user experiences, I approach each problem with empathy, curiosity, and a strong sense of craft — 
-          always putting users first and business goals in focus.
-        </motion.p>
-        <motion.button
-          onClick={handleResumeDownload}
-          disabled={!resume || loadingResume}
-          className="btn-green inline-flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
-          variants={staggerItem}
-          whileHover={{ scale: 1.03 }}
-          whileTap={{ scale: 0.98 }}
-        >
-          View Resume <ArrowUpRight className="w-4 h-4" />
-        </motion.button>
-      </motion.section>
-
-      {/* Education */}
-      <motion.section
-        id="education"
-        className={`${sectionClass} py-24`}
-        initial="initial"
-        whileInView="whileInView"
-        viewport={{ once: true, margin: "-80px" }}
-        variants={staggerContainer}
-      >
-        <motion.h2
-          className="text-3xl sm:text-4xl font-medium text-white mb-12"
-          variants={staggerItem}
-        >
-          Education
-        </motion.h2>
-        <motion.div
-          className="bg-white/5 border border-white/10 p-6 rounded-xl"
-          initial={{ opacity: 0, x: -16 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.4 }}
-          whileHover={{ y: -2 }}
-        >
-          <div className="flex flex-col sm:flex-row sm:justify-between gap-2 mb-2">
-            <h3 className="text-white font-medium text-lg">B.S. Computer Science</h3>
-            <span className="text-white/50 text-sm">Expected December 2026</span>
-          </div>
-          <p className="text-white/60 text-sm">University of Maryland, Baltimore County</p>
-        </motion.div>
-      </motion.section>
-
-      {/* Stack - tech icons marquee */}
-      <motion.section
-        id="stack"
-        className={`${sectionClass} py-24 border-t border-white/10 overflow-hidden`}
-        initial="initial"
-        whileInView="whileInView"
-        viewport={{ once: true, margin: "-80px" }}
-        variants={staggerContainer}
-      >
-        <motion.h2
-          className="text-3xl sm:text-4xl font-medium text-white mb-10"
-          variants={staggerItem}
-        >
-          What I work with
-        </motion.h2>
-        <motion.div
-          className="flex animate-marquee items-center gap-10 py-4"
-          variants={staggerItem}
-        >
-          {[...STACK_ICONS, ...STACK_ICONS].map(({ Icon }, i) => (
-            <span key={`stack-icon-${i}`} className="flex-shrink-0">
-              <Icon className="w-9 h-9 sm:w-10 sm:h-10 text-white/70" />
-            </span>
-          ))}
-        </motion.div>
-      </motion.section>
-
-      {/* Work Experience */}
-      <motion.section
-        id="work"
-        className={`${sectionClass} py-24`}
-        initial="initial"
-        whileInView="whileInView"
-        viewport={{ once: true, margin: "-80px" }}
-        variants={staggerContainer}
-      >
-        <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
-          <div>
-            <motion.h2
-              className="text-3xl sm:text-4xl font-medium text-white"
-              variants={staggerItem}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-white/90 text-sm mb-8 w-fit"
             >
-              And This Is My Work Experience
-            </motion.h2>
-          </div>
+              Hello, I&apos;m Fatin 👋
+            </motion.div>
+            <motion.h1
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="text-4xl sm:text-5xl md:text-6xl font-medium text-white leading-tight mb-6"
+            >
+              <span className="text-white">Software engineer</span>
+              <br />
+              <span className="text-white/60">crafting smart systems & modern solutions</span>
+            </motion.h1>
+            <motion.a
+              href="#contact"
+              onClick={(e) => { e.preventDefault(); document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" }); }}
+              className="btn-green inline-flex items-center gap-2 w-fit"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.4 }}
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.98 }}
+            >
+              Email me <ArrowUpRight className="w-4 h-4" />
+            </motion.a>
+          </motion.div>
+        </motion.section>
+
+        {/* About */}
+        <motion.section
+          id="about"
+          className={sectionClass}
+          initial="initial"
+          whileInView="whileInView"
+          viewport={{ once: true, margin: "-80px" }}
+          variants={staggerContainer}
+        >
+          <motion.h2
+            className="text-3xl sm:text-4xl font-medium text-white mb-6"
+            variants={staggerItem}
+          >
+            Solving real problems with purposeful, user-first thinking
+          </motion.h2>
+          <motion.p
+            className="text-white/70 text-lg max-w-2xl mb-8 leading-relaxed"
+            variants={staggerItem}
+          >
+            I&apos;m a software engineer who thrives on turning ambiguity into clarity. Whether it&apos;s building full-stack applications, 
+            integrating AI, or designing seamless user experiences, I approach each problem with empathy, curiosity, and a strong sense of craft — 
+            always putting users first and business goals in focus.
+          </motion.p>
           <motion.button
             onClick={handleResumeDownload}
             disabled={!resume || loadingResume}
-            className="btn-green inline-flex items-center gap-2 w-fit"
+            className="btn-green inline-flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
             variants={staggerItem}
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.98 }}
           >
             View Resume <ArrowUpRight className="w-4 h-4" />
           </motion.button>
-        </div>
-        <div className="mt-12 space-y-6">
-          {EXPERIENCE.map((job, idx) => (
-            <motion.div
-              key={job.role}
-              className="bg-white/5 border border-white/10 p-6 rounded-xl"
-              initial={{ opacity: 0, x: -16 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: idx * 0.1 }}
-              whileHover={{ y: -2 }}
-            >
-              <div className="flex flex-col sm:flex-row sm:justify-between gap-2 mb-2">
-                <h3 className="text-white font-medium text-lg">{job.role}</h3>
-                <span className="text-white/50 text-sm">{job.dates}</span>
-              </div>
-              <p className="text-white/60 text-sm mb-4">{job.org}</p>
-              <p className="text-white/70 leading-relaxed">{job.detail}</p>
-            </motion.div>
-          ))}
-        </div>
-      </motion.section>
+        </motion.section>
 
-      {/* Projects */}
-      <motion.section
-        id="projects"
-        className={`${sectionClass} py-24`}
-        initial="initial"
-        whileInView="whileInView"
-        viewport={{ once: true, margin: "-80px" }}
-        variants={staggerContainer}
-      >
-        <motion.h2
-          className="text-3xl sm:text-4xl font-medium text-white mb-12"
-          variants={staggerItem}
+        {/* Education */}
+        <motion.section
+          id="education"
+          className={sectionClass}
+          initial="initial"
+          whileInView="whileInView"
+          viewport={{ once: true, margin: "-80px" }}
+          variants={staggerContainer}
         >
-          My Latest Projects
-        </motion.h2>
-        {loadingProjects ? (
-          <p className="text-white/50">Loading projects...</p>
-        ) : projects.length === 0 ? (
-          <p className="text-white/50">No projects yet. Add some in the admin panel!</p>
-        ) : (
-          <div className="space-y-16">
-            {projects.map((project, idx) => (
-              <motion.div
-                key={idx}
-                className="grid md:grid-cols-2 gap-8 items-center"
-                initial={{ opacity: 0, y: 24 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: idx * 0.1 }}
+          <motion.h2
+            className="text-3xl sm:text-4xl font-medium text-white mb-12"
+            variants={staggerItem}
+          >
+            Education
+          </motion.h2>
+          <motion.div
+            className="bg-white/5 border border-white/10 p-6 rounded-xl"
+            initial={{ opacity: 0, x: -16 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.4 }}
+            whileHover={{ y: -2 }}
+          >
+            <div className="flex flex-col sm:flex-row sm:justify-between gap-2 mb-2">
+              <h3 className="text-white font-medium text-lg">B.S. Computer Science</h3>
+              <span className="text-white/50 text-sm">Expected December 2026</span>
+            </div>
+            <p className="text-white/60 text-sm">University of Maryland, Baltimore County</p>
+          </motion.div>
+        </motion.section>
+
+        {/* Stack - tech icons marquee */}
+        <motion.section
+          id="stack"
+          className={`${sectionClass} overflow-hidden`}
+          initial="initial"
+          whileInView="whileInView"
+          viewport={{ once: true, margin: "-80px" }}
+          variants={staggerContainer}
+        >
+          <motion.h2
+            className="text-3xl sm:text-4xl font-medium text-white mb-10"
+            variants={staggerItem}
+          >
+            What I work with
+          </motion.h2>
+          <motion.div
+            className="flex animate-marquee items-center gap-10 py-4"
+            variants={staggerItem}
+          >
+            {[...STACK_ICONS, ...STACK_ICONS].map(({ Icon }, i) => (
+              <span key={`stack-icon-${i}`} className="flex-shrink-0">
+                <Icon className="w-9 h-9 sm:w-10 sm:h-10 text-white/70" />
+              </span>
+            ))}
+          </motion.div>
+        </motion.section>
+
+        {/* Work Experience */}
+        <motion.section
+          id="work"
+          className={sectionClass}
+          initial="initial"
+          whileInView="whileInView"
+          viewport={{ once: true, margin: "-80px" }}
+          variants={staggerContainer}
+        >
+          <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+            <div>
+              <motion.h2
+                className="text-3xl sm:text-4xl font-medium text-white"
+                variants={staggerItem}
               >
-                <motion.div
-                  className="bg-white/5 border border-white/10 aspect-video rounded-xl flex items-center justify-center overflow-hidden"
-                  whileHover={{ scale: 1.02 }}
-                >
-                  <ProjectThumbnail src={project.photo} name={project.name} />
-                </motion.div>
-                <motion.div
-                  className="bg-white/5 border border-white/10 p-6 rounded-xl"
-                  whileHover={{ y: -4 }}
-                >
-                  <h3 className="text-xl font-medium text-white mb-3">{project.name}</h3>
-                  <ExpandableDescription
-                    text={project.description}
-                    className="text-white/70 leading-relaxed"
-                    lines={3}
-                  />
-                  <div className="flex flex-wrap gap-3">
-                    <a
-                      href={project.github}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 text-sm px-5 py-2.5 rounded-full border border-white/20 bg-white/5 text-white hover:bg-white/10 transition-colors"
-                    >
-                      <Github className="w-4 h-4" />
-                      GitHub
-                    </a>
-                    {project.live_url?.trim() ? (
-                      <a
-                        href={project.live_url.trim()}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="btn-green inline-flex items-center gap-2 text-sm px-5 py-2.5"
-                      >
-                        Live demo <ArrowUpRight className="w-4 h-4" />
-                      </a>
-                    ) : null}
-                  </div>
-                </motion.div>
+                And This Is My Work Experience
+              </motion.h2>
+            </div>
+            <motion.button
+              onClick={handleResumeDownload}
+              disabled={!resume || loadingResume}
+              className="btn-green inline-flex items-center gap-2 w-fit"
+              variants={staggerItem}
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.98 }}
+            >
+              View Resume <ArrowUpRight className="w-4 h-4" />
+            </motion.button>
+          </div>
+          <div className="mt-12 space-y-6">
+            {EXPERIENCE.map((job, idx) => (
+              <motion.div
+                key={job.role}
+                className="bg-white/5 border border-white/10 p-6 rounded-xl"
+                initial={{ opacity: 0, x: -16 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: idx * 0.1 }}
+                whileHover={{ y: -2 }}
+              >
+                <div className="flex flex-col sm:flex-row sm:justify-between gap-2 mb-2">
+                  <h3 className="text-white font-medium text-lg">{job.role}</h3>
+                  <span className="text-white/50 text-sm">{job.dates}</span>
+                </div>
+                <p className="text-white/60 text-sm mb-4">{job.org}</p>
+                <p className="text-white/70 leading-relaxed">{job.detail}</p>
               </motion.div>
             ))}
           </div>
-        )}
-      </motion.section>
+        </motion.section>
 
-      {/* Contact */}
-      <motion.section
-        id="contact"
-        className={`${sectionClass} py-24`}
-        initial="initial"
-        whileInView="whileInView"
-        viewport={{ once: true, margin: "-80px" }}
-        variants={staggerContainer}
-      >
-        <motion.h2
-          className="text-4xl sm:text-5xl font-medium text-white mb-4"
-          variants={staggerItem}
+        {/* Projects */}
+        <motion.section
+          id="projects"
+          className={sectionClass}
+          initial="initial"
+          whileInView="whileInView"
+          viewport={{ once: true, margin: "-80px" }}
+          variants={staggerContainer}
         >
-          Let&apos;s Get in Touch
-        </motion.h2>
-        <motion.p
-          className="text-white/70 text-lg mb-10"
-          variants={staggerItem}
-        >
-          Let&apos;s connect and start with your project ASAP.
-        </motion.p>
-        {contactSuccess && (
-          <div className="mb-6 p-4 rounded-lg bg-green-500/20 border border-green-500/30 flex items-center gap-3">
-            <CheckCircle className="w-5 h-5 text-green-400" />
-            <p className="text-green-400">Thank you! I&apos;ll get back soon.</p>
-          </div>
-        )}
-        {contactError && (
-          <div className="mb-6 p-4 rounded-lg bg-red-500/20 border border-red-500/30 flex items-center gap-3">
-            <AlertCircle className="w-5 h-5 text-red-400" />
-            <p className="text-red-400">{contactError}</p>
-          </div>
-        )}
-        <motion.form
-          onSubmit={handleContactSubmit}
-          className="bg-white/5 border border-white/10 max-w-lg space-y-4 p-8 rounded-2xl"
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-        >
-          <input
-            type="text"
-            name="name"
-            placeholder="Name"
-            value={formData.name}
-            onChange={(e) => setFormData((p) => ({ ...p, name: e.target.value }))}
-            required
-            className="w-full px-4 py-3 rounded-lg bg-white/5 border border-white/10 text-white placeholder-white/40 focus:outline-none focus:border-[#C8FF00]"
-          />
-          <input
-            type="email"
-            name="email"
-            placeholder="Email"
-            value={formData.email}
-            onChange={(e) => setFormData((p) => ({ ...p, email: e.target.value }))}
-            required
-            className="w-full px-4 py-3 rounded-lg bg-white/5 border border-white/10 text-white placeholder-white/40 focus:outline-none focus:border-[#C8FF00]"
-          />
-          <textarea
-            name="message"
-            placeholder="Message"
-            value={formData.message}
-            onChange={(e) => setFormData((p) => ({ ...p, message: e.target.value }))}
-            required
-            rows={4}
-            className="w-full px-4 py-3 rounded-lg bg-white/5 border border-white/10 text-white placeholder-white/40 focus:outline-none focus:border-[#C8FF00] resize-none"
-          />
-          <motion.button
-            type="submit"
-            disabled={formLoading}
-            className="btn-green inline-flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
+          <motion.h2
+            className="text-3xl sm:text-4xl font-medium text-white mb-12"
+            variants={staggerItem}
           >
-            {formLoading ? "Sending..." : "Drop me a message"} <Send className="w-4 h-4" />
-          </motion.button>
-        </motion.form>
-        <p className="text-white/50 mt-6 text-sm">
-          Or email me at{" "}
-          <a href="mailto:fatinm1@umbc.edu" className="text-[#C8FF00] hover:underline">
-            fatinm1@umbc.edu
-          </a>
-        </p>
-      </motion.section>
+            My Latest Projects
+          </motion.h2>
+          {loadingProjects ? (
+            <p className="text-white/50">Loading projects...</p>
+          ) : projects.length === 0 ? (
+            <p className="text-white/50">No projects yet. Add some in the admin panel!</p>
+          ) : (
+            <div className="space-y-16">
+              {projects.map((project, idx) => (
+                <motion.div
+                  key={idx}
+                  className="grid md:grid-cols-2 gap-8 items-center"
+                  initial={{ opacity: 0, y: 24 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: idx * 0.1 }}
+                >
+                  <motion.div
+                    className="bg-white/5 border border-white/10 aspect-video rounded-xl flex items-center justify-center overflow-hidden"
+                    whileHover={{ scale: 1.02 }}
+                  >
+                    <ProjectThumbnail src={project.photo} name={project.name} />
+                  </motion.div>
+                  <motion.div
+                    className="bg-white/5 border border-white/10 p-6 rounded-xl"
+                    whileHover={{ y: -4 }}
+                  >
+                    <h3 className="text-xl font-medium text-white mb-3">{project.name}</h3>
+                    <ExpandableDescription
+                      text={project.description}
+                      className="text-white/70 leading-relaxed"
+                      lines={3}
+                    />
+                    <div className="flex flex-wrap gap-3">
+                      <a
+                        href={project.github}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 text-sm px-5 py-2.5 rounded-full border border-white/20 bg-white/5 text-white hover:bg-white/10 transition-colors"
+                      >
+                        <Github className="w-4 h-4" />
+                        GitHub
+                      </a>
+                      {project.live_url?.trim() ? (
+                        <a
+                          href={project.live_url.trim()}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="btn-green inline-flex items-center gap-2 text-sm px-5 py-2.5"
+                        >
+                          Live demo <ArrowUpRight className="w-4 h-4" />
+                        </a>
+                      ) : null}
+                    </div>
+                  </motion.div>
+                </motion.div>
+              ))}
+            </div>
+          )}
+        </motion.section>
+
+        {/* Contact */}
+        <motion.section
+          id="contact"
+          className={sectionClass}
+          initial="initial"
+          whileInView="whileInView"
+          viewport={{ once: true, margin: "-80px" }}
+          variants={staggerContainer}
+        >
+          <motion.h2
+            className="text-4xl sm:text-5xl font-medium text-white mb-4"
+            variants={staggerItem}
+          >
+            Let&apos;s Get in Touch
+          </motion.h2>
+          <motion.p
+            className="text-white/70 text-lg mb-10"
+            variants={staggerItem}
+          >
+            Let&apos;s connect and start with your project ASAP.
+          </motion.p>
+          {contactSuccess && (
+            <div className="mb-6 p-4 rounded-lg bg-green-500/20 border border-green-500/30 flex items-center gap-3">
+              <CheckCircle className="w-5 h-5 text-green-400" />
+              <p className="text-green-400">Thank you! I&apos;ll get back soon.</p>
+            </div>
+          )}
+          {contactError && (
+            <div className="mb-6 p-4 rounded-lg bg-red-500/20 border border-red-500/30 flex items-center gap-3">
+              <AlertCircle className="w-5 h-5 text-red-400" />
+              <p className="text-red-400">{contactError}</p>
+            </div>
+          )}
+          <motion.form
+            onSubmit={handleContactSubmit}
+            className="bg-white/5 border border-white/10 max-w-lg space-y-4 p-8 rounded-2xl"
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+          >
+            <input
+              type="text"
+              name="name"
+              placeholder="Name"
+              value={formData.name}
+              onChange={(e) => setFormData((p) => ({ ...p, name: e.target.value }))}
+              required
+              className="w-full px-4 py-3 rounded-lg bg-white/5 border border-white/10 text-white placeholder-white/40 focus:outline-none focus:border-[#C8FF00]"
+            />
+            <input
+              type="email"
+              name="email"
+              placeholder="Email"
+              value={formData.email}
+              onChange={(e) => setFormData((p) => ({ ...p, email: e.target.value }))}
+              required
+              className="w-full px-4 py-3 rounded-lg bg-white/5 border border-white/10 text-white placeholder-white/40 focus:outline-none focus:border-[#C8FF00]"
+            />
+            <textarea
+              name="message"
+              placeholder="Message"
+              value={formData.message}
+              onChange={(e) => setFormData((p) => ({ ...p, message: e.target.value }))}
+              required
+              rows={4}
+              className="w-full px-4 py-3 rounded-lg bg-white/5 border border-white/10 text-white placeholder-white/40 focus:outline-none focus:border-[#C8FF00] resize-none"
+            />
+            <motion.button
+              type="submit"
+              disabled={formLoading}
+              className="btn-green inline-flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+            >
+              {formLoading ? "Sending..." : "Drop me a message"} <Send className="w-4 h-4" />
+            </motion.button>
+          </motion.form>
+          <p className="text-white/50 mt-6 text-sm">
+            Or email me at{" "}
+            <a href="mailto:fatinm1@umbc.edu" className="text-[#C8FF00] hover:underline">
+              fatinm1@umbc.edu
+            </a>
+          </p>
+        </motion.section>
+      </div>
 
       {/* Footer */}
-      <footer className="bg-[#111] border-t border-white/10 py-16 px-6 sm:px-10 mt-8">
+      <footer className="bg-[#111] border-t border-white/10 py-16 px-6 sm:px-10 mt-20">
         <div className="max-w-5xl mx-auto flex flex-col md:flex-row md:justify-between gap-12">
           <div>
             <h3 className="text-xl font-medium text-white mb-2">Fatin&apos;s Portfolio</h3>
