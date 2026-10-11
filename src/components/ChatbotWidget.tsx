@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { MessageCircle, X } from "lucide-react";
 
 interface Message {
@@ -11,8 +12,9 @@ interface Message {
 }
 
 const SUGGESTED_QUESTIONS = [
+  "What has Fatin built?",
+  "Tell me about the LLM Engine",
   "What are Fatin's skills?",
-  "Tell me about Fatin's projects",
   "How can I contact Fatin?",
 ];
 
@@ -23,14 +25,17 @@ export default function ChatbotWidget() {
   const [loading, setLoading] = useState(false);
   const [conversationHistory, setConversationHistory] = useState<{ role: "user" | "assistant"; content: string }[]>([]);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const toggleRef = useRef<HTMLButtonElement>(null);
   const [isClient, setIsClient] = useState(false);
+  const reduceMotion = useReducedMotion();
 
   useEffect(() => {
     setIsClient(true);
     setMessages([
       {
         id: "1",
-        text: "Hi! I'm Fatin's AI assistant. Ask me anything!",
+        text: "Hi! I'm Fatin's AI assistant. Ask me about his projects, experience or how to reach him.",
         isUser: false,
         timestamp: new Date(),
       },
@@ -38,8 +43,20 @@ export default function ChatbotWidget() {
   }, []);
 
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
+    messagesEndRef.current?.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "end" });
+  }, [messages, loading, isOpen, reduceMotion]);
+
+  useEffect(() => {
+    if (!isOpen) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setIsOpen(false);
+        toggleRef.current?.focus();
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [isOpen]);
 
   const sendMessage = async (messageText: string) => {
     if (!messageText.trim() || loading) return;
@@ -106,93 +123,124 @@ export default function ChatbotWidget() {
 
   if (!isClient) return null;
 
+  const hasAskedSomething = messages.some((m) => m.isUser);
+  const duration = reduceMotion ? 0 : 0.25;
+
   return (
     <>
       {/* Floating button */}
       <button
+        ref={toggleRef}
         onClick={() => setIsOpen(!isOpen)}
-        className="chatbot-fab fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-[#C8FF00] text-black shadow-lg hover:bg-[#C8FF00]/90 transition-all duration-300 hover:scale-110 flex items-center justify-center"
-        aria-label="Open chatbot"
+        aria-expanded={isOpen}
+        aria-controls="chatbot-panel"
+        aria-label={isOpen ? "Close chat" : "Open chat"}
+        className="chatbot-fab fixed bottom-5 right-5 z-50 flex h-[52px] w-[52px] items-center justify-center rounded-full bg-accent text-[#0a0a0a] transition-transform duration-300 ease-silk hover:scale-105"
       >
-        <MessageCircle className="w-7 h-7" />
+        {isOpen ? <X className="h-6 w-6" /> : <MessageCircle className="h-6 w-6" />}
       </button>
 
-      {/* Chat popup */}
-      {isOpen && (
-        <div className="fixed bottom-24 right-6 z-50 w-[380px] max-w-[calc(100vw-3rem)] h-[520px] flex flex-col bg-black/95 border border-white/10 rounded-2xl shadow-2xl overflow-hidden">
-          {/* Header */}
-          <div className="flex items-center justify-between px-4 py-3 border-b border-white/10 bg-white/5">
-            <span className="font-medium text-white">Chat with Fatin&apos;s AI</span>
-            <button
-              onClick={() => setIsOpen(false)}
-              className="p-1.5 rounded-lg hover:bg-white/10 text-white/70 hover:text-white transition-colors"
-              aria-label="Close"
-            >
-              <X className="w-5 h-5" />
-            </button>
-          </div>
-
-          {/* Messages */}
-          <div className="flex-1 overflow-y-auto p-4 space-y-3">
-            {messages.map((msg) => (
-              <div key={msg.id} className={`flex ${msg.isUser ? "justify-end" : "justify-start"}`}>
-                <div
-                  className={`max-w-[85%] px-3 py-2 rounded-lg text-sm ${
-                    msg.isUser ? "bg-[#C8FF00] text-black" : "bg-white/10 text-white"
-                  }`}
-                >
-                  {msg.text}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            id="chatbot-panel"
+            role="dialog"
+            aria-label="Chat with Fatin's AI assistant"
+            className="fixed bottom-[84px] right-4 z-50 flex h-[min(520px,calc(100dvh-120px))] w-[380px] max-w-[calc(100vw-2rem)] origin-bottom-right flex-col overflow-hidden rounded-2xl border border-[#26262b] bg-[#0a0a0d]/95 shadow-[0_24px_80px_rgba(0,0,0,.6)] backdrop-blur-md sm:right-5"
+            initial={{ opacity: 0, scale: 0.98, y: 8 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.98, y: 8 }}
+            transition={{ duration, ease: [0.16, 1, 0.3, 1] }}
+            onAnimationComplete={() => inputRef.current?.focus()}
+          >
+            {/* Header */}
+            <div className="flex items-center justify-between border-b border-border px-4 py-3">
+              <div className="flex items-center gap-2.5">
+                <span className="h-2 w-2 rounded-full bg-accent shadow-[0_0_12px_var(--accent)]" aria-hidden="true" />
+                <div className="flex flex-col">
+                  <span className="text-sm font-semibold text-foreground">Ask about Fatin</span>
+                  <span className="font-mono text-[11px] text-faint">AI assistant</span>
                 </div>
               </div>
-            ))}
-            {loading && (
-              <div className="flex justify-start">
-                <div className="bg-white/10 px-3 py-2 rounded-lg flex gap-1">
-                  <span className="w-2 h-2 bg-white rounded-full animate-bounce" />
-                  <span className="w-2 h-2 bg-white rounded-full animate-bounce" style={{ animationDelay: "0.1s" }} />
-                  <span className="w-2 h-2 bg-white rounded-full animate-bounce" style={{ animationDelay: "0.2s" }} />
-                </div>
-              </div>
-            )}
-            <div ref={messagesEndRef} />
-          </div>
-
-          {/* Suggested questions */}
-          <div className="px-4 pb-2 flex gap-2 overflow-x-auto">
-            {SUGGESTED_QUESTIONS.map((q, i) => (
               <button
-                key={i}
-                onClick={() => sendMessage(q)}
-                disabled={loading}
-                className="shrink-0 px-3 py-1.5 rounded-full bg-white/5 text-white/80 text-xs hover:bg-white/10 transition-colors disabled:opacity-50"
+                onClick={() => {
+                  setIsOpen(false);
+                  toggleRef.current?.focus();
+                }}
+                className="rounded-lg p-1.5 text-muted transition-colors hover:bg-white/[.06] hover:text-foreground"
+                aria-label="Close chat"
               >
-                {q}
-              </button>
-            ))}
-          </div>
-
-          {/* Input */}
-          <form onSubmit={handleSubmit} className="p-4 border-t border-white/10">
-            <div className="flex gap-2">
-              <input
-                type="text"
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                placeholder="Type your question..."
-                className="flex-1 rounded-lg px-4 py-2.5 bg-white/10 border border-white/20 text-white text-sm placeholder-white/40 focus:outline-none focus:border-[#C8FF00]"
-                disabled={loading}
-              />
-              <button
-                type="submit"
-                disabled={loading || !input.trim()}
-                className="btn-green text-sm px-4 disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                Send
+                <X className="h-4 w-4" />
               </button>
             </div>
-          </form>
-        </div>
-      )}
+
+            {/* Messages */}
+            <div className="flex-1 space-y-3 overflow-y-auto p-4" aria-live="polite">
+              {messages.map((msg) => (
+                <div key={msg.id} className={`flex ${msg.isUser ? "justify-end" : "justify-start"}`}>
+                  <div
+                    className={`max-w-[85%] whitespace-pre-line px-3.5 py-2.5 text-sm leading-[1.55] ${
+                      msg.isUser
+                        ? "rounded-2xl rounded-br-md bg-accent text-[#0a0a0a]"
+                        : "rounded-2xl rounded-bl-md border border-border bg-white/[.04] text-foreground/90"
+                    }`}
+                  >
+                    {msg.text}
+                  </div>
+                </div>
+              ))}
+              {loading && (
+                <div className="flex justify-start" aria-label="Assistant is typing">
+                  <div className="flex gap-1 rounded-2xl rounded-bl-md border border-border bg-white/[.04] px-3.5 py-3">
+                    <span className="h-1.5 w-1.5 rounded-full bg-muted motion-safe:animate-bounce" />
+                    <span className="h-1.5 w-1.5 rounded-full bg-muted motion-safe:animate-bounce [animation-delay:.1s]" />
+                    <span className="h-1.5 w-1.5 rounded-full bg-muted motion-safe:animate-bounce [animation-delay:.2s]" />
+                  </div>
+                </div>
+              )}
+              {!hasAskedSomething && (
+                <div className="flex flex-wrap gap-2 pt-1">
+                  {SUGGESTED_QUESTIONS.map((q) => (
+                    <button
+                      key={q}
+                      onClick={() => sendMessage(q)}
+                      disabled={loading}
+                      className="rounded-full border border-[#26262b] bg-white/[.02] px-3 py-1.5 text-xs text-muted transition-colors hover:border-[#3a3a42] hover:text-foreground disabled:opacity-50"
+                    >
+                      {q}
+                    </button>
+                  ))}
+                </div>
+              )}
+              <div ref={messagesEndRef} />
+            </div>
+
+            {/* Input */}
+            <form onSubmit={handleSubmit} className="border-t border-border p-3">
+              <div className="flex gap-2">
+                <input
+                  ref={inputRef}
+                  type="text"
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  placeholder="Ask a question..."
+                  aria-label="Your question"
+                  maxLength={1000}
+                  className="flex-1 rounded-xl border border-border bg-white/[.03] px-3.5 py-2.5 text-sm text-foreground placeholder:text-faint focus:border-accent focus:outline-none"
+                  disabled={loading}
+                />
+                <button
+                  type="submit"
+                  disabled={loading || !input.trim()}
+                  className="rounded-xl bg-accent px-4 text-sm font-medium text-[#0a0a0a] transition-opacity disabled:cursor-not-allowed disabled:opacity-40"
+                >
+                  Send
+                </button>
+              </div>
+            </form>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 }
