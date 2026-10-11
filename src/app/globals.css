@@ -245,8 +245,8 @@ a:hover .silk-arrow, .silk-pill:hover .silk-arrow { transform: translate(3px, -3
   animation: silk-ping 2s cubic-bezier(0, 0, .2, 1) infinite;
 }
 
-/* Tech marquee: duplicated list slides -50% */
-.silk-marquee { display: flex; gap: 36px; width: max-content; animation: silk-slide 30s linear infinite; }
+/* Tech marquee: two identical halves slide -50% for a seamless loop */
+.silk-marquee { display: flex; width: max-content; animation: silk-slide 30s linear infinite; }
 
 /* Writing card: border turns into a lime to indigo gradient on hover */
 .silk-glowborder { position: relative; border-radius: 18px; padding: 1px; background: var(--border); transition: background .5s var(--ease); }
@@ -267,8 +267,10 @@ a:hover .silk-arrow, .silk-pill:hover .silk-arrow { transform: translate(3px, -3
   .silk-swap > span, .silk-pill, .silk-primary::after, .silk-arrow, .silk-soft, .silk-thumb,
   .silk-glowborder, .silk-acc, .silk-chev { transition: none; }
   /* Show the stack as a static, wrapping list instead of scrolling it */
-  .silk-marquee { animation: none; flex-wrap: wrap; width: auto; row-gap: 8px; }
+  .silk-marquee { animation: none; width: auto; }
   .silk-marquee [data-duplicate] { display: none; }
+  /* Scroll reveals (framer-motion): force the final, visible state */
+  [data-reveal] { opacity: 1 !important; transform: none !important; filter: none !important; }
 }
 
 /* Chatbot floating button pulse */

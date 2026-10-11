@@ -1,141 +1,38 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import Link from "next/link";
-import { ArrowUpRight, Github } from "lucide-react";
-import { ExpandableDescription } from "@/components/ExpandableDescription";
-import { ProjectThumbnail } from "@/components/ProjectThumbnail";
-
-interface Project {
-  name: string;
-  description: string;
-  technologies: string[];
-  github: string;
-  photo?: string;
-  live_url?: string | null;
-  tags?: string[];
-}
+import SilkBackground from "@/components/SilkBackground";
+import {
+  FeaturedProjectCard,
+  ProjectGrid,
+  ProjectsSkeleton,
+  splitFeatured,
+  useProjects,
+} from "@/components/ProjectShowcase";
 
 export default function ProjectsPage() {
-  const [projects, setProjects] = useState<Project[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    fetch("/api/projects")
-      .then((res) => {
-        if (!res.ok) throw new Error("Failed to fetch projects");
-        return res.json();
-      })
-      .then((data) => {
-        setProjects(Array.isArray(data) ? data : []);
-        setLoading(false);
-      })
-      .catch((err) => {
-        setError(err.message);
-        setLoading(false);
-      });
-  }, []);
-
-  if (loading) {
-    return (
-      <div className="max-w-6xl mx-auto py-16 px-6 sm:px-10">
-        <div className="text-white/60">Loading...</div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="max-w-6xl mx-auto py-16 px-6 sm:px-10">
-        <div className="text-red-400">Error: {error}</div>
-      </div>
-    );
-  }
+  const state = useProjects();
+  const { featured, rest } = splitFeatured(state.status === "ready" ? state.projects : []);
 
   return (
-    <div className="max-w-6xl mx-auto py-16 px-6 sm:px-10">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-12">
-        <h1 className="text-4xl sm:text-5xl font-medium text-white">Works</h1>
-        <Link 
-          href="/projects" 
-          className="text-[#C8FF00] hover:text-[#C8FF00]/80 transition-colors flex items-center gap-1 text-sm font-medium tracking-wide"
-        >
-          VIEW ALL PROJECTS <ArrowUpRight className="w-4 h-4" />
-        </Link>
+    <>
+      <SilkBackground />
+      <div className="content-column pt-20">
+        <section className="flex flex-col gap-3.5">
+          <h1 className="silk-up m-0 mb-4 text-[clamp(30px,4vw,40px)] font-semibold tracking-[-0.04em]">Projects</h1>
+          {state.status === "loading" ? (
+            <ProjectsSkeleton />
+          ) : state.status === "error" ? (
+            <p className="text-sm text-muted">Projects are unavailable right now. Please check back soon.</p>
+          ) : !featured ? (
+            <p className="text-sm text-muted">No projects yet.</p>
+          ) : (
+            <>
+              <FeaturedProjectCard project={featured} />
+              {rest.length > 0 ? <ProjectGrid projects={rest} /> : null}
+            </>
+          )}
+        </section>
       </div>
-
-      {/* Projects Grid */}
-      {projects.length === 0 ? (
-        <div className="text-white/60 text-center py-20">
-          No projects found. Add some projects in the admin panel to get started!
-        </div>
-      ) : (
-        <div className="grid gap-8 grid-cols-1 md:grid-cols-2">
-          {projects.map((project, idx) => (
-            <div
-              key={idx}
-              className="bg-white/5 border border-white/10 p-6 rounded-xl hover:border-[#C8FF00]/20 transition-colors h-full flex flex-col"
-            >
-              <a
-                href={project.github}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group block"
-              >
-                <div className="aspect-video bg-white/5 rounded-lg mb-4 flex items-center justify-center overflow-hidden">
-                  <ProjectThumbnail src={project.photo} name={project.name} />
-                </div>
-                <div className="flex items-start justify-between gap-2 mb-2">
-                  <h2 className="font-medium text-xl text-white group-hover:text-[#C8FF00] transition-colors flex-1">
-                    {project.name}
-                  </h2>
-                  <ArrowUpRight className="w-5 h-5 text-[#C8FF00] shrink-0 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-                </div>
-              </a>
-              <ExpandableDescription
-                text={project.description}
-                className="text-white/70 text-sm leading-relaxed"
-                lines={2}
-              />
-              <div className="flex flex-wrap gap-2 mb-3">
-                <a
-                  href={project.github}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 text-xs px-4 py-2 rounded-full border border-white/20 bg-white/5 text-white hover:bg-white/10 transition-colors"
-                >
-                  <Github className="w-3.5 h-3.5" />
-                  GitHub
-                </a>
-                {project.live_url?.trim() ? (
-                  <a
-                    href={project.live_url.trim()}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="btn-green inline-flex items-center gap-2 text-xs px-4 py-2"
-                  >
-                    Live demo <ArrowUpRight className="w-3.5 h-3.5" />
-                  </a>
-                ) : null}
-              </div>
-              <div className="flex flex-wrap gap-2 text-xs mb-3">
-                {project.tags?.slice(0, 3).map((tag) => (
-                  <span key={tag} className="px-2 py-1 rounded bg-[#C8FF00]/10 text-[#C8FF00]/90">
-                    {tag}
-                  </span>
-                ))}
-              </div>
-              {project.technologies && project.technologies.length > 0 && (
-                <div className="flex flex-wrap gap-2 text-xs text-white/50 mt-auto">
-                  {project.technologies.slice(0, 4).join(" • ")}
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
-      )}
-    </div>
+    </>
   );
 }
