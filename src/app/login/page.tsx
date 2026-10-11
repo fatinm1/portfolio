@@ -44,13 +44,13 @@ export default function LoginPage() {
   return (
     <div className="max-w-md mx-auto py-12 px-4">
       <h1 className="text-3xl font-medium mb-8 text-center">Admin Login</h1>
-      <div className="bg-white/5 border border-white/10 p-6 rounded-xl">
+      <div className="bg-white/[.02] border border-border p-6 rounded-xl">
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div>
             <label className="block text-sm font-medium mb-2">Username</label>
             <input
               {...register("username", { required: "Username is required" })}
-              className="w-full rounded-lg px-4 py-2 bg-white/10 border border-white/20 text-white focus:outline-none focus:border-[#C8FF00]"
+              className="w-full rounded-lg px-4 py-2 bg-white/[.03] border border-border text-foreground focus:outline-none focus:border-accent"
               placeholder="Enter username"
             />
             {errors.username && <p className="text-red-400 text-sm mt-1">{errors.username.message}</p>}
@@ -61,7 +61,7 @@ export default function LoginPage() {
             <input
               type="password"
               {...register("password", { required: "Password is required" })}
-              className="w-full rounded-lg px-4 py-2 bg-white/10 border border-white/20 text-white focus:outline-none focus:border-[#C8FF00]"
+              className="w-full rounded-lg px-4 py-2 bg-white/[.03] border border-border text-foreground focus:outline-none focus:border-accent"
               placeholder="Enter password"
             />
             {errors.password && <p className="text-red-400 text-sm mt-1">{errors.password.message}</p>}

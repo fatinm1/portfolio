@@ -345,7 +345,7 @@ export default function AdminPage() {
         <h1 className="text-3xl font-medium">Admin Dashboard</h1>
         <button
           onClick={handleLogout}
-          className="px-4 py-2 rounded-lg bg-red-500 text-white font-medium shadow hover:bg-red-400 transition-colors"
+          className="px-4 py-2 rounded-lg border border-red-500/30 bg-red-500/10 text-red-400 font-medium hover:bg-red-500/20 transition-colors"
         >
           Logout
         </button>
@@ -353,7 +353,7 @@ export default function AdminPage() {
       
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
         {/* Add/Edit Project Section */}
-        <div className="bg-white/5 border border-white/10 p-6 rounded-xl">
+        <div className="bg-white/[.02] border border-border p-6 rounded-xl">
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-xl font-medium">
               {editingProject ? 'Edit Project' : 'Add New Project'}
@@ -371,7 +371,7 @@ export default function AdminPage() {
           
           {message && (
             <div className={`mb-4 p-3 rounded-lg text-center ${
-              message.includes('successfully') ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400'
+              message.includes('successfully') ? 'bg-success/10 text-success' : 'bg-red-500/20 text-red-400'
             }`}>
               {message}
             </div>
@@ -382,7 +382,7 @@ export default function AdminPage() {
               <label className="block text-sm font-medium mb-2">Project Name *</label>
               <input
                 {...register("name", { required: "Project name is required" })}
-                className="w-full rounded-lg px-4 py-2 bg-white/10 border border-white/20 text-white focus:outline-none focus:border-cyan-400"
+                className="w-full rounded-lg px-4 py-2 bg-white/[.03] border border-border text-foreground focus:outline-none focus:border-accent"
                 placeholder="Enter project name"
               />
               {errors.name && <p className="text-red-400 text-sm mt-1">{errors.name.message}</p>}
@@ -393,7 +393,7 @@ export default function AdminPage() {
               <textarea
                 {...register("description", { required: "Description is required" })}
                 rows={3}
-                className="w-full rounded-lg px-4 py-2 bg-white/10 border border-white/20 text-white focus:outline-none focus:border-cyan-400"
+                className="w-full rounded-lg px-4 py-2 bg-white/[.03] border border-border text-foreground focus:outline-none focus:border-accent"
                 placeholder="Enter project description"
               />
               {errors.description && <p className="text-red-400 text-sm mt-1">{errors.description.message}</p>}
@@ -403,7 +403,7 @@ export default function AdminPage() {
               <label className="block text-sm font-medium mb-2">Technologies *</label>
               <input
                 {...register("technologies", { required: "Technologies are required" })}
-                className="w-full rounded-lg px-4 py-2 bg-white/10 border border-white/20 text-white focus:outline-none focus:border-cyan-400"
+                className="w-full rounded-lg px-4 py-2 bg-white/[.03] border border-border text-foreground focus:outline-none focus:border-accent"
                 placeholder="React, Node.js, MongoDB (comma-separated)"
               />
               {errors.technologies && <p className="text-red-400 text-sm mt-1">{errors.technologies.message}</p>}
@@ -413,22 +413,22 @@ export default function AdminPage() {
               <label className="block text-sm font-medium mb-2">GitHub Link *</label>
               <input
                 {...register("github", { required: "GitHub link is required" })}
-                className="w-full rounded-lg px-4 py-2 bg-white/10 border border-white/20 text-white focus:outline-none focus:border-cyan-400"
+                className="w-full rounded-lg px-4 py-2 bg-white/[.03] border border-border text-foreground focus:outline-none focus:border-accent"
                 placeholder="https://github.com/username/project"
               />
               {errors.github && <p className="text-red-400 text-sm mt-1">{errors.github.message}</p>}
             </div>
 
-            <div className="rounded-lg border border-white/15 p-4 space-y-3">
+            <div className="rounded-lg border border-border p-4 space-y-3">
               <label className="flex items-center gap-3 cursor-pointer">
                 <input
                   type="checkbox"
                   {...register("hasLiveDemo")}
-                  className="rounded border-white/30 bg-white/10 w-4 h-4"
+                  className="rounded border-[#3a3a42] bg-white/[.03] w-4 h-4"
                 />
-                <span className="text-sm font-medium text-white">Project is deployed (show Live demo)</span>
+                <span className="text-sm font-medium text-foreground">Project is deployed (show Live demo)</span>
               </label>
-              <p className="text-xs text-white/50">
+              <p className="text-xs text-faint">
                 Turn on only if the app is hosted online. Leave off for repos-only projects — visitors will only see GitHub.
               </p>
               {hasLiveDemoWatch && (
@@ -436,7 +436,7 @@ export default function AdminPage() {
                   <label className="block text-sm font-medium mb-2">Live demo URL *</label>
                   <input
                     {...register("liveUrl")}
-                    className="w-full rounded-lg px-4 py-2 bg-white/10 border border-white/20 text-white focus:outline-none focus:border-cyan-400"
+                    className="w-full rounded-lg px-4 py-2 bg-white/[.03] border border-border text-foreground focus:outline-none focus:border-accent"
                     placeholder="https://my-app.vercel.app"
                   />
                 </div>
@@ -451,15 +451,15 @@ export default function AdminPage() {
                   accept="image/*"
                   onChange={handleFileUpload}
                   disabled={uploadingFile}
-                  className="w-full rounded-lg px-4 py-2 bg-white/10 border border-white/20 text-white focus:outline-none focus:border-cyan-400"
+                  className="w-full rounded-lg px-4 py-2 bg-white/[.03] border border-border text-foreground focus:outline-none focus:border-accent"
                 />
                 <input
                   {...register("photo")}
-                  className="w-full rounded-lg px-4 py-2 bg-white/10 border border-white/20 text-white focus:outline-none focus:border-cyan-400"
+                  className="w-full rounded-lg px-4 py-2 bg-white/[.03] border border-border text-foreground focus:outline-none focus:border-accent"
                   placeholder="Or paste image URL (https://...)"
                 />
                 {uploadedFile && (
-                  <p className="text-green-400 text-sm">File uploaded: {uploadedFile}</p>
+                  <p className="text-success text-sm">File uploaded: {uploadedFile}</p>
                 )}
               </div>
             </div>
@@ -468,7 +468,7 @@ export default function AdminPage() {
               <label className="block text-sm font-medium mb-2">Tags</label>
               <input
                 {...register("tags")}
-                className="w-full rounded-lg px-4 py-2 bg-white/10 border border-white/20 text-white focus:outline-none focus:border-cyan-400"
+                className="w-full rounded-lg px-4 py-2 bg-white/[.03] border border-border text-foreground focus:outline-none focus:border-accent"
                 placeholder="Web, AI, Mobile (comma-separated)"
               />
             </div>
@@ -479,7 +479,7 @@ export default function AdminPage() {
                 {...register("status")}
                 list="project-status-options"
                 maxLength={50}
-                className="w-full rounded-lg px-4 py-2 bg-white/10 border border-white/20 text-white focus:outline-none focus:border-cyan-400"
+                className="w-full rounded-lg px-4 py-2 bg-white/[.03] border border-border text-foreground focus:outline-none focus:border-accent"
                 placeholder="Live, Open source, Prototype, Team of 4 (optional)"
               />
               <datalist id="project-status-options">
@@ -494,9 +494,9 @@ export default function AdminPage() {
               <input
                 type="checkbox"
                 {...register("featured")}
-                className="rounded border-white/30 bg-white/10 w-4 h-4"
+                className="rounded border-[#3a3a42] bg-white/[.03] w-4 h-4"
               />
-              <span className="text-sm font-medium text-white">Featured on homepage (replaces the current featured project)</span>
+              <span className="text-sm font-medium text-foreground">Featured on homepage (replaces the current featured project)</span>
             </label>
 
             <button
@@ -510,7 +510,7 @@ export default function AdminPage() {
         </div>
 
         {/* Project Management Section */}
-        <div className="bg-white/5 border border-white/10 p-6 rounded-xl">
+        <div className="bg-white/[.02] border border-border p-6 rounded-xl">
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-xl font-medium">Project Management</h2>
             <button
@@ -520,7 +520,7 @@ export default function AdminPage() {
                 }
                 setShowProjects(!showProjects);
               }}
-              className="flex items-center gap-2 px-4 py-2 rounded-lg bg-cyan-500/20 text-cyan-400 hover:bg-cyan-500/30 transition-colors"
+              className="flex items-center gap-2 px-4 py-2 rounded-lg bg-accent/10 text-accent hover:bg-accent/20 transition-colors"
             >
               {showProjects ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
               {showProjects ? 'Hide' : 'View'} Projects
@@ -531,22 +531,22 @@ export default function AdminPage() {
             <div className="space-y-4 max-h-96 overflow-y-auto">
               {loadingProjects ? (
                 <div className="text-center py-8">
-                  <div className="w-6 h-6 border-2 border-cyan-400 border-t-transparent rounded-full animate-spin mx-auto mb-2"></div>
-                  <p className="text-white/60">Loading projects...</p>
+                  <div className="w-6 h-6 border-2 border-accent border-t-transparent rounded-full animate-spin mx-auto mb-2"></div>
+                  <p className="text-muted">Loading projects...</p>
                 </div>
               ) : projects.length === 0 ? (
                 <div className="text-center py-8">
-                  <p className="text-white/60">No projects yet</p>
+                  <p className="text-muted">No projects yet</p>
                 </div>
               ) : (
                 projects.map((project) => (
-                  <div key={project.id} className="p-4 rounded-lg bg-white/5 border border-white/10">
+                  <div key={project.id} className="p-4 rounded-lg bg-white/[.02] border border-border">
                     <div className="flex justify-between items-start mb-2">
-                      <h3 className="font-medium text-white">{project.name}</h3>
+                      <h3 className="font-medium text-foreground">{project.name}</h3>
                       <div className="flex gap-2">
                         <button
                           onClick={() => handleEditProject(project)}
-                          className="flex items-center gap-1 px-2 py-1 rounded-lg bg-cyan-500/20 text-cyan-400 hover:bg-cyan-500/30 transition-colors text-sm"
+                          className="flex items-center gap-1 px-2 py-1 rounded-lg bg-accent/10 text-accent hover:bg-accent/20 transition-colors text-sm"
                         >
                           <Edit className="w-3 h-3" />
                           Edit
@@ -561,13 +561,13 @@ export default function AdminPage() {
                         </button>
                       </div>
                     </div>
-                    <p className="text-white/80 text-sm mb-2 line-clamp-2">{project.description}</p>
+                    <p className="text-foreground/80 text-sm mb-2 line-clamp-2">{project.description}</p>
                     <div className="flex flex-wrap gap-1 mb-2">
                       {project.technologies?.slice(0, 3).map((tech, index) => (
-                        <span key={index} className="bg-blue-600/30 px-2 py-1 rounded text-xs">{tech}</span>
+                        <span key={index} className="bg-white/[.06] px-2 py-1 rounded text-xs">{tech}</span>
                       ))}
                       {project.technologies && project.technologies.length > 3 && (
-                        <span className="bg-gray-600/30 px-2 py-1 rounded text-xs">+{project.technologies.length - 3} more</span>
+                        <span className="bg-white/[.04] px-2 py-1 rounded text-xs">+{project.technologies.length - 3} more</span>
                       )}
                     </div>
                   </div>
@@ -578,60 +578,60 @@ export default function AdminPage() {
         </div>
 
         {/* Resume Management Section */}
-        <div className="bg-white/5 border border-white/10 p-6 rounded-xl">
+        <div className="bg-white/[.02] border border-border p-6 rounded-xl">
           <h2 className="text-xl font-medium mb-6">Resume Management</h2>
           
           <div className="space-y-4">
             {/* Current Resume */}
-            <div className="p-4 rounded-lg bg-white/5 border border-white/10">
-              <h3 className="font-medium text-white mb-2">Current Resume</h3>
+            <div className="p-4 rounded-lg bg-white/[.02] border border-border">
+              <h3 className="font-medium text-foreground mb-2">Current Resume</h3>
               {loadingResume ? (
                 <div className="flex items-center gap-2">
-                  <div className="w-4 h-4 border-2 border-cyan-400 border-t-transparent rounded-full animate-spin"></div>
-                  <p className="text-white/60 text-sm">Loading...</p>
+                  <div className="w-4 h-4 border-2 border-accent border-t-transparent rounded-full animate-spin"></div>
+                  <p className="text-muted text-sm">Loading...</p>
                 </div>
               ) : currentResume ? (
                 <div className="space-y-2">
                   <div className="flex items-center gap-2">
-                    <FileText className="w-4 h-4 text-cyan-400" />
-                    <span className="text-white/80 text-sm">{currentResume.filename}</span>
+                    <FileText className="w-4 h-4 text-accent" />
+                    <span className="text-foreground/80 text-sm">{currentResume.filename}</span>
                   </div>
-                  <p className="text-white/60 text-xs">
+                  <p className="text-muted text-xs">
                     Uploaded: {new Date(currentResume.uploaded_at).toLocaleDateString()}
                   </p>
                   <a
                     href={currentResume.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-cyan-500/20 text-cyan-400 text-sm hover:bg-cyan-500/30 transition-colors"
+                    className="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-accent/10 text-accent text-sm hover:bg-accent/20 transition-colors"
                   >
                     <Download className="w-3 h-3" />
                     View
                   </a>
                 </div>
               ) : (
-                <p className="text-white/60 text-sm">No resume uploaded</p>
+                <p className="text-muted text-sm">No resume uploaded</p>
               )}
             </div>
 
             {/* Upload New Resume */}
-            <div className="p-4 rounded-lg bg-white/5 border border-white/10">
-              <h3 className="font-medium text-white mb-2">Upload New Resume</h3>
+            <div className="p-4 rounded-lg bg-white/[.02] border border-border">
+              <h3 className="font-medium text-foreground mb-2">Upload New Resume</h3>
               <div className="space-y-2">
                 <input
                   type="file"
                   accept=".pdf"
                   onChange={handleResumeUpload}
                   disabled={uploadingResume}
-                  className="w-full rounded-lg px-4 py-2 bg-white/10 border border-white/20 text-white focus:outline-none focus:border-cyan-400"
+                  className="w-full rounded-lg px-4 py-2 bg-white/[.03] border border-border text-foreground focus:outline-none focus:border-accent"
                 />
-                <p className="text-white/60 text-xs">
+                <p className="text-muted text-xs">
                   Only PDF files, max 10MB. New upload will replace current resume.
                 </p>
                 {uploadingResume && (
                   <div className="flex items-center gap-2">
-                    <div className="w-4 h-4 border-2 border-cyan-400 border-t-transparent rounded-full animate-spin"></div>
-                    <p className="text-cyan-400 text-sm">Uploading...</p>
+                    <div className="w-4 h-4 border-2 border-accent border-t-transparent rounded-full animate-spin"></div>
+                    <p className="text-accent text-sm">Uploading...</p>
                   </div>
                 )}
               </div>
@@ -640,7 +640,7 @@ export default function AdminPage() {
         </div>
 
         {/* Contact Messages Section */}
-        <div className="bg-white/5 border border-white/10 p-6 rounded-xl">
+        <div className="bg-white/[.02] border border-border p-6 rounded-xl">
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-xl font-medium">Contact Messages</h2>
             <button
@@ -650,7 +650,7 @@ export default function AdminPage() {
                 }
                 setShowContacts(!showContacts);
               }}
-              className="flex items-center gap-2 px-4 py-2 rounded-lg bg-cyan-500/20 text-cyan-400 hover:bg-cyan-500/30 transition-colors"
+              className="flex items-center gap-2 px-4 py-2 rounded-lg bg-accent/10 text-accent hover:bg-accent/20 transition-colors"
             >
               {showContacts ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
               {showContacts ? 'Hide' : 'View'} Messages
@@ -661,25 +661,25 @@ export default function AdminPage() {
             <div className="space-y-4 max-h-96 overflow-y-auto">
               {loadingContacts ? (
                 <div className="text-center py-8">
-                  <div className="w-6 h-6 border-2 border-cyan-400 border-t-transparent rounded-full animate-spin mx-auto mb-2"></div>
-                  <p className="text-white/60">Loading messages...</p>
+                  <div className="w-6 h-6 border-2 border-accent border-t-transparent rounded-full animate-spin mx-auto mb-2"></div>
+                  <p className="text-muted">Loading messages...</p>
                 </div>
               ) : contacts.length === 0 ? (
                 <div className="text-center py-8">
-                  <Mail className="w-8 h-8 text-white/40 mx-auto mb-2" />
-                  <p className="text-white/60">No messages yet</p>
+                  <Mail className="w-8 h-8 text-faint mx-auto mb-2" />
+                  <p className="text-muted">No messages yet</p>
                 </div>
               ) : (
                 contacts.map((contact) => (
-                  <div key={contact.id} className="p-4 rounded-lg bg-white/5 border border-white/10">
+                  <div key={contact.id} className="p-4 rounded-lg bg-white/[.02] border border-border">
                     <div className="flex justify-between items-start mb-2">
-                      <h3 className="font-medium text-white">{contact.name}</h3>
-                      <span className="text-xs text-white/60">
+                      <h3 className="font-medium text-foreground">{contact.name}</h3>
+                      <span className="text-xs text-muted">
                         {new Date(contact.created_at).toLocaleDateString()}
                       </span>
                     </div>
-                    <p className="text-cyan-400 text-sm mb-2">{contact.email}</p>
-                    <p className="text-white/80 text-sm">{contact.message}</p>
+                    <p className="text-accent text-sm mb-2">{contact.email}</p>
+                    <p className="text-foreground/80 text-sm">{contact.message}</p>
                   </div>
                 ))
               )}

@@ -149,14 +149,14 @@ export default function ChatbotPage() {
     return (
       <div className="max-w-4xl mx-auto py-12 px-4">
         <h1 className="text-3xl font-medium mb-8 text-center">AI Chatbot</h1>
-        <div className="bg-white/5 border border-white/10 p-6 rounded-xl min-h-[600px] flex items-center justify-center">
+        <div className="bg-white/[.02] border border-border p-6 rounded-xl min-h-[600px] flex items-center justify-center">
           <div className="text-center">
             <div className="flex space-x-1 mb-4">
-              <div className="w-2 h-2 bg-[#C8FF00] rounded-full animate-bounce"></div>
-              <div className="w-2 h-2 bg-[#C8FF00] rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
-              <div className="w-2 h-2 bg-[#C8FF00] rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+              <div className="w-2 h-2 bg-accent rounded-full animate-bounce"></div>
+              <div className="w-2 h-2 bg-accent rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
+              <div className="w-2 h-2 bg-accent rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
             </div>
-            <p className="text-white/70">Loading chatbot...</p>
+            <p className="text-muted">Loading chatbot...</p>
           </div>
         </div>
       </div>
@@ -170,9 +170,9 @@ export default function ChatbotPage() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Chat Interface */}
         <div className="lg:col-span-2">
-          <div className="bg-white/5 border border-white/10 p-6 rounded-xl min-h-[600px] flex flex-col">
+          <div className="bg-white/[.02] border border-border p-6 rounded-xl min-h-[600px] flex flex-col">
             {/* Chat Header */}
-            <div className="flex justify-between items-center mb-4 pb-4 border-b border-white/20">
+            <div className="flex justify-between items-center mb-4 pb-4 border-b border-border">
               <h2 className="text-xl font-medium">Chat with Fatin's AI</h2>
               <button
                 onClick={clearChat}
@@ -192,8 +192,8 @@ export default function ChatbotPage() {
                   <div
                     className={`max-w-[80%] px-4 py-2 rounded-lg ${
                       message.isUser
-                        ? 'bg-[#C8FF00] text-black text-white'
-                        : 'bg-white/10 text-white'
+                        ? 'bg-accent text-[#0a0a0a]'
+                        : 'bg-white/[.03] text-foreground'
                     }`}
                   >
                     <p className="text-sm">{message.text}</p>
@@ -210,11 +210,11 @@ export default function ChatbotPage() {
               ))}
               {loading && (
                 <div className="flex justify-start">
-                  <div className="bg-white/10 text-white px-4 py-2 rounded-lg">
+                  <div className="bg-white/[.03] text-foreground px-4 py-2 rounded-lg">
                     <div className="flex space-x-1">
-                      <div className="w-2 h-2 bg-white rounded-full animate-bounce"></div>
-                      <div className="w-2 h-2 bg-white rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
-                      <div className="w-2 h-2 bg-white rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                      <div className="w-2 h-2 bg-muted rounded-full motion-safe:animate-bounce"></div>
+                      <div className="w-2 h-2 bg-muted rounded-full motion-safe:animate-bounce" style={{ animationDelay: '0.1s' }}></div>
+                      <div className="w-2 h-2 bg-muted rounded-full motion-safe:animate-bounce" style={{ animationDelay: '0.2s' }}></div>
                     </div>
                   </div>
                 </div>
@@ -229,7 +229,7 @@ export default function ChatbotPage() {
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 placeholder="Type your question..."
-                className="flex-1 rounded-lg px-4 py-2 bg-white/10 border border-white/20 text-white focus:outline-none focus:border-[#C8FF00]"
+                className="flex-1 rounded-lg px-4 py-2 bg-white/[.03] border border-border text-foreground focus:outline-none focus:border-accent"
                 disabled={loading}
               />
               <button
@@ -245,7 +245,7 @@ export default function ChatbotPage() {
 
         {/* Suggestions Sidebar */}
         <div className="lg:col-span-1">
-          <div className="bg-white/5 border border-white/10 p-6 rounded-xl">
+          <div className="bg-white/[.02] border border-border p-6 rounded-xl">
             <h3 className="text-lg font-medium mb-4">Suggested Questions</h3>
             <div className="space-y-2">
               {SUGGESTED_QUESTIONS.map((question, index) => (
@@ -253,16 +253,16 @@ export default function ChatbotPage() {
                   key={index}
                   onClick={() => handleSuggestionClick(question)}
                   disabled={loading}
-                  className="w-full text-left p-3 rounded-lg bg-white/5 hover:bg-white/10 transition-colors text-sm disabled:opacity-50"
+                  className="w-full text-left p-3 rounded-lg bg-white/[.02] hover:bg-white/10 transition-colors text-sm disabled:opacity-50"
                 >
                   {question}
                 </button>
               ))}
             </div>
             
-            <div className="mt-6 p-4 bg-[#C8FF00]/10 rounded-lg">
-              <h4 className="font-medium text-[#C8FF00] mb-2">💡 Tips</h4>
-              <ul className="text-xs text-white/70 space-y-1">
+            <div className="mt-6 p-4 bg-accent/10 rounded-lg">
+              <h4 className="font-medium text-accent mb-2">💡 Tips</h4>
+              <ul className="text-xs text-muted space-y-1">
                 <li>• Ask about specific projects</li>
                 <li>• Inquire about skills and experience</li>
                 <li>• Learn about Fatin's goals</li>

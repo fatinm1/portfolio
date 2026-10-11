@@ -151,7 +151,6 @@ export default function ChatbotWidget() {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.98, y: 8 }}
             transition={{ duration, ease: [0.16, 1, 0.3, 1] }}
-            onAnimationComplete={() => inputRef.current?.focus()}
           >
             {/* Header */}
             <div className="flex items-center justify-between border-b border-border px-4 py-3">
@@ -220,6 +219,7 @@ export default function ChatbotWidget() {
               <div className="flex gap-2">
                 <input
                   ref={inputRef}
+                  autoFocus
                   type="text"
                   value={input}
                   onChange={(e) => setInput(e.target.value)}

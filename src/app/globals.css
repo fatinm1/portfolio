@@ -34,6 +34,16 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Keyboard focus: a lime ring, only for keyboard navigation (outlines follow each element's own radius) */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+/* Text fields show focus with their accent border instead; checkboxes keep the ring */
+input:not([type="checkbox"]):not([type="radio"]):focus-visible, textarea:focus-visible, select:focus-visible {
+  outline: none;
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
@@ -132,18 +142,18 @@ body {
   .silk-cursor { display: none; }
 }
 
-/* Green CTA button - glossy lime style */
+/* Primary button used by admin, login, chatbot and contact pages: the flat lime Silk pill */
 .btn-green {
-  background: linear-gradient(to bottom, #C8FF00 0%, #A7ED57 50%, #9BE04D 100%);
-  border: 1px solid #7AB82E;
-  color: #1a1a1a;
+  background: var(--accent);
+  color: #0a0a0a;
   font-weight: 500;
   border-radius: 9999px;
-  padding: 0.75rem 1.5rem;
-  transition: box-shadow 0.2s, transform 0.15s;
+  padding: 0.7rem 1.25rem;
+  transition: transform .25s var(--ease), box-shadow .25s var(--ease);
 }
 .btn-green:hover:not(:disabled) {
-  box-shadow: 0 4px 20px rgba(200, 255, 0, 0.35);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 24px rgba(200, 255, 0, 0.25);
 }
 
 /* Smooth transitions for inputs and interactive elements */

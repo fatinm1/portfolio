@@ -64,8 +64,8 @@ export default function CommandMenu() {
 
   const closeMenu = useCallback(() => {
     setOpen(false);
-    // Return focus to whatever opened the menu (after the dialog unmounts its input).
-    requestAnimationFrame(() => restoreFocusRef.current?.focus?.());
+    // Return focus to whatever opened the menu.
+    restoreFocusRef.current?.focus?.();
   }, []);
 
   // ⌘K / Ctrl+K anywhere, plus the header button's event.
@@ -146,7 +146,7 @@ export default function CommandMenu() {
       navigateWithTransition(router, item.href);
       return;
     }
-    requestAnimationFrame(() => restoreFocusRef.current?.focus?.());
+    restoreFocusRef.current?.focus?.();
   };
 
   const onKeyDown = (e: React.KeyboardEvent) => {
@@ -198,7 +198,6 @@ export default function CommandMenu() {
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.98 }}
             transition={{ duration, ease }}
-            onAnimationComplete={() => inputRef.current?.focus()}
           >
             <div className="flex items-center gap-3 border-b border-border px-4">
               <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6b6b73" strokeWidth="2" strokeLinecap="round">

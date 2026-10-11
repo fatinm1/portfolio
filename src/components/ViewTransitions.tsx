@@ -17,6 +17,7 @@ export function navigateWithTransition(router: Router, href: string) {
   const samePage = url.pathname === window.location.pathname;
   const canAnimate =
     typeof document.startViewTransition === "function" &&
+    document.visibilityState === "visible" &&
     !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   if (samePage || !canAnimate) {
@@ -24,7 +25,7 @@ export function navigateWithTransition(router: Router, href: string) {
     return;
   }
 
-  document.startViewTransition(
+  const transition = document.startViewTransition(
     () =>
       new Promise<void>((resolve) => {
         finishPending?.();
@@ -34,6 +35,10 @@ export function navigateWithTransition(router: Router, href: string) {
         window.setTimeout(resolve, 1500);
       })
   );
+  // The navigation still runs if the browser skips the animation (e.g. tab hidden mid-way);
+  // swallow the resulting rejections instead of surfacing them as errors.
+  transition.ready.catch(() => {});
+  transition.finished.catch(() => {});
 }
 
 /** Mount once: animates internal link clicks between pages. */

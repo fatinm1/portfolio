@@ -101,19 +101,19 @@ export default function ContactPage() {
     <div className="max-w-2xl mx-auto py-12 px-4">
       <h1 className="text-3xl font-medium mb-8 text-center">Contact Me</h1>
       
-      <div className="bg-white/5 border border-white/10 p-8 rounded-xl">
+      <div className="bg-white/[.02] border border-border p-8 rounded-xl">
         {/* Contact Information */}
         <div className="mb-8">
           <h2 className="text-xl font-medium mb-6 text-center">Get In Touch</h2>
           <div className="space-y-4">
             <a 
               href="mailto:fatinm1@umbc.edu" 
-              className="flex items-center gap-3 p-4 rounded-lg bg-white/5 hover:bg-white/10 transition-colors border border-white/10"
+              className="flex items-center gap-3 p-4 rounded-lg bg-white/[.02] hover:bg-white/10 transition-colors border border-border"
             >
-              <Mail className="w-5 h-5 text-[#C8FF00]" />
+              <Mail className="w-5 h-5 text-accent" />
               <div>
-                <p className="font-medium text-white">Email</p>
-                <p className="text-[#C8FF00]">fatinm1@umbc.edu</p>
+                <p className="font-medium text-foreground">Email</p>
+                <p className="text-accent">fatinm1@umbc.edu</p>
               </div>
             </a>
             
@@ -121,12 +121,12 @@ export default function ContactPage() {
               href="https://www.linkedin.com/in/fatin-mojumder/" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="flex items-center gap-3 p-4 rounded-lg bg-white/5 hover:bg-white/10 transition-colors border border-white/10"
+              className="flex items-center gap-3 p-4 rounded-lg bg-white/[.02] hover:bg-white/10 transition-colors border border-border"
             >
-              <Linkedin className="w-5 h-5 text-[#C8FF00]" />
+              <Linkedin className="w-5 h-5 text-accent" />
               <div>
-                <p className="font-medium text-white">LinkedIn</p>
-                <p className="text-[#C8FF00]">linkedin.com/in/fatin-mojumder</p>
+                <p className="font-medium text-foreground">LinkedIn</p>
+                <p className="text-accent">linkedin.com/in/fatin-mojumder</p>
               </div>
             </a>
             
@@ -134,25 +134,25 @@ export default function ContactPage() {
               href="https://github.com/fatinm1" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="flex items-center gap-3 p-4 rounded-lg bg-white/5 hover:bg-white/10 transition-colors border border-white/10"
+              className="flex items-center gap-3 p-4 rounded-lg bg-white/[.02] hover:bg-white/10 transition-colors border border-border"
             >
-              <Github className="w-5 h-5 text-[#C8FF00]" />
+              <Github className="w-5 h-5 text-accent" />
               <div>
-                <p className="font-medium text-white">GitHub</p>
-                <p className="text-[#C8FF00]">github.com/fatinm1</p>
+                <p className="font-medium text-foreground">GitHub</p>
+                <p className="text-accent">github.com/fatinm1</p>
               </div>
             </a>
           </div>
         </div>
 
         {/* Contact Form */}
-        <div className="border-t border-white/20 pt-8">
+        <div className="border-t border-border pt-8">
           <h3 className="text-lg font-medium mb-4">Send a Message</h3>
           
           {success && (
-            <div className="mb-4 p-4 rounded-lg bg-green-500/20 border border-green-500/30 flex items-center gap-3">
-              <CheckCircle className="w-5 h-5 text-green-400" />
-              <p className="text-green-400">Thank you for your message! I'll get back to you soon.</p>
+            <div className="mb-4 p-4 rounded-lg bg-success/10 border border-success/30 flex items-center gap-3">
+              <CheckCircle className="w-5 h-5 text-success" />
+              <p className="text-success">Thank you for your message! I'll get back to you soon.</p>
             </div>
           )}
 
@@ -172,7 +172,7 @@ export default function ContactPage() {
                 value={formData.name}
                 onChange={handleInputChange}
                 placeholder="Your name" 
-                className="w-full rounded-lg px-4 py-2 bg-white/10 border border-white/20 text-white focus:outline-none focus:border-[#C8FF00] transition-colors" 
+                className="w-full rounded-lg px-4 py-2 bg-white/[.03] border border-border text-foreground focus:outline-none focus:border-accent transition-colors" 
                 required
                 disabled={loading}
               />
@@ -186,7 +186,7 @@ export default function ContactPage() {
                 value={formData.email}
                 onChange={handleInputChange}
                 placeholder="your@email.com" 
-                className="w-full rounded-lg px-4 py-2 bg-white/10 border border-white/20 text-white focus:outline-none focus:border-[#C8FF00] transition-colors" 
+                className="w-full rounded-lg px-4 py-2 bg-white/[.03] border border-border text-foreground focus:outline-none focus:border-accent transition-colors" 
                 required
                 disabled={loading}
               />
@@ -199,7 +199,7 @@ export default function ContactPage() {
                 value={formData.message}
                 onChange={handleInputChange}
                 placeholder="Your message..." 
-                className="w-full rounded-lg px-4 py-2 bg-white/10 border border-white/20 text-white focus:outline-none focus:border-[#C8FF00] transition-colors resize-none" 
+                className="w-full rounded-lg px-4 py-2 bg-white/[.03] border border-border text-foreground focus:outline-none focus:border-accent transition-colors resize-none" 
                 rows={4} 
                 required
                 disabled={loading}
@@ -227,27 +227,27 @@ export default function ContactPage() {
         </div>
 
         {/* Resume Section */}
-        <div id="resume" className="border-t border-white/20 pt-8 mt-8 scroll-mt-24">
+        <div id="resume" className="border-t border-border pt-8 mt-8 scroll-mt-24">
           <h3 className="text-lg font-medium mb-4">Resume</h3>
-          <div className="flex items-center gap-3 p-4 rounded-lg bg-white/5 border border-white/10">
-            <Download className="w-5 h-5 text-[#C8FF00]" />
+          <div className="flex items-center gap-3 p-4 rounded-lg bg-white/[.02] border border-border">
+            <Download className="w-5 h-5 text-accent" />
             <div className="flex-1">
               {loadingResume ? (
                 <div className="flex items-center gap-2">
-                  <div className="w-4 h-4 border-2 border-[#C8FF00] border-t-transparent rounded-full animate-spin"></div>
-                  <p className="text-white/60">Loading resume...</p>
+                  <div className="w-4 h-4 border-2 border-accent border-t-transparent rounded-full animate-spin"></div>
+                  <p className="text-muted">Loading resume...</p>
                 </div>
               ) : resume ? (
                 <div>
-                  <p className="font-medium text-white">Resume</p>
-                  <p className="text-white/60 text-sm">
+                  <p className="font-medium text-foreground">Resume</p>
+                  <p className="text-muted text-sm">
                     Updated: {new Date(resume.uploaded_at).toLocaleDateString()}
                   </p>
                 </div>
               ) : (
                 <div>
-                  <p className="font-medium text-white">Resume</p>
-                  <p className="text-white/60 text-sm">No resume uploaded yet</p>
+                  <p className="font-medium text-foreground">Resume</p>
+                  <p className="text-muted text-sm">No resume uploaded yet</p>
                 </div>
               )}
             </div>
