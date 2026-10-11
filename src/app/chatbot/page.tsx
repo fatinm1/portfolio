@@ -43,8 +43,10 @@ export default function ChatbotPage() {
     ]);
   }, []);
 
+  // Scroll only the message list; scrollIntoView would also scroll the window on page load.
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    const list = messagesEndRef.current?.parentElement;
+    if (list) list.scrollTo({ top: list.scrollHeight, behavior: "smooth" });
   };
 
   useEffect(() => {

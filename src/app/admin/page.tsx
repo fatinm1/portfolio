@@ -351,7 +351,7 @@ export default function AdminPage() {
         </button>
       </div>
       
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {/* Add/Edit Project Section */}
         <div className="bg-white/[.02] border border-border p-6 rounded-xl">
           <div className="flex justify-between items-center mb-6">
