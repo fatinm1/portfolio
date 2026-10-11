@@ -347,7 +347,7 @@ export default function LlmEngineBenchmarkPost() {
           wouldn&apos;t have caught it without checking.
         </P>
 
-        <p className="mt-12 border-t border-border pt-6 text-sm text-faint">
+        <p className="mt-12 border-t border-border pt-6 text-sm text-muted">
           The benchmark tools are in the repo: <Code>bench/llm_bench.cpp</Code>,{" "}
           <Code>bench/matvec_bench.cpp</Code> and <Code>bench/compare.sh</Code>. Raw results are in{" "}
           <Code>bench/results/</Code>.
