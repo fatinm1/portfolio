@@ -66,6 +66,14 @@ export default function Navigation() {
           </li>
           <li>
             <Link
+              href="/writing"
+              className="text-white/70 hover:text-white text-sm transition-colors"
+            >
+              Writing
+            </Link>
+          </li>
+          <li>
+            <Link
               href="/chatbot"
               className="text-white/70 hover:text-white text-sm transition-colors"
             >
@@ -97,7 +105,7 @@ export default function Navigation() {
       </div>
 
       {/* Mobile menu */}
-      <div className={`md:hidden overflow-hidden transition-all ${isMenuOpen ? "max-h-80" : "max-h-0"}`}>
+      <div className={`md:hidden overflow-hidden transition-all ${isMenuOpen ? "max-h-[40rem]" : "max-h-0"}`}>
         <ul className="px-6 pb-6 pt-2 space-y-2 border-t border-white/10">
           {navItems.map((item) => (
             <li key={item.id}>
@@ -117,6 +125,11 @@ export default function Navigation() {
               className="block py-3 text-[#C8FF00] font-medium"
             >
               Get in touch
+            </Link>
+          </li>
+          <li>
+            <Link href="/writing" onClick={() => setIsMenuOpen(false)} className="block py-3 text-white/70">
+              Writing
             </Link>
           </li>
           <li>
