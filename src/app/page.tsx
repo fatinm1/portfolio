@@ -117,7 +117,6 @@ export default function Home() {
   };
 
   const sectionClass = "scroll-mt-24 max-w-5xl mx-auto px-6 sm:px-10";
-  const tagClass = "px-4 py-2 rounded-full bg-white/5 border border-white/10 text-white/80 text-sm whitespace-nowrap";
 
   const { scrollYProgress } = useScroll();
   const progressWidth = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
@@ -186,9 +185,8 @@ export default function Home() {
         viewport={{ once: true, margin: "-80px" }}
         variants={staggerContainer}
       >
-        <motion.span className={tagClass} variants={staggerItem} />
         <motion.h2
-          className="text-3xl sm:text-4xl font-medium text-white mt-6 mb-6"
+          className="text-3xl sm:text-4xl font-medium text-white mb-6"
           variants={staggerItem}
         >
           Solving real problems with purposeful, user-first thinking
@@ -222,9 +220,8 @@ export default function Home() {
         viewport={{ once: true, margin: "-80px" }}
         variants={staggerContainer}
       >
-        <motion.span className={tagClass} variants={staggerItem} />
         <motion.h2
-          className="text-3xl sm:text-4xl font-medium text-white mt-6 mb-12"
+          className="text-3xl sm:text-4xl font-medium text-white mb-12"
           variants={staggerItem}
         >
           Education
@@ -258,9 +255,8 @@ export default function Home() {
         viewport={{ once: true, margin: "-80px" }}
         variants={staggerContainer}
       >
-        <motion.span className={tagClass} variants={staggerItem} />
         <motion.h2
-          className="text-3xl sm:text-4xl font-medium text-white mt-6 mb-10"
+          className="text-3xl sm:text-4xl font-medium text-white mb-10"
           variants={staggerItem}
         >
           What I work with
@@ -288,9 +284,8 @@ export default function Home() {
       >
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
           <div>
-            <motion.span className={tagClass} variants={staggerItem} />
             <motion.h2
-              className="text-3xl sm:text-4xl font-medium text-white mt-6"
+              className="text-3xl sm:text-4xl font-medium text-white"
               variants={staggerItem}
             >
               And This Is My Work Experience
@@ -357,9 +352,8 @@ export default function Home() {
         viewport={{ once: true, margin: "-80px" }}
         variants={staggerContainer}
       >
-        <motion.span className={tagClass} variants={staggerItem} />
         <motion.h2
-          className="text-3xl sm:text-4xl font-medium text-white mt-6 mb-12"
+          className="text-3xl sm:text-4xl font-medium text-white mb-12"
           variants={staggerItem}
         >
           My Latest Projects
@@ -440,9 +434,8 @@ export default function Home() {
         viewport={{ once: true, margin: "-80px" }}
         variants={staggerContainer}
       >
-        <motion.span className={tagClass} variants={staggerItem} />
         <motion.h2
-          className="text-4xl sm:text-5xl font-medium text-white mt-6 mb-4"
+          className="text-4xl sm:text-5xl font-medium text-white mb-4"
           variants={staggerItem}
         >
           Let&apos;s Get in Touch
