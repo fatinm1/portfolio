@@ -25,7 +25,7 @@ export function ProjectThumbnail({ src, name }: { src?: string | null; name: str
     <div
       role="img"
       aria-label={`${name} thumbnail`}
-      className="w-full h-full flex items-center justify-center px-4 text-center font-mono text-xs text-[#6b6b73]"
+      className="w-full h-full flex items-center justify-center px-4 text-center font-mono text-xs text-faint"
       style={{ background: PLACEHOLDER_BACKGROUND }}
     >
       {name}

@@ -1,16 +1,31 @@
 @import "tailwindcss";
 
+/* Silk design tokens (docs/redesign/REDESIGN_PLAN.md) */
 :root {
-  --background: #000000;
-  --foreground: #ffffff;
+  --background: #040406;
+  --foreground: #ededed;
+  --muted: #9b9ba3;
+  --faint: #6b6b73;
+  --border: #1c1c21;
   --accent: #C8FF00;
-  --accent-dim: rgba(200, 255, 0, 0.15);
+  --secondary: #5b6cff;
+  --success: #6ee7a8;
+  --warning: #fcd34d;
+  --ease: cubic-bezier(.16, 1, .3, 1);
 }
 
+/* Exposes the tokens as Tailwind utilities: bg-background, text-muted, border-border, ease-silk, ... */
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-faint: var(--faint);
+  --color-border: var(--border);
   --color-accent: var(--accent);
+  --color-secondary: var(--secondary);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --ease-silk: var(--ease);
   --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, "Segoe UI", sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, "SF Mono", Menlo, monospace;
 }
@@ -20,8 +35,8 @@ html {
 }
 
 body {
-  background: #000000;
-  color: #fff;
+  background: var(--background);
+  color: var(--foreground);
   font-family: var(--font-geist-sans), ui-sans-serif, system-ui, "Segoe UI", sans-serif;
 }
 
