@@ -4,6 +4,7 @@ import Stats from "@/components/home/Stats";
 import Experience from "@/components/home/Experience";
 import ProjectsSection from "@/components/home/ProjectsSection";
 import TechMarquee from "@/components/home/TechMarquee";
+import GitHubActivity from "@/components/home/GitHubActivity";
 import LatestWriting from "@/components/home/LatestWriting";
 import ContactSection from "@/components/home/ContactSection";
 
@@ -17,6 +18,7 @@ export default function Home() {
         <Experience />
         <ProjectsSection />
         <TechMarquee />
+        <GitHubActivity />
         <LatestWriting />
         <ContactSection />
       </div>
