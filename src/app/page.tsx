@@ -6,6 +6,7 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowUpRight, Zap, Send, CheckCircle, AlertCircle, Github } from "lucide-react";
 import { SiPython, SiOpenjdk, SiJavascript, SiC, SiCplusplus, SiFlask, SiFastapi, SiReact, SiNextdotjs, SiDjango, SiPostgresql, SiMysql, SiMongodb } from "react-icons/si";
 import { ExpandableDescription } from "@/components/ExpandableDescription";
+import { ProjectThumbnail } from "@/components/ProjectThumbnail";
 
 const slideIn = {
   initial: { opacity: 0, y: 32 },
@@ -378,15 +379,7 @@ export default function Home() {
                   className="bg-white/5 border border-white/10 aspect-video rounded-xl flex items-center justify-center overflow-hidden"
                   whileHover={{ scale: 1.02 }}
                 >
-                  {project.photo ? (
-                    <img
-                      src={project.photo}
-                      alt={`${project.name} preview`}
-                      className="w-full h-full object-cover"
-                    />
-                  ) : (
-                    <span className="text-white/30 text-sm">No preview</span>
-                  )}
+                  <ProjectThumbnail src={project.photo} name={project.name} />
                 </motion.div>
                 <motion.div
                   className="bg-white/5 border border-white/10 p-6 rounded-xl"

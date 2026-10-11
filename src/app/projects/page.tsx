@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { ArrowUpRight, Github } from "lucide-react";
 import { ExpandableDescription } from "@/components/ExpandableDescription";
+import { ProjectThumbnail } from "@/components/ProjectThumbnail";
 
 interface Project {
   name: string;
@@ -84,15 +85,7 @@ export default function ProjectsPage() {
                 className="group block"
               >
                 <div className="aspect-video bg-white/5 rounded-lg mb-4 flex items-center justify-center overflow-hidden">
-                  {project.photo ? (
-                    <img
-                      src={project.photo}
-                      alt={`${project.name} preview`}
-                      className="w-full h-full object-cover"
-                    />
-                  ) : (
-                    <div className="text-white/30 text-sm">No preview</div>
-                  )}
+                  <ProjectThumbnail src={project.photo} name={project.name} />
                 </div>
                 <div className="flex items-start justify-between gap-2 mb-2">
                   <h2 className="font-medium text-xl text-white group-hover:text-[#C8FF00] transition-colors flex-1">
