@@ -50,6 +50,87 @@ body {
   gap: 80px;
 }
 
+/* Silk animated background (components/SilkBackground.tsx); values from docs/redesign/silk-mockup.dc.html */
+.silk-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+.silk-aurora {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 160vmax;
+  height: 160vmax;
+  margin: -80vmax 0 0 -80vmax;
+  background: conic-gradient(from 0deg, transparent 0deg, rgba(200, 255, 0, .55) 60deg, transparent 120deg, rgba(91, 108, 255, .6) 200deg, transparent 260deg, rgba(200, 255, 0, .55) 320deg, transparent 360deg);
+  filter: blur(80px);
+  opacity: .2;
+  will-change: transform;
+  animation: silk-swirl 40s linear infinite;
+}
+.silk-orb {
+  position: absolute;
+  border-radius: 999px;
+  filter: blur(90px);
+  will-change: transform;
+}
+.silk-o1 { width: 560px; height: 560px; top: -180px; left: 4%; background: var(--accent); opacity: .12; animation: silk-drift1 18s ease-in-out infinite alternate; }
+.silk-o2 { width: 640px; height: 640px; top: 80px; right: -160px; background: var(--secondary); opacity: .13; animation: silk-drift2 22s ease-in-out infinite alternate; }
+.silk-o3 { width: 520px; height: 520px; bottom: -200px; left: 20%; background: var(--secondary); opacity: .09; animation: silk-drift3 26s ease-in-out infinite alternate; }
+.silk-o4 { width: 420px; height: 420px; bottom: 10%; right: 12%; background: var(--accent); opacity: .07; animation: silk-drift4 20s ease-in-out infinite alternate; }
+.silk-vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 90% 80% at 50% 40%, rgba(4, 4, 6, .35) 0%, rgba(4, 4, 6, .85) 100%);
+}
+.silk-grid {
+  position: absolute;
+  inset: -64px;
+  background-image: radial-gradient(rgba(255, 255, 255, .09) 1px, transparent 1.4px);
+  background-size: 32px 32px;
+  -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 30%, #000 30%, transparent 75%);
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 30%, #000 30%, transparent 75%);
+  will-change: transform;
+  animation: silk-gridpan 30s linear infinite;
+}
+.silk-grain {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: .07;
+  mix-blend-mode: overlay;
+}
+.silk-cursor {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 0;
+  width: 420px;
+  height: 420px;
+  margin: -210px 0 0 -210px;
+  border-radius: 999px;
+  pointer-events: none;
+  background: radial-gradient(circle, rgba(200, 255, 0, .10), rgba(91, 108, 255, .06) 40%, transparent 70%);
+  opacity: 0;
+  transform: translate3d(-600px, -600px, 0);
+  will-change: transform;
+  transition: transform .35s var(--ease), opacity .35s var(--ease);
+}
+@keyframes silk-swirl { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+@keyframes silk-gridpan { from { transform: translate(0, 0); } to { transform: translate(32px, 32px); } }
+@keyframes silk-drift1 { from { transform: translate(-10%, -6%) scale(1); } to { transform: translate(18%, 12%) scale(1.15); } }
+@keyframes silk-drift2 { from { transform: translate(10%, 8%) scale(1.1); } to { transform: translate(-16%, -10%) scale(.95); } }
+@keyframes silk-drift3 { from { transform: translate(0, 0) scale(1); } to { transform: translate(30%, -20%) scale(1.2); } }
+@keyframes silk-drift4 { from { transform: translate(0, 0) scale(1.1); } to { transform: translate(-40%, -25%) scale(.9); } }
+@media (prefers-reduced-motion: reduce) {
+  .silk-aurora, .silk-orb, .silk-grid { animation: none; }
+  .silk-cursor { display: none; }
+}
+
 /* Green CTA button - glossy lime style */
 .btn-green {
   background: linear-gradient(to bottom, #C8FF00 0%, #A7ED57 50%, #9BE04D 100%);
