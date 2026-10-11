@@ -4,6 +4,8 @@ import "./globals.css";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import ChatbotWidget from "@/components/ChatbotWidget";
+import CommandMenu from "@/components/CommandMenu";
+import ViewTransitions from "@/components/ViewTransitions";
 
 const geistSans = Geist({
   subsets: ["latin"],
@@ -35,6 +37,8 @@ export default function RootLayout({
         <main className="relative z-[1]">{children}</main>
         <SiteFooter />
         <ChatbotWidget />
+        <CommandMenu />
+        <ViewTransitions />
       </body>
     </html>
   );

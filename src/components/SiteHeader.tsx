@@ -37,7 +37,7 @@ export default function SiteHeader() {
   const openCommandMenu = () => window.dispatchEvent(new Event(OPEN_COMMAND_MENU_EVENT));
 
   return (
-    <header id="top" className="relative z-10 mx-auto w-full max-w-[768px] px-6 pt-7">
+    <header id="top" className="relative z-10 mx-auto w-full max-w-[768px] px-6 pt-7 [view-transition-name:site-header]">
       <div className="silk-up flex items-center justify-between gap-3">
         <Link href="/" className="inline-flex items-center gap-2 font-semibold tracking-[-0.02em] text-foreground">
           <span className="h-2 w-2 rounded-full bg-accent shadow-[0_0_12px_var(--accent)]" aria-hidden="true" />
@@ -115,6 +115,16 @@ export default function SiteHeader() {
               {link.label}
             </Link>
           ))}
+          <button
+            type="button"
+            onClick={() => {
+              setMenuOpen(false);
+              openCommandMenu();
+            }}
+            className="mt-4 w-fit rounded-lg border border-[#26262b] bg-white/[.03] px-3 py-2 text-left text-sm text-muted"
+          >
+            Search the site
+          </button>
         </nav>
       </div>
     </header>

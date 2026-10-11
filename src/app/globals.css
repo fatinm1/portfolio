@@ -256,6 +256,12 @@ a:hover .silk-arrow, .silk-pill:hover .silk-arrow { transform: translate(3px, -3
 .silk-acc { display: grid; transition: grid-template-rows .5s var(--ease), opacity .4s var(--ease); }
 .silk-chev { transition: transform .4s var(--ease); }
 
+/* Page transitions (components/ViewTransitions.tsx): fade + 8px rise; the header stays put */
+::view-transition-old(root) { animation: silk-vt-out .18s ease both; }
+::view-transition-new(root) { animation: silk-vt-in .35s var(--ease) both; }
+@keyframes silk-vt-out { to { opacity: 0; } }
+@keyframes silk-vt-in { from { opacity: 0; transform: translateY(8px); } }
+
 @keyframes silk-up { from { opacity: 0; transform: translateY(16px); filter: blur(6px); } to { opacity: 1; transform: none; filter: none; } }
 @keyframes silk-shimmer { from { background-position: 150% 0; } to { background-position: -100% 0; } }
 @keyframes silk-ping { 0% { transform: scale(1); opacity: .8; } 80%, 100% { transform: scale(2.2); opacity: 0; } }
@@ -263,6 +269,7 @@ a:hover .silk-arrow, .silk-pill:hover .silk-arrow { transform: translate(3px, -3
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
+  ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; }
   .silk-up, .silk-shimmer, .silk-beam::before, .silk-ping::after { animation: none; }
   .silk-swap > span, .silk-pill, .silk-primary::after, .silk-arrow, .silk-soft, .silk-thumb,
   .silk-glowborder, .silk-acc, .silk-chev { transition: none; }
