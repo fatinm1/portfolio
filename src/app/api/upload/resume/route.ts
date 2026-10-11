@@ -22,7 +22,8 @@ export async function POST(req: NextRequest) {
     const formData = await req.formData();
     const file = formData.get('resume');
     
-    if (!file || !(file instanceof File)) {
+    // Blob, not File: the global File class only exists from Node 20, and uploads are File (a Blob subclass).
+    if (!file || !(file instanceof Blob)) {
       return NextResponse.json({ error: 'No file uploaded' }, { status: 400 });
     }
 
