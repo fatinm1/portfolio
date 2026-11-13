@@ -119,8 +119,7 @@ export function StatusBadge({ status }: { status: string }) {
   return <span className={`${badgeBase} border-[#26262b] text-muted`}>{status}</span>;
 }
 
-export function FeaturedProjectCard({ project, highlighted = true }: { project: Project; highlighted?: boolean }) {
-  const label = project.status?.trim() ? `Featured · ${project.status.trim()}` : "Featured";
+export function FeaturedProjectCard({ project }: { project: Project }) {
   return (
     <article className="silk-beam block">
       <div className="flex flex-wrap items-center gap-5 rounded-[17px] bg-[#0a0a0d] p-3.5">
@@ -132,9 +131,7 @@ export function FeaturedProjectCard({ project, highlighted = true }: { project: 
             <a href={projectHref(project)} target="_blank" rel="noopener noreferrer" className="text-xl font-semibold tracking-[-0.02em] text-foreground hover:text-accent">
               {project.name} <span className="silk-arrow text-[#8b8b93]">↗</span>
             </a>
-            {highlighted ? (
-              <span className={`${badgeBase} border-[#2f3a10] bg-accent/[.06] text-accent`}>{label}</span>
-            ) : project.status?.trim() ? <StatusBadge status={project.status.trim()} /> : null}
+            {project.status?.trim() ? <StatusBadge status={project.status.trim()} /> : null}
           </span>
           <span className="line-clamp-4 text-[15px] leading-[1.6] text-muted">{project.description}</span>
         </div>
@@ -144,7 +141,7 @@ export function FeaturedProjectCard({ project, highlighted = true }: { project: 
 }
 
 export function ProjectCard({ project }: { project: Project }) {
-  return <FeaturedProjectCard project={project} highlighted={false} />;
+  return <FeaturedProjectCard project={project} />;
 }
 
 export function ProjectGrid({ projects }: { projects: Project[] }) {
