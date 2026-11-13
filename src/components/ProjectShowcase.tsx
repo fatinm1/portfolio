@@ -35,7 +35,7 @@ export function useProjects(): ProjectsState {
             "https://github.com/fatinm1/llm-engine": { name: "TokenForge", subtitle: "C++ LLM Inference Engine" },
             "https://github.com/fatinm1/lecturekit": { subtitle: "Multi-Agent Lecture Study Platform" },
             "https://github.com/fatinm1/nida-proj": { subtitle: "AI-Assisted NDA Review & Redlining" },
-            "https://github.com/fatinm1/therapy-scheduling": { name: "TheraSycn", subtitle: "Therapy Appointment Scheduling Platform" },
+            "https://github.com/fatinm1/therapy-scheduling": { name: "TheraSync", subtitle: "Therapy Appointment Scheduling Platform" },
           };
           return branding[key] ? { ...project, ...branding[key] } : project;
         }) : [],
