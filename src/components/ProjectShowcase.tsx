@@ -43,6 +43,9 @@ const projectHref = (p: Project) => p.live_url?.trim() || p.github;
 // Stable attachment URLs redirect to a fresh streaming URL on each request.
 // Keep the published videos outside the application bundle and Git history.
 const PROJECT_DEMOS: Record<string, { src: string; development?: boolean }> = {
+  "https://github.com/fatinm1/nida-proj": {
+    src: "https://github.com/user-attachments/assets/da42192f-01f1-48c5-96e3-4b6222fd1575",
+  },
   "https://github.com/fatinm1/llm-engine": {
     src: "https://github.com/user-attachments/assets/c306283c-325e-445d-86bf-2b1832349792",
   },
