@@ -29,11 +29,16 @@ export function useProjects(): ProjectsState {
       })
       .then((data) => setState({
         status: "ready",
-        projects: Array.isArray(data) ? data.map((project: Project) =>
-          project.github.trim().replace(/\.git$|\/$/g, "").toLowerCase() === "https://github.com/fatinm1/llm-engine"
-            ? { ...project, name: "TokenForge", subtitle: "C++ LLM Inference Engine" }
-            : project
-        ) : [],
+        projects: Array.isArray(data) ? data.map((project: Project) => {
+          const key = project.github.trim().replace(/\.git$|\/$/g, "").toLowerCase();
+          const branding: Record<string, { name?: string; subtitle: string }> = {
+            "https://github.com/fatinm1/llm-engine": { name: "TokenForge", subtitle: "C++ LLM Inference Engine" },
+            "https://github.com/fatinm1/lecturekit": { subtitle: "Multi-Agent Lecture Study Platform" },
+            "https://github.com/fatinm1/nida-proj": { subtitle: "AI-Assisted NDA Review & Redlining" },
+            "https://github.com/fatinm1/therapy-scheduling": { name: "TheraSycn", subtitle: "Therapy Appointment Scheduling Platform" },
+          };
+          return branding[key] ? { ...project, ...branding[key] } : project;
+        }) : [],
       }))
       .catch(() => setState({ status: "error" }));
   }, []);
