@@ -60,7 +60,7 @@ const PROJECT_DEMOS: Record<string, { src: string; development?: boolean }> = {
     src: "https://github.com/user-attachments/assets/da42192f-01f1-48c5-96e3-4b6222fd1575",
   },
   "https://github.com/fatinm1/llm-engine": {
-    src: "https://github.com/user-attachments/assets/c306283c-325e-445d-86bf-2b1832349792",
+    src: "https://github.com/user-attachments/assets/f90024b7-6b12-49b7-998a-685a7004ccea",
   },
   "https://github.com/fatinm1/lecturekit": {
     src: "https://github.com/user-attachments/assets/995f1709-85bb-4c6b-8cf3-573899152b49",
