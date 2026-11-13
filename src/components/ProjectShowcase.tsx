@@ -6,6 +6,7 @@ import { ProjectThumbnail } from "./ProjectThumbnail";
 export interface Project {
   id: number;
   name: string;
+  subtitle?: string;
   description: string;
   technologies: string[];
   github: string;
@@ -26,7 +27,14 @@ export function useProjects(): ProjectsState {
         if (!res.ok) throw new Error("Failed to load projects");
         return res.json();
       })
-      .then((data) => setState({ status: "ready", projects: Array.isArray(data) ? data : [] }))
+      .then((data) => setState({
+        status: "ready",
+        projects: Array.isArray(data) ? data.map((project: Project) =>
+          project.github.trim().replace(/\.git$|\/$/g, "").toLowerCase() === "https://github.com/fatinm1/llm-engine"
+            ? { ...project, name: "TokenForge", subtitle: "C++ LLM Inference Engine" }
+            : project
+        ) : [],
+      }))
       .catch(() => setState({ status: "error" }));
   }, []);
   return state;
@@ -133,6 +141,7 @@ export function FeaturedProjectCard({ project }: { project: Project }) {
             </a>
             {project.status?.trim() ? <StatusBadge status={project.status.trim()} /> : null}
           </span>
+          {project.subtitle ? <span className="font-mono text-xs text-accent">{project.subtitle}</span> : null}
           <span className="line-clamp-4 text-[15px] leading-[1.6] text-muted">{project.description}</span>
         </div>
       </div>
