@@ -1,6 +1,5 @@
 import SilkBackground from "@/components/SilkBackground";
 import Hero from "@/components/home/Hero";
-import Stats from "@/components/home/Stats";
 import Experience from "@/components/home/Experience";
 import Education from "@/components/home/Education";
 import ProjectsSection from "@/components/home/ProjectsSection";
@@ -15,7 +14,6 @@ export default function Home() {
       <SilkBackground />
       <div className="content-column pt-20">
         <Hero />
-        <Stats />
         <Experience />
         <Education />
         <ProjectsSection />
@@ -27,3 +25,4 @@ export default function Home() {
     </>
   );
 }
+
