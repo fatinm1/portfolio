@@ -40,6 +40,61 @@ export function splitFeatured(projects: Project[]): { featured: Project | null; 
 
 const projectHref = (p: Project) => p.live_url?.trim() || p.github;
 
+// Stable attachment URLs redirect to a fresh streaming URL on each request.
+// Keep the published videos outside the application bundle and Git history.
+const PROJECT_DEMOS: Record<string, { src: string; development?: boolean }> = {
+  "https://github.com/fatinm1/llm-engine": {
+    src: "https://github.com/user-attachments/assets/c306283c-325e-445d-86bf-2b1832349792",
+  },
+  "https://github.com/fatinm1/lecturekit": {
+    src: "https://github.com/user-attachments/assets/995f1709-85bb-4c6b-8cf3-573899152b49",
+  },
+  "https://github.com/fatinm1/therapy-scheduling": {
+    src: "https://github.com/user-attachments/assets/ad734257-3aa1-40c4-9f8a-e9261b54701f",
+    development: true,
+  },
+};
+
+function ProjectMedia({ project, featured = false }: { project: Project; featured?: boolean }) {
+  const demo = PROJECT_DEMOS[project.github.trim().replace(/\.git$|\/$/g, "").toLowerCase()];
+  if (demo) {
+    return (
+      <div className="flex flex-col gap-2">
+        <video
+          controls
+          playsInline
+          preload="none"
+          poster={project.photo || undefined}
+          aria-label={`${project.name} — 60-second demo`}
+          className="aspect-video w-full rounded-xl border border-[#1f1f25] bg-black object-contain"
+        >
+          <source src={demo.src} type="video/mp4" />
+          <a href={demo.src}>Watch the {project.name} demo</a>
+        </video>
+        <span className="px-1 font-mono text-[11px] text-muted">
+          60-second demo{demo.development ? " · Development demo" : ""}
+        </span>
+      </div>
+    );
+  }
+  return (
+    <a
+      href={projectHref(project)}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label={`Explore ${project.name}`}
+      className="relative block aspect-[16/10] overflow-hidden rounded-xl border border-[#1f1f25]"
+    >
+      <ProjectThumbnail
+        src={project.photo}
+        name={project.name}
+        variant={featured ? "featured" : "card"}
+        sizes={featured ? "(max-width: 640px) calc(100vw - 80px), 340px" : "(max-width: 640px) calc(100vw - 72px), 240px"}
+      />
+    </a>
+  );
+}
+
 const badgeBase = "inline-flex shrink-0 items-center gap-1.5 rounded-full border px-[9px] py-[3px] text-[11px]";
 
 export function StatusBadge({ status }: { status: string }) {
@@ -64,51 +119,37 @@ export function StatusBadge({ status }: { status: string }) {
 export function FeaturedProjectCard({ project }: { project: Project }) {
   const label = project.status?.trim() ? `Featured · ${project.status.trim()}` : "Featured";
   return (
-    <a href={projectHref(project)} target="_blank" rel="noopener noreferrer" className="silk-beam block">
+    <article className="silk-beam block">
       <div className="flex flex-wrap items-center gap-5 rounded-[17px] bg-[#0a0a0d] p-3.5">
-        <div className="relative aspect-[16/10] flex-[1_1_260px] overflow-hidden rounded-xl border border-[#1f1f25]">
-          <ProjectThumbnail
-            src={project.photo}
-            name={project.name}
-            variant="featured"
-            sizes="(max-width: 640px) calc(100vw - 80px), 340px"
-          />
+        <div className="min-w-0 flex-[1_1_260px]">
+          <ProjectMedia project={project} featured />
         </div>
         <div className="flex min-w-0 flex-[1_1_280px] flex-col gap-2.5 px-2 py-1.5">
           <span className="flex flex-wrap items-center justify-between gap-2">
-            <span className="text-xl font-semibold tracking-[-0.02em] text-foreground">
+            <a href={projectHref(project)} target="_blank" rel="noopener noreferrer" className="text-xl font-semibold tracking-[-0.02em] text-foreground hover:text-accent">
               {project.name} <span className="silk-arrow text-[#8b8b93]">↗</span>
-            </span>
+            </a>
             <span className={`${badgeBase} border-[#2f3a10] bg-accent/[.06] text-accent`}>{label}</span>
           </span>
           <span className="line-clamp-4 text-[15px] leading-[1.6] text-muted">{project.description}</span>
         </div>
       </div>
-    </a>
+    </article>
   );
 }
 
 export function ProjectCard({ project }: { project: Project }) {
   return (
-    <a
-      href={projectHref(project)}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="silk-soft silk-card flex flex-col gap-2.5 rounded-2xl border border-border bg-white/[.02] px-3 pb-5 pt-3"
-    >
-      <div className="relative mb-1.5 aspect-[16/10] overflow-hidden rounded-xl border border-[#1f1f25]">
-        <ProjectThumbnail
-          src={project.photo}
-          name={project.name}
-          sizes="(max-width: 640px) calc(100vw - 72px), 240px"
-        />
+    <article className="silk-soft silk-card flex flex-col gap-2.5 rounded-2xl border border-border bg-white/[.02] px-3 pb-5 pt-3">
+      <div className="mb-1.5">
+        <ProjectMedia project={project} />
       </div>
       <span className="flex items-center justify-between gap-2 px-2">
-        <span className="font-semibold text-foreground">{project.name}</span>
+        <a href={projectHref(project)} target="_blank" rel="noopener noreferrer" className="font-semibold text-foreground hover:text-accent">{project.name} <span aria-hidden="true">↗</span></a>
         {project.status?.trim() ? <StatusBadge status={project.status.trim()} /> : null}
       </span>
       <span className="line-clamp-2 px-2 text-sm leading-[1.6] text-muted">{project.description}</span>
-    </a>
+    </article>
   );
 }
 
