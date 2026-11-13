@@ -119,7 +119,7 @@ export function StatusBadge({ status }: { status: string }) {
   return <span className={`${badgeBase} border-[#26262b] text-muted`}>{status}</span>;
 }
 
-export function FeaturedProjectCard({ project }: { project: Project }) {
+export function FeaturedProjectCard({ project, highlighted = true }: { project: Project; highlighted?: boolean }) {
   const label = project.status?.trim() ? `Featured · ${project.status.trim()}` : "Featured";
   return (
     <article className="silk-beam block">
@@ -132,7 +132,9 @@ export function FeaturedProjectCard({ project }: { project: Project }) {
             <a href={projectHref(project)} target="_blank" rel="noopener noreferrer" className="text-xl font-semibold tracking-[-0.02em] text-foreground hover:text-accent">
               {project.name} <span className="silk-arrow text-[#8b8b93]">↗</span>
             </a>
-            <span className={`${badgeBase} border-[#2f3a10] bg-accent/[.06] text-accent`}>{label}</span>
+            {highlighted ? (
+              <span className={`${badgeBase} border-[#2f3a10] bg-accent/[.06] text-accent`}>{label}</span>
+            ) : project.status?.trim() ? <StatusBadge status={project.status.trim()} /> : null}
           </span>
           <span className="line-clamp-4 text-[15px] leading-[1.6] text-muted">{project.description}</span>
         </div>
@@ -142,23 +144,12 @@ export function FeaturedProjectCard({ project }: { project: Project }) {
 }
 
 export function ProjectCard({ project }: { project: Project }) {
-  return (
-    <article className="silk-soft silk-card flex flex-col gap-2.5 rounded-2xl border border-border bg-white/[.02] px-3 pb-5 pt-3">
-      <div className="mb-1.5">
-        <ProjectMedia project={project} />
-      </div>
-      <span className="flex items-center justify-between gap-2 px-2">
-        <a href={projectHref(project)} target="_blank" rel="noopener noreferrer" className="font-semibold text-foreground hover:text-accent">{project.name} <span aria-hidden="true">↗</span></a>
-        {project.status?.trim() ? <StatusBadge status={project.status.trim()} /> : null}
-      </span>
-      <span className="line-clamp-2 px-2 text-sm leading-[1.6] text-muted">{project.description}</span>
-    </article>
-  );
+  return <FeaturedProjectCard project={project} highlighted={false} />;
 }
 
 export function ProjectGrid({ projects }: { projects: Project[] }) {
   return (
-    <div className="grid grid-cols-[repeat(auto-fit,minmax(210px,1fr))] gap-3.5">
+    <div className="flex flex-col gap-3.5">
       {projects.map((project) => (
         <ProjectCard key={project.id} project={project} />
       ))}
@@ -174,9 +165,10 @@ export function ProjectsSkeleton() {
       <div className={`${block} h-[220px]`} />
       <div className="grid grid-cols-[repeat(auto-fit,minmax(210px,1fr))] gap-3.5">
         {[0, 1, 2].map((i) => (
-          <div key={i} className={`${block} h-[230px]`} />
+          <div key={i} className={`${block} h-[220px]`} />
         ))}
       </div>
     </div>
   );
 }
+
