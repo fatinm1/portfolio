@@ -55,12 +55,13 @@ const projectHref = (p: Project) => p.live_url?.trim() || p.github;
 
 // Stable attachment URLs redirect to a fresh streaming URL on each request.
 // Keep the published videos outside the application bundle and Git history.
-const PROJECT_DEMOS: Record<string, { src: string; development?: boolean }> = {
+const PROJECT_DEMOS: Record<string, { src: string; poster?: string; development?: boolean }> = {
   "https://github.com/fatinm1/nida-proj": {
     src: "https://github.com/user-attachments/assets/da42192f-01f1-48c5-96e3-4b6222fd1575",
   },
   "https://github.com/fatinm1/llm-engine": {
-    src: "https://github.com/user-attachments/assets/f90024b7-6b12-49b7-998a-685a7004ccea",
+    src: "https://github.com/user-attachments/assets/ec7305f8-c943-4d77-a3be-2e6035fe17e0",
+    poster: "/demos/tokenforge-poster.jpg",
   },
   "https://github.com/fatinm1/lecturekit": {
     src: "https://github.com/user-attachments/assets/995f1709-85bb-4c6b-8cf3-573899152b49",
@@ -80,7 +81,7 @@ function ProjectMedia({ project, featured = false }: { project: Project; feature
           controls
           playsInline
           preload="none"
-          poster={project.photo || undefined}
+          poster={demo.poster || project.photo || undefined}
           aria-label={`${project.name} — 60-second demo`}
           className="aspect-video w-full rounded-xl border border-[#1f1f25] bg-black object-contain"
         >
