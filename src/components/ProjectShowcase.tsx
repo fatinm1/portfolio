@@ -64,7 +64,8 @@ const PROJECT_DEMOS: Record<string, { src: string; poster?: string; development?
     poster: "/demos/tokenforge-poster.jpg",
   },
   "https://github.com/fatinm1/lecturekit": {
-    src: "https://github.com/user-attachments/assets/995f1709-85bb-4c6b-8cf3-573899152b49",
+    src: "https://github.com/user-attachments/assets/46d76fdf-15e6-48e3-a01e-830889ccd648",
+    poster: "/demos/lecturekit-poster.jpg",
   },
   "https://github.com/fatinm1/therapy-scheduling": {
     src: "https://github.com/user-attachments/assets/ad734257-3aa1-40c4-9f8a-e9261b54701f",
