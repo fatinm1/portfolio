@@ -286,3 +286,7 @@ For issues and questions:
 ---
 
 **Built using Next.js, TypeScript, and Tailwind CSS**
+
+## Security regression checks
+
+Run `npm test` for signed-session tampering, upload traversal, file-signature validation, and executable-link rejection. CI also checks TypeScript. These checks do not certify all routes or a deployment. Keep project code/live links current and benchmark evidence linked to its exact source.
