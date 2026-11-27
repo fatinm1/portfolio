@@ -1,5 +1,5 @@
 # ClausePilot portfolio demo
 
-The 60-second product video used by the ClausePilot card on fatin.dev. Includes labeled workflow illustrations with fictional sample content.
+The 60-second narrated walkthrough used by the ClausePilot card on fatin.dev, recorded on the live app.
 
-https://github.com/user-attachments/assets/da42192f-01f1-48c5-96e3-4b6222fd1575
+https://github.com/user-attachments/assets/949325c3-772a-4238-8d1d-6526e8f9bcaf
