@@ -57,7 +57,8 @@ const projectHref = (p: Project) => p.live_url?.trim() || p.github;
 // Keep the published videos outside the application bundle and Git history.
 const PROJECT_DEMOS: Record<string, { src: string; poster?: string; development?: boolean }> = {
   "https://github.com/fatinm1/nida-proj": {
-    src: "https://github.com/user-attachments/assets/da42192f-01f1-48c5-96e3-4b6222fd1575",
+    src: "https://github.com/user-attachments/assets/949325c3-772a-4238-8d1d-6526e8f9bcaf",
+    poster: "https://github.com/user-attachments/assets/b5b92348-0d1e-4152-a88d-ff097f49e4ce",
   },
   "https://github.com/fatinm1/llm-engine": {
     src: "https://github.com/user-attachments/assets/ec7305f8-c943-4d77-a3be-2e6035fe17e0",
