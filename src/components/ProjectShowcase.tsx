@@ -69,7 +69,8 @@ const PROJECT_DEMOS: Record<string, { src: string; poster?: string; development?
     poster: "/demos/lecturekit-poster.jpg",
   },
   "https://github.com/fatinm1/therapy-scheduling": {
-    src: "https://github.com/user-attachments/assets/ad734257-3aa1-40c4-9f8a-e9261b54701f",
+    src: "/demos/therasync-demo.mp4",
+    poster: "/demos/therasync-poster.jpg",
     development: true,
   },
 };
